@@ -1,0 +1,175 @@
+<div class="submit-page" [style.--primary]="themeColor">
+
+  <!-- Header -->
+  <div class="sub-header">
+    <a routerLink="/dashboard" class="btn btn-ghost btn-sm back-btn">
+      <svg fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24" width="14" height="14">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+      </svg>
+      Back
+    </a>
+    <div>
+      <h1 class="page-title">Report a problem</h1>
+      <p class="page-sub">Tell us what's wrong and where.</p>
+    </div>
+  </div>
+
+  <!-- Success state -->
+  <div *ngIf="successMsg" class="success-state">
+    <div class="success-icon">✓</div>
+    <h2>Reported successfully</h2>
+    <p>{{ successMsg }}</p>
+  </div>
+
+  <form *ngIf="!successMsg" [formGroup]="form" (ngSubmit)="submit()" class="sub-form">
+
+    <!-- Step 1: Category grid -->
+    <section class="form-section">
+      <div class="section-head">
+        <div class="section-num">1</div>
+        <div>
+          <h2 class="section-title">What's the issue?</h2>
+          <p class="section-sub">Pick the category that best fits.</p>
+        </div>
+      </div>
+
+      <div class="category-grid">
+        <button *ngFor="let cat of categories"
+                type="button"
+                class="cat-btn"
+                [class.selected]="form.get('categoryId')?.value === cat.id"
+                (click)="form.patchValue({categoryId: cat.id})">
+          <span class="cat-icon">{{ categoryIcon(cat.name) }}</span>
+          <span class="cat-name">{{ cat.name }}</span>
+        </button>
+      </div>
+
+      <div *ngIf="categories.length === 0" class="loading-row">Loading categories…</div>
+    </section>
+
+    <!-- Step 2: Description -->
+    <section class="form-section">
+      <div class="section-head">
+        <div class="section-num">2</div>
+        <div>
+          <h2 class="section-title">Describe the problem</h2>
+          <p class="section-sub">Be specific — it helps staff fix it faster.</p>
+        </div>
+      </div>
+
+      <div class="field field-boxed">
+        <textarea formControlName="description"
+                  placeholder="e.g. The streetlight near Gate B has been dark for 3 days. The whole path is unlit after 7pm."
+                  rows="4" style="resize: vertical;"></textarea>
+        <p class="field-helper">{{ form.get('description')?.value?.length || 0 }} / min 10 characters</p>
+      </div>
+    </section>
+
+    <!-- Step 3: Location map -->
+    <section class="form-section">
+      <div class="section-head">
+        <div class="section-num">3</div>
+        <div>
+          <h2 class="section-title">Pin the location</h2>
+          <p class="section-sub">Drag the pin to the exact spot.</p>
+        </div>
+      </div>
+
+      <div class="map-actions">
+        <button type="button" class="btn btn-sm" (click)="useMyLocation()">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="14" height="14"><circle cx="12" cy="12" r="3"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v3m0 14v3M2 12h3m14 0h3M4.22 4.22l2.12 2.12m11.32 11.32l2.12 2.12M4.22 19.78l2.12-2.12m11.32-11.32l2.12-2.12"/></svg>
+          Use my location
+        </button>
+        <button type="button" class="btn btn-sm btn-ghost" (click)="recenter()">
+          ↺ Recenter
+        </button>
+        <span *ngIf="form.get('latitude')?.value" class="loc-coords mono text-xs text-mute">
+          {{ form.get('latitude')?.value | number:'1.4-4' }}, {{ form.get('longitude')?.value | number:'1.4-4' }}
+        </span>
+      </div>
+
+      <div #mapEl class="submit-map"></div>
+      <p class="field-helper">Tap on the map to move the pin, or drag it to fine-tune.</p>
+      <p *ngIf="locationError" class="field-helper field-helper-error">{{ locationError }}</p>
+    </section>
+
+    <!-- Step 4: Photos -->
+    <section class="form-section">
+      <div class="section-head">
+        <div class="section-num">4</div>
+        <div>
+          <h2 class="section-title">Add photos <span class="optional">(optional)</span></h2>
+          <p class="section-sub">Photos help staff identify and fix the issue faster.</p>
+        </div>
+      </div>
+
+      <div class="photo-grid">
+        <div *ngFor="let p of photos; let i = index" class="photo-thumb">
+          <img [src]="photoSrc(p)" alt="">
+          <button type="button" class="photo-remove" (click)="removePhoto(i)">✕</button>
+        </div>
+
+        <label *ngIf="photos.length < 5" class="photo-add">
+          <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" width="24" height="24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+          <span>Add photo</span>
+          <input type="file" accept="image/*" multiple (change)="onFiles($event)" style="display:none">
+        </label>
+
+        <button *ngIf="photos.length < 5" type="button" class="photo-add camera-add" (click)="openCamera()">
+          <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" width="24" height="24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h.01M15 12h.01"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 10.5v3"/>
+          </svg>
+          <span>Take photo</span>
+        </button>
+      </div>
+
+      <p class="field-helper">Up to 5 photos, each under 5 MB.</p>
+    </section>
+
+    <!-- Error -->
+    <div *ngIf="errorMsg" class="banner error">{{ errorMsg }}</div>
+
+    <!-- Submit -->
+    <div class="submit-row">
+      <button type="submit" class="btn btn-primary btn-lg"
+              [disabled]="form.invalid || loading">
+        <span *ngIf="!loading">Submit report</span>
+        <span *ngIf="loading">Submitting…</span>
+        <svg *ngIf="!loading" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24" width="16" height="16">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+        </svg>
+      </button>
+      <a routerLink="/dashboard" class="btn btn-ghost">Cancel</a>
+    </div>
+
+  </form>
+</div>
+
+<div class="camera-overlay" *ngIf="showCameraModal" (click)="closeCamera()">
+  <div class="camera-modal" (click)="$event.stopPropagation()">
+    <h2>Take a photo</h2>
+    <p class="camera-sub">Capture the issue directly from the site, then add it to the complaint.</p>
+
+    <div class="camera-frame" [class.camera-frame-error]="cameraError">
+      <video #cameraVideo autoplay playsinline muted></video>
+      <div *ngIf="cameraStarting" class="camera-placeholder">Starting camera...</div>
+      <div *ngIf="cameraError" class="camera-placeholder">{{ cameraError }}</div>
+    </div>
+
+    <div class="camera-actions">
+      <button type="button" class="btn btn-ghost" (click)="closeCamera()">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="capturePhotoFromCamera()" [disabled]="cameraStarting || !!cameraError">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h.01M15 12h.01"/>
+        </svg>
+        Capture photo
+      </button>
+    </div>
+  </div>
+</div>

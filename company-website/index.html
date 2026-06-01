@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OmniCivic — A quiet portal for the things your community keeps fixing.</title>
+  <meta name="description" content="OmniCivic is a thoughtful complaint platform for residential communities, gated societies, and municipal blocks. Replace WhatsApp chaos with a portal where things actually get tracked and fixed.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:opsz,wght,ital@9..144,400..700,0;9..144,400..700,1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ─── NAV ─── -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="#top">
+        <span class="brand-mark">◐</span>
+        <span class="brand-name">OmniCivic</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#how">How it works</a>
+        <a href="#compare">vs. WhatsApp</a>
+        <a href="#after">What happens next</a>
+        <a href="#pricing">Pricing</a>
+      </nav>
+      <div class="nav-cta">
+        <a href="http://localhost:4200/login" class="nav-signin" id="signin-nav" target="_self">Sign in</a>
+        <a href="request.html" class="btn btn-primary">Request access</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero" id="top">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <div class="eyebrow">
+          <span class="dot"></span>
+          <span>For residential communities &amp; municipal blocks</span>
+        </div>
+        <h1>
+          A quiet portal for the<br>
+          things your community<br>
+          <em>keeps fixing</em>.
+        </h1>
+        <p class="hero-sub">
+          OmniCivic replaces the WhatsApp group chaos with a thoughtful place to report, track, and resolve civic issues — water leaks, broken lights, garbage, security — without anyone losing the thread.
+        </p>
+        <div class="hero-cta">
+          <a href="request.html" class="btn btn-primary big">
+            Request access for your community
+            <svg fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </a>
+          <a href="#how" class="btn btn-secondary big">See how it works</a>
+        </div>
+        <p class="hero-meta">
+          <span>★ ★ ★ ★ ★</span>
+          <span>Used by 12 communities · Built for the way real residents actually report</span>
+        </p>
+      </div>
+
+      <!-- Cycling preview cards -->
+      <aside class="hero-preview">
+        <div class="preview-stack">
+          <div class="preview-card card-1">
+            <div class="pc-head">
+              <span class="pc-dot warm"></span>
+              <span class="pc-cat">Water leakage</span>
+              <span class="pc-time">2 minutes ago</span>
+            </div>
+            <p class="pc-body">"Water is gushing from the joint near Block C parking. Visible since this morning."</p>
+            <div class="pc-foot">
+              <span>by mariaH4</span>
+              <span class="pc-pill warm">Open</span>
+            </div>
+          </div>
+
+          <div class="preview-card card-2">
+            <div class="pc-head">
+              <span class="pc-dot amber"></span>
+              <span class="pc-cat">Streetlight</span>
+              <span class="pc-time">1 hour ago</span>
+            </div>
+            <p class="pc-body">"Block D entry lamp not working since Friday. The whole driveway is dark."</p>
+            <div class="pc-foot">
+              <span>by ramnaMAR2 → staff: ravi</span>
+              <span class="pc-pill amber">In progress</span>
+            </div>
+          </div>
+
+          <div class="preview-card card-3">
+            <div class="pc-head">
+              <span class="pc-dot sage"></span>
+              <span class="pc-cat">Garbage collection</span>
+              <span class="pc-time">Resolved 3 days ago</span>
+            </div>
+            <p class="pc-body">"Bin 7 was missed Tuesday morning. Now overflowing." Marked done with photo.</p>
+            <div class="pc-foot">
+              <span>resolved by staff: priya</span>
+              <span class="pc-pill sage">Resolved</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ─── FOUNDER NOTE ─── -->
+  <section class="founder">
+    <div class="founder-inner">
+      <div class="founder-eyebrow">— · A note from the maker</div>
+      <blockquote class="founder-quote">
+        <p>
+          I built OmniCivic because every community I lived in had the <em>same conversation</em> three times a week: someone in the group chat reports a leak, someone else says it's been a month, the secretary asks who's handling it, the message scrolls away, nothing changes.
+        </p>
+        <p>
+          The point of this isn't more software. The point is that <em>the thread doesn't disappear.</em> A leak that's been open for six days <em>looks</em> like a leak that's been open for six days — visible to residents, to the admin, to the staff member it's assigned to. That visibility is the entire feature.
+        </p>
+      </blockquote>
+      <div class="founder-sig">
+        <div class="sig-mark">VJ</div>
+        <div class="sig-text">
+          <strong>Vethesh Jayaprakash</strong>
+          <span>Founder, OmniCivic · Chennai</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── HOW IT WORKS ─── -->
+  <section class="how" id="how">
+    <div class="section-head">
+      <div class="eyebrow-sage">— · How it works</div>
+      <h2>Three roles. One thread per issue.</h2>
+      <p>Built for the way communities actually operate — not how they appear in pitch decks.</p>
+    </div>
+
+    <div class="role-grid">
+      <article class="role-card">
+        <div class="role-num">01</div>
+        <h3>Residents <em>report</em></h3>
+        <p>They open the app, pick a category, drop a pin, optionally attach a photo, and submit. No chasing anyone. They can see exactly when it was acknowledged and who's handling it.</p>
+        <ul>
+          <li>Photos &amp; map pin on every complaint</li>
+          <li>Real-time status — Open → Assigned → In progress → Resolved</li>
+          <li>"Affected too" button so admins know what's burning</li>
+        </ul>
+      </article>
+
+      <article class="role-card">
+        <div class="role-num">02</div>
+        <h3>Admins <em>route</em></h3>
+        <p>Every new report lands in a triage queue. Admin assigns it to the right staff member, watches them work, reviews their proof when they say it's done.</p>
+        <ul>
+          <li>Triage queue sorted by urgency and age</li>
+          <li>Auto-suggested staff based on category</li>
+          <li>Proof review gate before anything is marked resolved</li>
+        </ul>
+      </article>
+
+      <article class="role-card">
+        <div class="role-num">03</div>
+        <h3>Staff <em>fix</em></h3>
+        <p>Each staff member sees only their assigned tasks. They mark "started", do the work, submit proof (a photo + short note), and wait for admin to approve.</p>
+        <ul>
+          <li>Personal queue — no inbox spam</li>
+          <li>Proof submission with photo</li>
+          <li>Rejection sends it back with reason — no silent failures</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- ─── COMPARISON ─── -->
+  <section class="compare" id="compare">
+    <div class="section-head">
+      <div class="eyebrow-sage">— · Why bother</div>
+      <h2>You already use WhatsApp. So why this?</h2>
+      <p>WhatsApp is great for "what's for dinner". It's not built for "the lift has been broken for nine days."</p>
+    </div>
+
+    <div class="compare-grid">
+      <article class="compare-card before">
+        <div class="compare-title">
+          <span class="bullet">×</span>
+          <h3>WhatsApp / paper logbooks</h3>
+        </div>
+        <ul>
+          <li>Messages scroll away. No one knows what's pending.</li>
+          <li>Who's responsible for this? Unclear, every time.</li>
+          <li>No proof a thing was actually fixed — just "OK done" texts.</li>
+          <li>New residents can't see history. They re-report old issues.</li>
+          <li>Heated arguments in the group chat about the same broken light for weeks.</li>
+        </ul>
+      </article>
+
+      <article class="compare-card after">
+        <div class="compare-title">
+          <span class="bullet">✓</span>
+          <h3>OmniCivic</h3>
+        </div>
+        <ul>
+          <li>Each issue has a stable URL, status, and assigned owner.</li>
+          <li>Residents see exactly who's working on it and when it started.</li>
+          <li>Photo proof required before something is marked resolved.</li>
+          <li>Full searchable history. New residents see what's already been handled.</li>
+          <li>The group chat goes back to being a group chat.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- ─── WHAT HAPPENS NEXT ─── -->
+  <section class="after" id="after">
+    <div class="section-head">
+      <div class="eyebrow-sage">— · What happens after you sign up</div>
+      <h2>Four steps. No salespeople.</h2>
+    </div>
+
+    <ol class="steps">
+      <li>
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>You submit a request</h4>
+          <p>Tell us your community name, your contact info, optionally a logo and your address (so we can pin your location on the map for residents).</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>We review &amp; approve</h4>
+          <p>Usually within a day. We'll generate a 4-character prefix unique to your community (e.g. <code>MAR2</code> for Marina Mall) — it becomes part of every user's username.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>You get admin credentials</h4>
+          <p>You receive an email with your admin username and a temporary password. First sign-in forces you to set a new password.</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>You invite residents &amp; staff</h4>
+          <p>From the admin panel, create users one-by-one or in bulk. Each gets their own welcome email with their credentials. The platform is live.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ─── PRICING ─── -->
+  <section class="pricing" id="pricing">
+    <div class="pricing-card">
+      <div class="pricing-eyebrow">— · Pricing</div>
+      <h2>One price. No tiers. No "starter plan" tricks.</h2>
+      <div class="price">
+        <span class="price-amount">₹3,000–6,000</span>
+        <span class="price-period">/ year, all-in</span>
+      </div>
+      <p class="price-sub">
+        Pricing is based on community size, not feature count. You get everything from day one. We don't believe in withholding "advanced features" — every community needs to see complaint history and require proof.
+      </p>
+      <ul class="price-includes">
+        <li>✓ Unlimited residents, staff and co-admins</li>
+        <li>✓ Unlimited complaints, photos, map pins</li>
+        <li>✓ Email notifications for every status change</li>
+        <li>✓ Audit log of every action</li>
+        <li>✓ Custom community branding (logo, theme color)</li>
+        <li>✓ Direct support from the maker</li>
+      </ul>
+      <a href="request.html" class="btn btn-primary big">Request access</a>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="brand-mark">◐</span>
+        <span>OmniCivic</span>
+      </div>
+      <p>© 2026 OmniCivic · Made in Chennai · For communities that prefer the work get done.</p>
+      <div class="footer-links">
+        <a href="request.html">Request access</a>
+        <a href="http://localhost:4200/login" id="signin-footer" target="_self">Sign in</a>
+        <a href="mailto:hello@omnicivic.com">hello@omnicivic.com</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Wire sign-in links dynamically from config.js so they survive deployment
+    (function() {
+      var base = (window.OMNICIVIC_CONFIG || {}).platformUrl || 'http://localhost:4200';
+      var loginUrl = base + '/login'; // Always direct to login page
+      ['signin-nav', 'signin-footer'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.href = loginUrl;
+      });
+    })();
+  </script>
+</body>
+</html>

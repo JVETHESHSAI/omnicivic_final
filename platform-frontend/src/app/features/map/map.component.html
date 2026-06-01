@@ -1,0 +1,34 @@
+<div class="map-page">
+
+  <header class="map-header">
+    <div class="header-inner">
+      <div>
+        <h1 class="page-title">Community map</h1>
+        <p class="page-sub">Every complaint, plotted.</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-secondary btn-sm" (click)="useMyLocation()">📍 My location</button>
+        <button class="btn btn-secondary btn-sm" (click)="recenter()">↻ Recenter</button>
+      </div>
+    </div>
+
+    <div class="filter-row">
+      <button class="filter-pill" [class.active]="statusFilter === 'all'" (click)="setFilter('all')">
+        <span>All</span><span class="count">{{ counts.all }}</span>
+      </button>
+      <button class="filter-pill open" [class.active]="statusFilter === 'OPEN'" (click)="setFilter('OPEN')">
+        <span class="dot"></span><span>Open</span><span class="count">{{ counts.OPEN }}</span>
+      </button>
+      <button class="filter-pill amber" [class.active]="statusFilter === 'IN_PROGRESS'" (click)="setFilter('IN_PROGRESS')">
+        <span class="dot"></span><span>In progress</span><span class="count">{{ counts.IN_PROGRESS }}</span>
+      </button>
+      <button class="filter-pill sage" [class.active]="statusFilter === 'RESOLVED'" (click)="setFilter('RESOLVED')">
+        <span class="dot"></span><span>Resolved</span><span class="count">{{ counts.RESOLVED }}</span>
+      </button>
+    </div>
+  </header>
+
+  <div #mapEl class="map-canvas"></div>
+
+  <div class="map-overlay-loading" *ngIf="loading">$ loading pins…</div>
+</div>

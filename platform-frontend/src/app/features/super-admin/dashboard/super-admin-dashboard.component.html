@@ -1,0 +1,300 @@
+<div class="qo-page">
+
+  <!-- Credentials banner shown after successful approval -->
+  <div *ngIf="lastCredentials" class="creds-banner">
+    <div class="creds-header">
+      <span class="creds-icon">✓</span>
+      <div>
+        <div class="creds-title">Community provisioned — <strong>{{ lastCredentials.orgName }}</strong></div>
+        <div class="creds-sub">Save these credentials now. Email may have failed — send them manually if needed.</div>
+      </div>
+      <button class="creds-dismiss" (click)="dismissCredentials()">✕</button>
+    </div>
+    <div class="creds-grid">
+      <div class="cred-item">
+        <span class="cred-label">Username</span>
+        <span class="cred-val">{{ lastCredentials.username }}</span>
+        <button class="cred-copy" (click)="copy(lastCredentials.username)" title="Copy">⎘</button>
+      </div>
+      <div class="cred-item">
+        <span class="cred-label">Temp password</span>
+        <span class="cred-val">{{ lastCredentials.temporaryPassword }}</span>
+        <button class="cred-copy" (click)="copy(lastCredentials.temporaryPassword)" title="Copy">⎘</button>
+      </div>
+      <div class="cred-item">
+        <span class="cred-label">Prefix</span>
+        <span class="cred-val">{{ lastCredentials.prefix }}</span>
+        <button class="cred-copy" (click)="copy(lastCredentials.prefix)" title="Copy">⎘</button>
+      </div>
+      <div class="cred-item">
+        <span class="cred-label">Email</span>
+        <span class="cred-val">{{ lastCredentials.email }}</span>
+        <button class="cred-copy" (click)="copy(lastCredentials.email)" title="Copy">⎘</button>
+      </div>
+    </div>
+    <div class="creds-login-url">
+      Login URL: <span>http://localhost:4200/login</span>
+      <button class="cred-copy" (click)="copy('http://localhost:4200/login')" title="Copy">⎘</button>
+    </div>
+  </div>
+
+  <!-- Stat strip -->
+  <section class="stats">
+    <div class="stat">
+      <div class="stat-num amber">{{ counts['PENDING'] || 0 }}</div>
+      <div class="stat-label">pending requests</div>
+      <div class="stat-spark">awaiting decision</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num green">{{ counts['APPROVED'] || 0 }}</div>
+      <div class="stat-label">approved</div>
+      <div class="stat-spark">{{ activeCommunities.length }} active communities</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num red">{{ counts['REJECTED'] || 0 }}</div>
+      <div class="stat-label">rejected</div>
+      <div class="stat-spark">archived</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">{{ activeCommunities.length }}</div>
+      <div class="stat-label">live communities</div>
+      <div class="stat-spark live">
+        <span class="pulse"></span> operational
+      </div>
+    </div>
+  </section>
+
+  <!-- Tabs -->
+  <div class="qo-tabs">
+    <button class="qo-tab" [class.active]="activeTab === 'requests'" (click)="activeTab = 'requests'">
+      service requests
+      <span class="badge" *ngIf="counts['PENDING'] > 0">{{ counts['PENDING'] }}</span>
+    </button>
+    <button class="qo-tab" [class.active]="activeTab === 'communities'" (click)="activeTab = 'communities'">
+      communities <span class="badge">{{ activeCommunities.length }}</span>
+    </button>
+  </div>
+
+  <!-- ─── REQUESTS TAB ─── -->
+  <div class="two-col" *ngIf="activeTab === 'requests'">
+
+    <aside class="queue">
+      <header class="queue-head">
+        <div class="filter-pills">
+          <button class="pill" [class.active]="requestFilter === 'PENDING'" (click)="setRequestFilter('PENDING')">pending</button>
+          <button class="pill" [class.active]="requestFilter === 'APPROVED'" (click)="setRequestFilter('APPROVED')">approved</button>
+          <button class="pill" [class.active]="requestFilter === 'REJECTED'" (click)="setRequestFilter('REJECTED')">rejected</button>
+          <button class="pill" [class.active]="requestFilter === 'ALL'" (click)="setRequestFilter('ALL')">all</button>
+        </div>
+      </header>
+
+      <div class="queue-loading" *ngIf="loading">$ loading…</div>
+
+      <div class="queue-empty" *ngIf="!loading && requests.length === 0">
+        // no {{ requestFilter | lowercase }} requests
+      </div>
+
+      <div class="queue-list" *ngIf="!loading && requests.length > 0">
+        <article *ngFor="let r of requests"
+                 class="queue-item"
+                 [class.selected]="selectedRequest?.id === r.id"
+                 (click)="selectRequest(r)">
+          <div class="queue-item-head">
+            <span class="org">{{ r.organizationName }}</span>
+            <span class="status" [class]="'st-' + r.status">{{ r.status | lowercase }}</span>
+          </div>
+          <div class="queue-item-meta">
+            <span>{{ r.ownerName }}</span>
+            <span class="sep">·</span>
+            <span>{{ timeAgo(r.submittedAt) }}</span>
+          </div>
+        </article>
+      </div>
+    </aside>
+
+    <section class="detail">
+      <div class="detail-empty" *ngIf="!selectedRequest">
+        <div class="empty-glyph">⌘</div>
+        <p>// select a request from the queue</p>
+      </div>
+
+      <div *ngIf="selectedRequest" class="detail-content">
+        <header class="detail-head">
+          <div class="logo-wrap" *ngIf="selectedRequest.logoBase64"
+               [style.background-image]="'url(' + logoSrc(selectedRequest.logoBase64) + ')'"></div>
+          <div class="logo-wrap fallback" *ngIf="!selectedRequest.logoBase64">
+            {{ selectedRequest.organizationName?.charAt(0) }}
+          </div>
+          <div>
+            <h2>{{ selectedRequest.organizationName }}</h2>
+            <p class="sub">request_id: {{ selectedRequest.id }} · {{ fullDate(selectedRequest.submittedAt) }}</p>
+          </div>
+          <span class="status big" [class]="'st-' + selectedRequest.status">
+            {{ selectedRequest.status | lowercase }}
+          </span>
+        </header>
+
+        <section class="info-grid">
+          <div>
+            <div class="lbl">owner</div>
+            <div class="val">{{ selectedRequest.ownerName }}</div>
+          </div>
+          <div>
+            <div class="lbl">email</div>
+            <div class="val">{{ selectedRequest.ownerEmail }}</div>
+          </div>
+          <div *ngIf="selectedRequest.ownerPhone">
+            <div class="lbl">phone</div>
+            <div class="val">{{ selectedRequest.ownerPhone }}</div>
+          </div>
+          <div *ngIf="selectedRequest.address">
+            <div class="lbl">address</div>
+            <div class="val">{{ selectedRequest.address }}</div>
+          </div>
+        </section>
+
+        <section class="desc-block" *ngIf="selectedRequest.description">
+          <div class="lbl">description</div>
+          <p>{{ selectedRequest.description }}</p>
+        </section>
+
+        <section *ngIf="selectedRequest.status === 'APPROVED'" class="resolution-block approved">
+          <div class="lbl">approved as</div>
+          <div class="val mono">{{ selectedRequest.assignedPrefix }}</div>
+          <p class="muted">reviewed by {{ selectedRequest.reviewedBy }} · {{ fullDate(selectedRequest.reviewedAt!) }}</p>
+        </section>
+
+        <section *ngIf="selectedRequest.status === 'REJECTED'" class="resolution-block rejected">
+          <div class="lbl">rejection reason</div>
+          <p>{{ selectedRequest.rejectionReason }}</p>
+          <p class="muted">reviewed by {{ selectedRequest.reviewedBy }} · {{ fullDate(selectedRequest.reviewedAt!) }}</p>
+        </section>
+
+        <!-- Decision panel -->
+        <section *ngIf="selectedRequest.status === 'PENDING'" class="decision-panel">
+          <div class="decision-head">
+            <span class="warn">⚠</span>
+            <span>this decision will email the owner immediately and provision a community admin account</span>
+          </div>
+
+          <div class="prefix-input-block">
+            <label class="mono lbl">community_prefix [4 chars, A-Z 0-9]</label>
+            <input type="text" maxlength="4" [(ngModel)]="approvePrefix"
+                   (input)="approvePrefix = approvePrefix.toUpperCase()"
+                   class="prefix-input"
+                   placeholder="ABCD">
+            <p class="hint">// must be unique platform-wide · case insensitive · suggested: {{ suggestPrefix(selectedRequest.organizationName) }}</p>
+          </div>
+
+          <div class="reject-input-block">
+            <label class="mono lbl">rejection_reason (for rejection only)</label>
+            <textarea [(ngModel)]="rejectionReason" rows="3"
+                      placeholder="Tell the owner why this won't be approved."></textarea>
+          </div>
+
+          <div class="error-block mono" *ngIf="approveError">⚠ {{ approveError }}</div>
+
+          <div class="decision-actions">
+            <button class="action-btn reject" (click)="rejectRequest()" [disabled]="rejecting">
+              {{ rejecting ? 'rejecting…' : '✗ reject' }}
+            </button>
+            <button class="action-btn approve" (click)="approveRequest()" [disabled]="approving">
+              {{ approving ? 'provisioning…' : '✓ approve &amp; provision' }}
+            </button>
+          </div>
+        </section>
+      </div>
+    </section>
+  </div>
+
+  <!-- ─── COMMUNITIES TAB ─── -->
+  <div class="two-col" *ngIf="activeTab === 'communities'">
+    <aside class="queue">
+      <header class="queue-head">
+        <span class="mono dim">// live communities</span>
+      </header>
+      <div class="queue-empty" *ngIf="communities.length === 0">// no communities provisioned yet</div>
+      <div class="queue-list" *ngIf="communities.length > 0">
+        <article *ngFor="let c of communities"
+                 class="queue-item"
+                 [class.selected]="selectedCommunity?.communityPrefix === c.communityPrefix"
+                 (click)="selectCommunity(c)">
+          <div class="queue-item-head">
+            <span class="org">{{ c.name }}</span>
+            <span class="mono dim">{{ c.communityPrefix }}</span>
+          </div>
+          <div class="queue-item-meta">
+            <span *ngIf="c.adminEmail">admin: {{ c.adminEmail }}</span>
+          </div>
+        </article>
+      </div>
+    </aside>
+
+    <section class="detail">
+      <div class="detail-empty" *ngIf="!selectedCommunity">
+        <div class="empty-glyph">⌘</div>
+        <p>// select a community</p>
+      </div>
+
+      <div *ngIf="selectedCommunity" class="detail-content">
+        <header class="detail-head">
+          <div class="logo-wrap" *ngIf="selectedCommunity.logoBase64"
+               [style.background-image]="'url(' + logoSrc(selectedCommunity.logoBase64) + ')'"></div>
+          <div class="logo-wrap fallback" *ngIf="!selectedCommunity.logoBase64">
+            {{ selectedCommunity.name.charAt(0) }}
+          </div>
+          <div>
+            <h2>{{ selectedCommunity.name }}</h2>
+            <p class="sub mono">prefix: {{ selectedCommunity.communityPrefix }}</p>
+          </div>
+        </header>
+
+        <section class="info-grid">
+          <div *ngIf="selectedCommunity.adminEmail">
+            <div class="lbl">admin email</div>
+            <div class="val">{{ selectedCommunity.adminEmail }}</div>
+          </div>
+          <div *ngIf="selectedCommunity.adminUsername">
+            <div class="lbl">admin username</div>
+            <div class="val mono">{{ selectedCommunity.adminUsername }}</div>
+          </div>
+          <div *ngIf="selectedCommunity.adminFirstLogin">
+            <div class="lbl">status</div>
+            <div class="val amber">admin hasn't signed in yet</div>
+          </div>
+        </section>
+
+        <section class="cred-block" *ngIf="selectedCommunity.adminFirstLogin && selectedCommunity.adminTemporaryPassword">
+          <div class="lbl mono">// temporary credentials (visible until first login)</div>
+          <div class="cred-grid">
+            <div>
+              <span class="cred-label">username</span>
+              <span class="cred-val mono">{{ selectedCommunity.adminUsername }}</span>
+              <button class="copy-mini" (click)="copy(selectedCommunity.adminUsername!)">copy</button>
+            </div>
+            <div>
+              <span class="cred-label">temp password</span>
+              <span class="cred-val mono">{{ selectedCommunity.adminTemporaryPassword }}</span>
+              <button class="copy-mini" (click)="copy(selectedCommunity.adminTemporaryPassword!)">copy</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="decision-panel">
+          <div class="decision-head">
+            <span class="warn">⚠</span>
+            <span>removing a community is a soft-delete. residents lose access immediately. data remains for audit.</span>
+          </div>
+          <div class="decision-actions" *ngIf="selectedCommunity.active !== false">
+            <button class="action-btn reject" (click)="removeCommunity(selectedCommunity)">
+              ✗ remove community
+            </button>
+          </div>
+          <div *ngIf="selectedCommunity.active === false" class="inactive-notice">
+            ✓ this community has been deactivated. residents have lost access. data is preserved for audit.
+          </div>
+        </section>
+      </div>
+    </section>
+  </div>
+</div>

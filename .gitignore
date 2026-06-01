@@ -1,0 +1,35 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+
+# Logs
+*.log
+logs/
+
+# Java / Spring
+backend/target/
+backend/.mvn/
+**/build/
+**/out/
+
+# Node / Angular
+platform-frontend/node_modules/
+platform-frontend/.angular/
+platform-frontend/dist/
+platform-frontend/.cache/
+company-website/node_modules/
+
+# Local env / secrets
+.env
+.env.*
+!.env.example
+backend/src/main/resources/application-local.properties
+backend/src/main/resources/application-secrets.properties
+
+# Misc
+coverage/
+tmp/
+temp/

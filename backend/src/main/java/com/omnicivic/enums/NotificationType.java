@@ -1,0 +1,13 @@
+package com.omnicivic.enums;
+
+public enum NotificationType {
+    COMPLAINT_SUBMITTED,
+    COMPLAINT_ASSIGNED,
+    STATUS_UPDATED,
+    PROOF_SUBMITTED,
+    PROOF_APPROVED,
+    PROOF_REJECTED,
+    COMPLAINT_RESOLVED,
+    COMPLAINT_CLOSED,
+    DUPLICATE_WARNING
+}

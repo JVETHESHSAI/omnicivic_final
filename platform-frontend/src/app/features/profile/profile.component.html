@@ -1,0 +1,111 @@
+<div class="profile-page" [style.--primary]="themeColor">
+
+  <div class="profile-header">
+    <div class="eyebrow">Your profile</div>
+    <h1 class="page-title">{{ user?.firstName }} <em>{{ user?.lastName }}</em></h1>
+    <p class="page-sub">Manage your personal information and avatar.</p>
+  </div>
+
+  <div class="profile-grid">
+
+    <!-- Left: avatar + identity -->
+    <aside class="profile-aside">
+      <div class="avatar-zone">
+        <div class="avatar-frame">
+          <img *ngIf="avatarPreview" [src]="avatarPreview" alt="Avatar" class="avatar-img">
+          <div *ngIf="!avatarPreview" class="avatar-initials">{{ initials }}</div>
+          <label class="avatar-upload-btn" title="Upload photo">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="14" height="14">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            <input type="file" accept="image/*" (change)="onAvatarFile($event)" style="display:none">
+          </label>
+        </div>
+        <button *ngIf="avatarPreview" class="btn btn-sm btn-ghost" (click)="removeAvatar()" style="margin-top: 8px; font-size: 12px; color: var(--ink-mute);">Remove photo</button>
+        <p class="avatar-hint">JPG or PNG, max 2 MB</p>
+      </div>
+
+      <div class="identity-card card card-pad">
+        <div class="id-row">
+          <span class="id-label">Username</span>
+          <span class="id-val mono">{{ user?.username }}</span>
+        </div>
+        <div class="id-row">
+          <span class="id-label">Role</span>
+          <span class="id-val">
+            <span class="tag" [class.sage]="user?.role === 'ADMIN' || user?.role === 'CO_ADMIN'"
+                              [class.sky]="user?.role === 'STAFF'"
+                              [class.amber]="user?.role === 'RESIDENT'">
+              {{ roleLabel }}
+            </span>
+          </span>
+        </div>
+        <div class="id-row">
+          <span class="id-label">Community</span>
+          <span class="id-val mono">{{ user?.communityPrefix }}</span>
+        </div>
+        <div class="id-row">
+          <span class="id-label">Email</span>
+          <span class="id-val">{{ user?.email || '—' }}</span>
+        </div>
+        <div class="id-row" *ngIf="user?.createdAt">
+          <span class="id-label">Member since</span>
+          <span class="id-val text-mute text-sm">{{ user?.createdAt | date:'MMM d, y' }}</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right: edit form -->
+    <section class="profile-form card">
+      <div class="card-pad" style="border-bottom: 1px solid var(--stone-200); margin-bottom: 0;">
+        <h2 style="font-family: 'Fraunces', serif; font-size: 18px; font-weight: 500; letter-spacing: -0.015em;">Edit details</h2>
+      </div>
+      <div class="card-pad">
+        <form [formGroup]="form" (ngSubmit)="save()">
+
+          <div class="form-row-2">
+            <div class="field">
+              <label>First name</label>
+              <input type="text" formControlName="firstName" placeholder="e.g. Vethesh">
+            </div>
+            <div class="field">
+              <label>Last name</label>
+              <input type="text" formControlName="lastName" placeholder="e.g. Jai">
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Phone</label>
+            <input type="tel" formControlName="phone" placeholder="+91 98765 43210">
+            <p class="field-helper">Used for urgent community communications only.</p>
+          </div>
+
+          <div class="field">
+            <label>Bio <span style="font-weight:400; text-transform:none; letter-spacing:0; color: var(--ink-mute);">(optional)</span></label>
+            <textarea formControlName="bio" placeholder="Tell your community a bit about yourself…" rows="3" style="resize: vertical;"></textarea>
+            <p class="field-helper">{{ form.get('bio')?.value?.length || 0 }} / 500 characters</p>
+          </div>
+
+          <div class="save-row">
+            <button type="submit" class="btn btn-primary" [disabled]="saving">
+              <svg *ngIf="!saving" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24" width="15" height="15">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
+              {{ saving ? 'Saving…' : 'Save changes' }}
+            </button>
+
+            <div *ngIf="saved" class="save-ok">
+              <svg fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              Saved
+            </div>
+
+            <div *ngIf="error" class="banner error" style="margin: 0; flex: 1;">{{ error }}</div>
+          </div>
+
+        </form>
+      </div>
+    </section>
+
+  </div>
+</div>

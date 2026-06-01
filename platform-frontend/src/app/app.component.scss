@@ -1,0 +1,4004 @@
+// // // // // // // :host { display: block; }
+
+// // // // // // // /* ══════════════════════════════════
+// // // // // // //    QUIET OPERATOR — super admin dark shell
+// // // // // // //    ══════════════════════════════════ */
+// // // // // // // .qo-shell {
+// // // // // // //   min-height: 100vh;
+// // // // // // //   background: var(--qo-bg);
+// // // // // // //   color: var(--qo-text);
+// // // // // // //   display: flex;
+// // // // // // //   flex-direction: column;
+// // // // // // // }
+
+// // // // // // // .qo-topbar {
+// // // // // // //   background: var(--qo-bg);
+// // // // // // //   border-bottom: 1px solid var(--qo-line);
+// // // // // // //   display: flex;
+// // // // // // //   align-items: stretch;
+// // // // // // //   height: 48px;
+// // // // // // //   position: sticky;
+// // // // // // //   top: 0;
+// // // // // // //   z-index: 100;
+// // // // // // // }
+
+// // // // // // // .qo-brand {
+// // // // // // //   padding: 0 22px;
+// // // // // // //   display: flex;
+// // // // // // //   align-items: center;
+// // // // // // //   gap: 10px;
+// // // // // // //   border-right: 1px solid var(--qo-line);
+// // // // // // //   font-family: 'JetBrains Mono', monospace;
+// // // // // // //   font-size: 12px;
+// // // // // // //   font-weight: 600;
+// // // // // // //   color: var(--qo-text);
+// // // // // // // }
+
+// // // // // // // .qo-mark {
+// // // // // // //   width: 22px; height: 22px;
+// // // // // // //   background: var(--qo-amber);
+// // // // // // //   color: var(--qo-bg);
+// // // // // // //   display: flex; align-items: center; justify-content: center;
+// // // // // // //   font-size: 13px; font-weight: 700;
+// // // // // // //   border-radius: 4px;
+// // // // // // // }
+
+// // // // // // // .qo-meta { color: var(--qo-text-dim); font-weight: 400; }
+
+// // // // // // // .qo-context {
+// // // // // // //   padding: 0 18px;
+// // // // // // //   display: flex; align-items: center; gap: 14px;
+// // // // // // //   border-right: 1px solid var(--qo-line);
+// // // // // // //   font-family: 'JetBrains Mono', monospace;
+// // // // // // //   font-size: 11px;
+// // // // // // //   color: var(--qo-text-dim);
+// // // // // // // }
+
+// // // // // // // .qo-live { display: inline-flex; align-items: center; gap: 6px; }
+// // // // // // // .qo-pulse {
+// // // // // // //   width: 6px; height: 6px;
+// // // // // // //   background: var(--qo-green);
+// // // // // // //   border-radius: 50%;
+// // // // // // //   animation: qo-live-pulse 2s ease-out infinite;
+// // // // // // // }
+// // // // // // // @keyframes qo-live-pulse {
+// // // // // // //   0%   { box-shadow: 0 0 0 0 rgba(123, 192, 122, 0.5); }
+// // // // // // //   100% { box-shadow: 0 0 0 8px rgba(123, 192, 122, 0); }
+// // // // // // // }
+
+// // // // // // // .qo-nav {
+// // // // // // //   flex: 1;
+// // // // // // //   display: flex; align-items: stretch;
+// // // // // // //   padding: 0 18px; gap: 6px;
+// // // // // // // }
+// // // // // // // .qo-nav a {
+// // // // // // //   display: inline-flex; align-items: center;
+// // // // // // //   padding: 0 14px;
+// // // // // // //   font-family: 'JetBrains Mono', monospace;
+// // // // // // //   font-size: 12px;
+// // // // // // //   color: var(--qo-text-dim);
+// // // // // // //   transition: color var(--d-fast) var(--ease);
+// // // // // // //   position: relative;
+// // // // // // // }
+// // // // // // // .qo-nav a:hover { color: var(--qo-text); }
+// // // // // // // .qo-nav a.active { color: var(--qo-amber); }
+// // // // // // // .qo-nav a.active::after {
+// // // // // // //   content: ''; position: absolute;
+// // // // // // //   bottom: -1px; left: 14px; right: 14px;
+// // // // // // //   height: 2px; background: var(--qo-amber);
+// // // // // // // }
+
+// // // // // // // .qo-badge {
+// // // // // // //   margin-left: 8px;
+// // // // // // //   background: var(--qo-amber); color: var(--qo-bg);
+// // // // // // //   font-size: 10px; font-weight: 600;
+// // // // // // //   padding: 1px 6px; border-radius: 999px;
+// // // // // // //   font-family: 'JetBrains Mono', monospace;
+// // // // // // // }
+
+// // // // // // // .qo-user {
+// // // // // // //   padding: 0 18px;
+// // // // // // //   display: flex; align-items: center; gap: 12px;
+// // // // // // //   border-left: 1px solid var(--qo-line);
+// // // // // // //   font-size: 12px;
+// // // // // // // }
+// // // // // // // .qo-who { color: var(--qo-text); font-family: 'JetBrains Mono', monospace; }
+// // // // // // // .qo-logout {
+// // // // // // //   background: transparent; border: 1px solid var(--qo-line);
+// // // // // // //   color: var(--qo-text-dim); padding: 6px; border-radius: 4px;
+// // // // // // //   cursor: pointer; display: inline-flex; align-items: center;
+// // // // // // //   transition: all var(--d-fast) var(--ease);
+// // // // // // // }
+// // // // // // // .qo-logout:hover { border-color: var(--qo-red); color: var(--qo-red); }
+// // // // // // // .qo-main { flex: 1; }
+
+// // // // // // // /* ══════════════════════════════════
+// // // // // // //    GARDEN & STONE — community shell
+// // // // // // //    ══════════════════════════════════ */
+// // // // // // // .gs-shell {
+// // // // // // //   display: grid;
+// // // // // // //   grid-template-columns: 240px 1fr;
+// // // // // // //   min-height: 100vh;
+// // // // // // //   transition: grid-template-columns 320ms var(--ease);
+// // // // // // //   background: var(--stone-100);
+// // // // // // // }
+
+// // // // // // // .gs-shell.collapsed {
+// // // // // // //   grid-template-columns: 56px 1fr;
+// // // // // // // }
+
+// // // // // // // /* ── Sidebar ──────────────────────── */
+// // // // // // // .gs-sidebar {
+// // // // // // //   background: var(--stone-50);
+// // // // // // //   border-right: 1px solid var(--stone-200);
+// // // // // // //   padding: 18px 0;
+// // // // // // //   display: flex;
+// // // // // // //   flex-direction: column;
+// // // // // // //   position: sticky;
+// // // // // // //   top: 0;
+// // // // // // //   height: 100vh;
+// // // // // // //   /* NO overflow:hidden — that was clipping the toggle button */
+// // // // // // //   overflow-y: auto;
+// // // // // // //   overflow-x: hidden;
+// // // // // // //   z-index: 50;
+// // // // // // //   /* Scrollbar invisible but functional */
+// // // // // // //   scrollbar-width: none;
+// // // // // // // }
+// // // // // // // .gs-sidebar::-webkit-scrollbar { display: none; }
+
+// // // // // // // /* Brand header */
+// // // // // // // .gs-sidebar-head {
+// // // // // // //   display: flex;
+// // // // // // //   align-items: center;
+// // // // // // //   gap: 10px;
+// // // // // // //   padding: 0 12px 18px;
+// // // // // // //   border-bottom: 1px solid var(--stone-200);
+// // // // // // //   margin-bottom: 14px;
+// // // // // // //   flex-shrink: 0;
+// // // // // // // }
+
+// // // // // // // /* Brand mark — circle with logo image or letter */
+// // // // // // // .gs-mark {
+// // // // // // //   width: 34px; height: 34px;
+// // // // // // //   border-radius: 50%;
+// // // // // // //   background: var(--primary);
+// // // // // // //   color: white;
+// // // // // // //   display: flex; align-items: center; justify-content: center;
+// // // // // // //   font-family: 'Fraunces', serif;
+// // // // // // //   font-weight: 600; font-size: 15px;
+// // // // // // //   flex-shrink: 0;
+// // // // // // //   overflow: hidden;
+// // // // // // //   transition: width var(--d-base) var(--ease), height var(--d-base) var(--ease);
+// // // // // // // }
+
+// // // // // // // .gs-logo-img {
+// // // // // // //   width: 100%; height: 100%;
+// // // // // // //   object-fit: cover;
+// // // // // // //   border-radius: 50%;
+// // // // // // //   display: block;
+// // // // // // // }
+
+// // // // // // // .gs-name-wrap {
+// // // // // // //   flex: 1;
+// // // // // // //   min-width: 0;
+// // // // // // //   overflow: hidden;
+// // // // // // //   transition: opacity 200ms var(--ease), width 320ms var(--ease);
+// // // // // // // }
+
+// // // // // // // .gs-shell.collapsed .gs-name-wrap {
+// // // // // // //   opacity: 0;
+// // // // // // //   width: 0;
+// // // // // // //   pointer-events: none;
+// // // // // // // }
+
+// // // // // // // .gs-name {
+// // // // // // //   font-family: 'Fraunces', serif;
+// // // // // // //   font-size: 15px;
+// // // // // // //   font-weight: 500;
+// // // // // // //   letter-spacing: -0.015em;
+// // // // // // //   color: var(--ink);
+// // // // // // //   white-space: nowrap;
+// // // // // // //   overflow: hidden;
+// // // // // // //   text-overflow: ellipsis;
+// // // // // // // }
+
+// // // // // // // .gs-meta {
+// // // // // // //   font-size: 10px;
+// // // // // // //   color: var(--ink-mute);
+// // // // // // //   font-family: 'JetBrains Mono', monospace;
+// // // // // // //   margin-top: 1px;
+// // // // // // // }
+
+// // // // // // // /* Toggle button — always visible, always clickable */
+// // // // // // // .gs-collapse {
+// // // // // // //   width: 26px; height: 26px;
+// // // // // // //   border-radius: 6px; border: none;
+// // // // // // //   background: transparent; color: var(--ink-mute);
+// // // // // // //   display: flex; align-items: center; justify-content: center;
+// // // // // // //   cursor: pointer; flex-shrink: 0;
+// // // // // // //   transition: all var(--d-fast) var(--ease);
+// // // // // // //   /* never fade or hide */
+// // // // // // //   opacity: 1 !important;
+// // // // // // //   pointer-events: auto !important;
+// // // // // // // }
+// // // // // // // .gs-collapse:hover { background: var(--stone-200); color: var(--ink); }
+// // // // // // // .gs-collapse svg { transition: transform 320ms var(--ease); }
+// // // // // // // .gs-shell.collapsed .gs-collapse svg { transform: rotate(180deg); }
+
+// // // // // // // /* Navigation */
+// // // // // // // .gs-nav {
+// // // // // // //   padding: 0 8px;
+// // // // // // //   flex: 1;
+// // // // // // // }
+
+// // // // // // // .gs-section + .gs-section { margin-top: 14px; }
+
+// // // // // // // .gs-section-label {
+// // // // // // //   font-size: 10px; font-weight: 600;
+// // // // // // //   text-transform: uppercase; letter-spacing: 0.14em;
+// // // // // // //   color: var(--ink-low);
+// // // // // // //   padding: 6px 8px;
+// // // // // // //   white-space: nowrap;
+// // // // // // //   overflow: hidden;
+// // // // // // //   transition: opacity 200ms var(--ease);
+// // // // // // // }
+// // // // // // // .gs-shell.collapsed .gs-section-label { opacity: 0; }
+
+// // // // // // // .gs-link {
+// // // // // // //   display: flex; align-items: center; gap: 12px;
+// // // // // // //   padding: 9px 10px;
+// // // // // // //   border-radius: 8px;
+// // // // // // //   color: var(--ink-soft);
+// // // // // // //   font-size: 14px; font-weight: 500;
+// // // // // // //   margin-bottom: 2px;
+// // // // // // //   text-decoration: none;
+// // // // // // //   position: relative;
+// // // // // // //   transition: all var(--d-fast) var(--ease);
+// // // // // // //   white-space: nowrap;
+// // // // // // //   overflow: hidden;
+// // // // // // // }
+// // // // // // // .gs-link:hover { background: var(--stone-100); color: var(--ink); }
+// // // // // // // .gs-link.active { background: var(--ink); color: var(--stone-50); }
+
+// // // // // // // .gs-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+// // // // // // // .gs-text {
+// // // // // // //   flex: 1; overflow: hidden; text-overflow: ellipsis;
+// // // // // // //   transition: opacity 200ms var(--ease);
+// // // // // // // }
+// // // // // // // .gs-shell.collapsed .gs-text { opacity: 0; }
+
+// // // // // // // .gs-badge {
+// // // // // // //   background: var(--warm-red); color: white;
+// // // // // // //   font-size: 10px; font-weight: 600;
+// // // // // // //   padding: 1px 7px; border-radius: 999px;
+// // // // // // //   transition: opacity 200ms var(--ease);
+// // // // // // //   flex-shrink: 0;
+// // // // // // // }
+// // // // // // // .gs-link.active .gs-badge { background: var(--amber); color: var(--ink); }
+
+// // // // // // // .gs-shell.collapsed .gs-badge {
+// // // // // // //   position: absolute; top: 4px; right: 4px;
+// // // // // // //   font-size: 0; width: 8px; height: 8px; padding: 0;
+// // // // // // //   opacity: 1;
+// // // // // // // }
+
+// // // // // // // /* Footer: user av + name + logout */
+// // // // // // // .gs-sidebar-foot {
+// // // // // // //   display: flex; align-items: center; gap: 10px;
+// // // // // // //   padding: 10px 12px 4px;
+// // // // // // //   margin-top: auto; flex-shrink: 0;
+// // // // // // //   border-top: 1px solid var(--stone-200);
+// // // // // // // }
+
+// // // // // // // /* User avatar circle — image or initial */
+// // // // // // // .gs-user-av {
+// // // // // // //   width: 32px; height: 32px;
+// // // // // // //   border-radius: 50%;
+// // // // // // //   background: var(--amber);
+// // // // // // //   color: white;
+// // // // // // //   display: flex; align-items: center; justify-content: center;
+// // // // // // //   font-family: 'Fraunces', serif;
+// // // // // // //   font-weight: 600; font-size: 13px;
+// // // // // // //   flex-shrink: 0;
+// // // // // // //   overflow: hidden;
+// // // // // // // }
+
+// // // // // // // .gs-av-img {
+// // // // // // //   width: 100%; height: 100%;
+// // // // // // //   object-fit: cover; border-radius: 50%; display: block;
+// // // // // // // }
+
+// // // // // // // .gs-user-info {
+// // // // // // //   flex: 1; overflow: hidden; min-width: 0;
+// // // // // // //   transition: opacity 200ms var(--ease);
+// // // // // // // }
+// // // // // // // .gs-shell.collapsed .gs-user-info {
+// // // // // // //   opacity: 0; pointer-events: none;
+// // // // // // // }
+
+// // // // // // // .gs-user-name {
+// // // // // // //   font-size: 13px; font-weight: 500; color: var(--ink);
+// // // // // // //   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+// // // // // // // }
+// // // // // // // .gs-user-role {
+// // // // // // //   font-size: 10px; color: var(--ink-mute);
+// // // // // // //   text-transform: uppercase; letter-spacing: 0.08em; margin-top: 1px;
+// // // // // // // }
+
+// // // // // // // /* Logout — ALWAYS visible and clickable */
+// // // // // // // .gs-logout-btn {
+// // // // // // //   border: none; background: transparent; color: var(--ink-mute);
+// // // // // // //   padding: 6px; border-radius: 6px; cursor: pointer;
+// // // // // // //   display: flex !important; align-items: center; justify-content: center;
+// // // // // // //   transition: all var(--d-fast) var(--ease);
+// // // // // // //   flex-shrink: 0;
+// // // // // // //   opacity: 1 !important;
+// // // // // // //   pointer-events: auto !important;
+// // // // // // //   visibility: visible !important;
+// // // // // // // }
+// // // // // // // .gs-logout-btn:hover { background: var(--stone-200); color: var(--warm-red); }
+
+// // // // // // // .gs-main { min-height: 100vh; overflow-x: hidden; }
+
+// // // // // // // /* ── Mobile ─────────────────────── */
+// // // // // // // @media (max-width: 720px) {
+// // // // // // //   /* Expanded on mobile: full sidebar overlay */
+// // // // // // //   .gs-shell {
+// // // // // // //     grid-template-columns: 1fr;
+// // // // // // //     position: relative;
+// // // // // // //   }
+
+// // // // // // //   .gs-shell.collapsed {
+// // // // // // //     grid-template-columns: 52px 1fr;
+// // // // // // //   }
+
+// // // // // // //   /* When expanded on mobile, sidebar overlays content */
+// // // // // // //   .gs-shell:not(.collapsed) .gs-sidebar {
+// // // // // // //     position: fixed;
+// // // // // // //     top: 0; left: 0; bottom: 0;
+// // // // // // //     width: 240px;
+// // // // // // //     z-index: 200;
+// // // // // // //     box-shadow: 4px 0 24px rgba(0,0,0,.13);
+// // // // // // //   }
+
+// // // // // // //   .gs-shell:not(.collapsed) .gs-main {
+// // // // // // //     margin-left: 0;
+// // // // // // //   }
+
+// // // // // // //   /* Collapsed mobile: icon-only strip */
+// // // // // // //   .gs-shell.collapsed .gs-sidebar {
+// // // // // // //     width: 52px;
+// // // // // // //   }
+
+// // // // // // //   .gs-shell.collapsed .gs-name-wrap,
+// // // // // // //   .gs-shell.collapsed .gs-section-label,
+// // // // // // //   .gs-shell.collapsed .gs-text,
+// // // // // // //   .gs-shell.collapsed .gs-user-info {
+// // // // // // //     opacity: 0 !important;
+// // // // // // //     pointer-events: none;
+// // // // // // //     width: 0;
+// // // // // // //   }
+
+// // // // // // //   .gs-shell.collapsed .gs-main {
+// // // // // // //     grid-column: 1;
+// // // // // // //     margin-left: 52px;
+// // // // // // //   }
+
+// // // // // // //   /* Collapse button always shown on mobile */
+// // // // // // //   .gs-collapse { display: flex !important; }
+
+// // // // // // //   /* Sidebar footer always shows logout */
+// // // // // // //   .gs-sidebar-foot { padding: 8px 12px; }
+
+// // // // // // //   /* Backdrop when sidebar is open on mobile */
+// // // // // // //   .gs-shell:not(.collapsed)::before {
+// // // // // // //     content: '';
+// // // // // // //     position: fixed;
+// // // // // // //     inset: 0;
+// // // // // // //     background: rgba(0,0,0,0.35);
+// // // // // // //     z-index: 199;
+// // // // // // //   }
+// // // // // // // }
+
+
+// // // // // // :host { display: block; }
+
+// // // // // // /* ══════════════════════════════════
+// // // // // //    QUIET OPERATOR — super admin dark shell
+// // // // // //    ══════════════════════════════════ */
+// // // // // // .qo-shell {
+// // // // // //   min-height: 100vh;
+// // // // // //   background: var(--qo-bg);
+// // // // // //   color: var(--qo-text);
+// // // // // //   display: flex;
+// // // // // //   flex-direction: column;
+// // // // // // }
+
+// // // // // // .qo-topbar {
+// // // // // //   background: var(--qo-bg);
+// // // // // //   border-bottom: 1px solid var(--qo-line);
+// // // // // //   display: flex;
+// // // // // //   align-items: stretch;
+// // // // // //   height: 48px;
+// // // // // //   position: sticky;
+// // // // // //   top: 0;
+// // // // // //   z-index: 100;
+// // // // // // }
+
+// // // // // // .qo-brand {
+// // // // // //   padding: 0 22px;
+// // // // // //   display: flex;
+// // // // // //   align-items: center;
+// // // // // //   gap: 10px;
+// // // // // //   border-right: 1px solid var(--qo-line);
+// // // // // //   font-family: 'JetBrains Mono', monospace;
+// // // // // //   font-size: 12px;
+// // // // // //   font-weight: 600;
+// // // // // //   color: var(--qo-text);
+// // // // // // }
+
+// // // // // // .qo-mark {
+// // // // // //   width: 22px; height: 22px;
+// // // // // //   background: var(--qo-amber);
+// // // // // //   color: var(--qo-bg);
+// // // // // //   display: flex; align-items: center; justify-content: center;
+// // // // // //   font-size: 13px; font-weight: 700;
+// // // // // //   border-radius: 4px;
+// // // // // // }
+
+// // // // // // .qo-meta { color: var(--qo-text-dim); font-weight: 400; }
+
+// // // // // // .qo-context {
+// // // // // //   padding: 0 18px;
+// // // // // //   display: flex; align-items: center; gap: 14px;
+// // // // // //   border-right: 1px solid var(--qo-line);
+// // // // // //   font-family: 'JetBrains Mono', monospace;
+// // // // // //   font-size: 11px;
+// // // // // //   color: var(--qo-text-dim);
+// // // // // // }
+
+// // // // // // .qo-live { display: inline-flex; align-items: center; gap: 6px; }
+// // // // // // .qo-pulse {
+// // // // // //   width: 6px; height: 6px;
+// // // // // //   background: var(--qo-green);
+// // // // // //   border-radius: 50%;
+// // // // // //   animation: qo-live-pulse 2s ease-out infinite;
+// // // // // // }
+// // // // // // @keyframes qo-live-pulse {
+// // // // // //   0%   { box-shadow: 0 0 0 0 rgba(123, 192, 122, 0.5); }
+// // // // // //   100% { box-shadow: 0 0 0 8px rgba(123, 192, 122, 0); }
+// // // // // // }
+
+// // // // // // .qo-nav {
+// // // // // //   flex: 1;
+// // // // // //   display: flex; align-items: stretch;
+// // // // // //   padding: 0 18px; gap: 6px;
+// // // // // // }
+// // // // // // .qo-nav a {
+// // // // // //   display: inline-flex; align-items: center;
+// // // // // //   padding: 0 14px;
+// // // // // //   font-family: 'JetBrains Mono', monospace;
+// // // // // //   font-size: 12px;
+// // // // // //   color: var(--qo-text-dim);
+// // // // // //   transition: color var(--d-fast) var(--ease);
+// // // // // //   position: relative;
+// // // // // // }
+// // // // // // .qo-nav a:hover { color: var(--qo-text); }
+// // // // // // .qo-nav a.active { color: var(--qo-amber); }
+// // // // // // .qo-nav a.active::after {
+// // // // // //   content: ''; position: absolute;
+// // // // // //   bottom: -1px; left: 14px; right: 14px;
+// // // // // //   height: 2px; background: var(--qo-amber);
+// // // // // // }
+
+// // // // // // .qo-badge {
+// // // // // //   margin-left: 8px;
+// // // // // //   background: var(--qo-amber); color: var(--qo-bg);
+// // // // // //   font-size: 10px; font-weight: 600;
+// // // // // //   padding: 1px 6px; border-radius: 999px;
+// // // // // //   font-family: 'JetBrains Mono', monospace;
+// // // // // // }
+
+// // // // // // .qo-user {
+// // // // // //   padding: 0 18px;
+// // // // // //   display: flex; align-items: center; gap: 12px;
+// // // // // //   border-left: 1px solid var(--qo-line);
+// // // // // //   font-size: 12px;
+// // // // // // }
+// // // // // // .qo-who { color: var(--qo-text); font-family: 'JetBrains Mono', monospace; }
+// // // // // // .qo-logout {
+// // // // // //   background: transparent; border: 1px solid var(--qo-line);
+// // // // // //   color: var(--qo-text-dim); padding: 6px; border-radius: 4px;
+// // // // // //   cursor: pointer; display: inline-flex; align-items: center;
+// // // // // //   transition: all var(--d-fast) var(--ease);
+// // // // // // }
+// // // // // // .qo-logout:hover { border-color: var(--qo-red); color: var(--qo-red); }
+// // // // // // .qo-main { flex: 1; }
+
+// // // // // // /* ══════════════════════════════════
+// // // // // //    GARDEN & STONE — community shell
+// // // // // //    ══════════════════════════════════ */
+// // // // // // .gs-shell {
+// // // // // //   display: grid;
+// // // // // //   grid-template-columns: 240px 1fr;
+// // // // // //   min-height: 100vh;
+// // // // // //   transition: grid-template-columns 320ms var(--ease);
+// // // // // //   background: var(--stone-100);
+// // // // // // }
+
+// // // // // // .gs-shell.collapsed {
+// // // // // //   grid-template-columns: 56px 1fr;
+// // // // // // }
+
+// // // // // // /* ── Sidebar ──────────────────────── */
+// // // // // // .gs-sidebar {
+// // // // // //   background: var(--stone-50);
+// // // // // //   border-right: 1px solid var(--stone-200);
+// // // // // //   padding: 18px 0;
+// // // // // //   display: flex;
+// // // // // //   flex-direction: column;
+// // // // // //   position: sticky;
+// // // // // //   top: 0;
+// // // // // //   height: 100vh;
+// // // // // //   /* NO overflow:hidden — that was clipping the toggle button */
+// // // // // //   overflow-y: auto;
+// // // // // //   overflow-x: hidden;
+// // // // // //   z-index: 50;
+// // // // // //   /* Scrollbar invisible but functional */
+// // // // // //   scrollbar-width: none;
+// // // // // // }
+// // // // // // .gs-sidebar::-webkit-scrollbar { display: none; }
+
+// // // // // // /* Brand header */
+// // // // // // .gs-sidebar-head {
+// // // // // //   display: flex;
+// // // // // //   align-items: center;
+// // // // // //   gap: 10px;
+// // // // // //   padding: 0 12px 18px;
+// // // // // //   border-bottom: 1px solid var(--stone-200);
+// // // // // //   margin-bottom: 14px;
+// // // // // //   flex-shrink: 0;
+// // // // // //   position: relative;
+// // // // // //   min-height: 52px;
+// // // // // // }
+
+// // // // // // /* Brand mark — circle with logo image or letter */
+// // // // // // .gs-mark {
+// // // // // //   width: 34px; height: 34px;
+// // // // // //   border-radius: 50%;
+// // // // // //   background: var(--primary);
+// // // // // //   color: white;
+// // // // // //   display: flex; align-items: center; justify-content: center;
+// // // // // //   font-family: 'Fraunces', serif;
+// // // // // //   font-weight: 600; font-size: 15px;
+// // // // // //   flex-shrink: 0;
+// // // // // //   overflow: hidden;
+// // // // // //   transition: width var(--d-base) var(--ease), height var(--d-base) var(--ease);
+// // // // // // }
+
+// // // // // // .gs-logo-img {
+// // // // // //   width: 100%; height: 100%;
+// // // // // //   object-fit: cover;
+// // // // // //   border-radius: 50%;
+// // // // // //   display: block;
+// // // // // // }
+
+// // // // // // .gs-name-wrap {
+// // // // // //   flex: 1;
+// // // // // //   min-width: 0;
+// // // // // //   overflow: hidden;
+// // // // // //   transition: opacity 200ms var(--ease), width 320ms var(--ease);
+// // // // // // }
+
+// // // // // // .gs-shell.collapsed .gs-name-wrap {
+// // // // // //   opacity: 0;
+// // // // // //   width: 0;
+// // // // // //   pointer-events: none;
+// // // // // // }
+
+// // // // // // .gs-name {
+// // // // // //   font-family: 'Fraunces', serif;
+// // // // // //   font-size: 15px;
+// // // // // //   font-weight: 500;
+// // // // // //   letter-spacing: -0.015em;
+// // // // // //   color: var(--ink);
+// // // // // //   white-space: nowrap;
+// // // // // //   overflow: hidden;
+// // // // // //   text-overflow: ellipsis;
+// // // // // // }
+
+// // // // // // .gs-meta {
+// // // // // //   font-size: 10px;
+// // // // // //   color: var(--ink-mute);
+// // // // // //   font-family: 'JetBrains Mono', monospace;
+// // // // // //   margin-top: 1px;
+// // // // // // }
+
+// // // // // // /* ── Toggle button ─────────────────────────────────────────────────
+// // // // // //    CRITICAL: When collapsed the sidebar is only 56px wide.
+// // // // // //    The button must NEVER be clipped by overflow-x:hidden.
+// // // // // //    Solution: when collapsed, position it outside the sidebar
+// // // // // //    using a fixed/absolute position so it's always reachable.
+// // // // // // ──────────────────────────────────────────────────────────────────── */
+// // // // // // .gs-collapse {
+// // // // // //   width: 28px; height: 28px;
+// // // // // //   border-radius: 6px; border: 1px solid var(--stone-200);
+// // // // // //   background: var(--stone-50); color: var(--ink-mute);
+// // // // // //   display: flex !important; align-items: center; justify-content: center;
+// // // // // //   cursor: pointer; flex-shrink: 0;
+// // // // // //   transition: all var(--d-fast) var(--ease);
+// // // // // //   opacity: 1 !important;
+// // // // // //   pointer-events: auto !important;
+// // // // // //   visibility: visible !important;
+// // // // // //   z-index: 60;
+// // // // // // }
+// // // // // // .gs-collapse:hover { background: var(--stone-200); color: var(--ink); }
+// // // // // // .gs-collapse svg { transition: transform 320ms var(--ease); }
+
+// // // // // // /* When expanded — normal position inside head */
+// // // // // // .gs-shell:not(.collapsed) .gs-collapse {
+// // // // // //   position: relative;
+// // // // // // }
+
+// // // // // // /* When collapsed — float the button to the right edge of sidebar,
+// // // // // //    overlapping into the main content so it's always visible & clickable */
+// // // // // // .gs-shell.collapsed .gs-collapse {
+// // // // // //   position: fixed;
+// // // // // //   left: 44px;
+// // // // // //   top: 12px;
+// // // // // //   box-shadow: 0 1px 4px rgba(0,0,0,.12);
+// // // // // //   z-index: 100;
+// // // // // // }
+// // // // // // .gs-shell.collapsed .gs-collapse svg { transform: rotate(180deg); }
+
+// // // // // // /* Navigation */
+// // // // // // .gs-nav {
+// // // // // //   padding: 0 8px;
+// // // // // //   flex: 1;
+// // // // // // }
+
+// // // // // // .gs-section + .gs-section { margin-top: 14px; }
+
+// // // // // // .gs-section-label {
+// // // // // //   font-size: 10px; font-weight: 600;
+// // // // // //   text-transform: uppercase; letter-spacing: 0.14em;
+// // // // // //   color: var(--ink-low);
+// // // // // //   padding: 6px 8px;
+// // // // // //   white-space: nowrap;
+// // // // // //   overflow: hidden;
+// // // // // //   transition: opacity 200ms var(--ease);
+// // // // // // }
+// // // // // // .gs-shell.collapsed .gs-section-label { opacity: 0; }
+
+// // // // // // .gs-link {
+// // // // // //   display: flex; align-items: center; gap: 12px;
+// // // // // //   padding: 9px 10px;
+// // // // // //   border-radius: 8px;
+// // // // // //   color: var(--ink-soft);
+// // // // // //   font-size: 14px; font-weight: 500;
+// // // // // //   margin-bottom: 2px;
+// // // // // //   text-decoration: none;
+// // // // // //   position: relative;
+// // // // // //   transition: all var(--d-fast) var(--ease);
+// // // // // //   white-space: nowrap;
+// // // // // //   overflow: hidden;
+// // // // // // }
+// // // // // // .gs-link:hover { background: var(--stone-100); color: var(--ink); }
+// // // // // // .gs-link.active { background: var(--ink); color: var(--stone-50); }
+
+// // // // // // .gs-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+// // // // // // .gs-text {
+// // // // // //   flex: 1; overflow: hidden; text-overflow: ellipsis;
+// // // // // //   transition: opacity 200ms var(--ease);
+// // // // // // }
+// // // // // // .gs-shell.collapsed .gs-text { opacity: 0; }
+
+// // // // // // .gs-badge {
+// // // // // //   background: var(--warm-red); color: white;
+// // // // // //   font-size: 10px; font-weight: 600;
+// // // // // //   padding: 1px 7px; border-radius: 999px;
+// // // // // //   transition: opacity 200ms var(--ease);
+// // // // // //   flex-shrink: 0;
+// // // // // // }
+// // // // // // .gs-link.active .gs-badge { background: var(--amber); color: var(--ink); }
+
+// // // // // // .gs-shell.collapsed .gs-badge {
+// // // // // //   position: absolute; top: 4px; right: 4px;
+// // // // // //   font-size: 0; width: 8px; height: 8px; padding: 0;
+// // // // // //   opacity: 1;
+// // // // // // }
+
+// // // // // // /* Footer: user av + name + logout */
+// // // // // // .gs-sidebar-foot {
+// // // // // //   display: flex; align-items: center; gap: 10px;
+// // // // // //   padding: 10px 12px 4px;
+// // // // // //   margin-top: auto; flex-shrink: 0;
+// // // // // //   border-top: 1px solid var(--stone-200);
+// // // // // // }
+
+// // // // // // /* User avatar circle — image or initial */
+// // // // // // .gs-user-av {
+// // // // // //   width: 32px; height: 32px;
+// // // // // //   border-radius: 50%;
+// // // // // //   background: var(--amber);
+// // // // // //   color: white;
+// // // // // //   display: flex; align-items: center; justify-content: center;
+// // // // // //   font-family: 'Fraunces', serif;
+// // // // // //   font-weight: 600; font-size: 13px;
+// // // // // //   flex-shrink: 0;
+// // // // // //   overflow: hidden;
+// // // // // // }
+
+// // // // // // .gs-av-img {
+// // // // // //   width: 100%; height: 100%;
+// // // // // //   object-fit: cover; border-radius: 50%; display: block;
+// // // // // // }
+
+// // // // // // .gs-user-info {
+// // // // // //   flex: 1; overflow: hidden; min-width: 0;
+// // // // // //   transition: opacity 200ms var(--ease);
+// // // // // // }
+// // // // // // .gs-shell.collapsed .gs-user-info {
+// // // // // //   opacity: 0; pointer-events: none;
+// // // // // // }
+
+// // // // // // .gs-user-name {
+// // // // // //   font-size: 13px; font-weight: 500; color: var(--ink);
+// // // // // //   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+// // // // // // }
+// // // // // // .gs-user-role {
+// // // // // //   font-size: 10px; color: var(--ink-mute);
+// // // // // //   text-transform: uppercase; letter-spacing: 0.08em; margin-top: 1px;
+// // // // // // }
+
+// // // // // // /* Logout — ALWAYS visible and clickable */
+// // // // // // .gs-logout-btn {
+// // // // // //   border: none; background: transparent; color: var(--ink-mute);
+// // // // // //   padding: 6px; border-radius: 6px; cursor: pointer;
+// // // // // //   display: flex !important; align-items: center; justify-content: center;
+// // // // // //   transition: all var(--d-fast) var(--ease);
+// // // // // //   flex-shrink: 0;
+// // // // // //   opacity: 1 !important;
+// // // // // //   pointer-events: auto !important;
+// // // // // //   visibility: visible !important;
+// // // // // //   position: relative;
+// // // // // //   z-index: 60;
+// // // // // // }
+// // // // // // .gs-logout-btn:hover { background: var(--stone-200); color: var(--warm-red); }
+
+// // // // // // /* When collapsed — logout button always visible at bottom of collapsed strip */
+// // // // // // .gs-shell.collapsed .gs-logout-btn {
+// // // // // //   position: fixed;
+// // // // // //   left: 10px;
+// // // // // //   bottom: 12px;
+// // // // // //   background: var(--stone-100);
+// // // // // //   border: 1px solid var(--stone-200);
+// // // // // //   border-radius: 8px;
+// // // // // //   box-shadow: 0 1px 4px rgba(0,0,0,.1);
+// // // // // //   z-index: 100;
+// // // // // //   padding: 8px;
+// // // // // //   width: 36px; height: 36px;
+// // // // // // }
+
+// // // // // // .gs-main { min-height: 100vh; overflow-x: hidden; }
+
+// // // // // // /* ── Mobile ─────────────────────── */
+// // // // // // @media (max-width: 720px) {
+// // // // // //   /* Expanded on mobile: full sidebar overlay */
+// // // // // //   .gs-shell {
+// // // // // //     grid-template-columns: 1fr;
+// // // // // //     position: relative;
+// // // // // //   }
+
+// // // // // //   .gs-shell.collapsed {
+// // // // // //     grid-template-columns: 52px 1fr;
+// // // // // //   }
+
+// // // // // //   /* When expanded on mobile, sidebar overlays content */
+// // // // // //   .gs-shell:not(.collapsed) .gs-sidebar {
+// // // // // //     position: fixed;
+// // // // // //     top: 0; left: 0; bottom: 0;
+// // // // // //     width: 240px;
+// // // // // //     z-index: 200;
+// // // // // //     box-shadow: 4px 0 24px rgba(0,0,0,.13);
+// // // // // //   }
+
+// // // // // //   .gs-shell:not(.collapsed) .gs-main {
+// // // // // //     margin-left: 0;
+// // // // // //   }
+
+// // // // // //   /* Collapsed mobile: icon-only strip */
+// // // // // //   .gs-shell.collapsed .gs-sidebar {
+// // // // // //     width: 52px;
+// // // // // //   }
+
+// // // // // //   .gs-shell.collapsed .gs-name-wrap,
+// // // // // //   .gs-shell.collapsed .gs-section-label,
+// // // // // //   .gs-shell.collapsed .gs-text,
+// // // // // //   .gs-shell.collapsed .gs-user-info {
+// // // // // //     opacity: 0 !important;
+// // // // // //     pointer-events: none;
+// // // // // //     width: 0;
+// // // // // //   }
+
+// // // // // //   .gs-shell.collapsed .gs-main {
+// // // // // //     grid-column: 1;
+// // // // // //     margin-left: 52px;
+// // // // // //   }
+
+// // // // // //   /* Collapse button always shown on mobile */
+// // // // // //   .gs-collapse { display: flex !important; }
+
+// // // // // //   /* Sidebar footer always shows logout */
+// // // // // //   .gs-sidebar-foot { padding: 8px 12px; }
+
+// // // // // //   /* Backdrop when sidebar is open on mobile */
+// // // // // //   .gs-shell:not(.collapsed)::before {
+// // // // // //     content: '';
+// // // // // //     position: fixed;
+// // // // // //     inset: 0;
+// // // // // //     background: rgba(0,0,0,0.35);
+// // // // // //     z-index: 199;
+// // // // // //   }
+// // // // // // }
+
+
+
+// // // // // :host { display: block; }
+
+// // // // // /* ══════════════════════════════════
+// // // // //    QUIET OPERATOR — super admin dark shell
+// // // // //    ══════════════════════════════════ */
+// // // // // .qo-shell {
+// // // // //   min-height: 100vh;
+// // // // //   background: var(--qo-bg);
+// // // // //   color: var(--qo-text);
+// // // // //   display: flex;
+// // // // //   flex-direction: column;
+// // // // // }
+
+// // // // // .qo-topbar {
+// // // // //   background: var(--qo-bg);
+// // // // //   border-bottom: 1px solid var(--qo-line);
+// // // // //   display: flex;
+// // // // //   align-items: stretch;
+// // // // //   height: 48px;
+// // // // //   position: sticky;
+// // // // //   top: 0;
+// // // // //   z-index: 100;
+// // // // // }
+
+// // // // // .qo-brand {
+// // // // //   padding: 0 22px;
+// // // // //   display: flex;
+// // // // //   align-items: center;
+// // // // //   gap: 10px;
+// // // // //   border-right: 1px solid var(--qo-line);
+// // // // //   font-family: 'JetBrains Mono', monospace;
+// // // // //   font-size: 12px;
+// // // // //   font-weight: 600;
+// // // // //   color: var(--qo-text);
+// // // // // }
+
+// // // // // .qo-mark {
+// // // // //   width: 22px; height: 22px;
+// // // // //   background: var(--qo-amber);
+// // // // //   color: var(--qo-bg);
+// // // // //   display: flex; align-items: center; justify-content: center;
+// // // // //   font-size: 13px; font-weight: 700;
+// // // // //   border-radius: 4px;
+// // // // // }
+
+// // // // // .qo-meta { color: var(--qo-text-dim); font-weight: 400; }
+
+// // // // // .qo-context {
+// // // // //   padding: 0 18px;
+// // // // //   display: flex; align-items: center; gap: 14px;
+// // // // //   border-right: 1px solid var(--qo-line);
+// // // // //   font-family: 'JetBrains Mono', monospace;
+// // // // //   font-size: 11px;
+// // // // //   color: var(--qo-text-dim);
+// // // // // }
+
+// // // // // .qo-live { display: inline-flex; align-items: center; gap: 6px; }
+// // // // // .qo-pulse {
+// // // // //   width: 6px; height: 6px;
+// // // // //   background: var(--qo-green);
+// // // // //   border-radius: 50%;
+// // // // //   animation: qo-live-pulse 2s ease-out infinite;
+// // // // // }
+// // // // // @keyframes qo-live-pulse {
+// // // // //   0%   { box-shadow: 0 0 0 0 rgba(123, 192, 122, 0.5); }
+// // // // //   100% { box-shadow: 0 0 0 8px rgba(123, 192, 122, 0); }
+// // // // // }
+
+// // // // // .qo-nav {
+// // // // //   flex: 1;
+// // // // //   display: flex; align-items: stretch;
+// // // // //   padding: 0 18px; gap: 6px;
+// // // // // }
+// // // // // .qo-nav a {
+// // // // //   display: inline-flex; align-items: center;
+// // // // //   padding: 0 14px;
+// // // // //   font-family: 'JetBrains Mono', monospace;
+// // // // //   font-size: 12px;
+// // // // //   color: var(--qo-text-dim);
+// // // // //   transition: color var(--d-fast) var(--ease);
+// // // // //   position: relative;
+// // // // // }
+// // // // // .qo-nav a:hover { color: var(--qo-text); }
+// // // // // .qo-nav a.active { color: var(--qo-amber); }
+// // // // // .qo-nav a.active::after {
+// // // // //   content: ''; position: absolute;
+// // // // //   bottom: -1px; left: 14px; right: 14px;
+// // // // //   height: 2px; background: var(--qo-amber);
+// // // // // }
+
+// // // // // .qo-badge {
+// // // // //   margin-left: 8px;
+// // // // //   background: var(--qo-amber); color: var(--qo-bg);
+// // // // //   font-size: 10px; font-weight: 600;
+// // // // //   padding: 1px 6px; border-radius: 999px;
+// // // // //   font-family: 'JetBrains Mono', monospace;
+// // // // // }
+
+// // // // // .qo-user {
+// // // // //   padding: 0 18px;
+// // // // //   display: flex; align-items: center; gap: 12px;
+// // // // //   border-left: 1px solid var(--qo-line);
+// // // // //   font-size: 12px;
+// // // // // }
+// // // // // .qo-who { color: var(--qo-text); font-family: 'JetBrains Mono', monospace; }
+// // // // // .qo-logout {
+// // // // //   background: transparent; border: 1px solid var(--qo-line);
+// // // // //   color: var(--qo-text-dim); padding: 6px; border-radius: 4px;
+// // // // //   cursor: pointer; display: inline-flex; align-items: center;
+// // // // //   transition: all var(--d-fast) var(--ease);
+// // // // // }
+// // // // // .qo-logout:hover { border-color: var(--qo-red); color: var(--qo-red); }
+// // // // // .qo-main { flex: 1; }
+
+// // // // // /* ══════════════════════════════════
+// // // // //    GARDEN & STONE — community shell
+// // // // //    ══════════════════════════════════ */
+// // // // // .gs-shell {
+// // // // //   display: grid;
+// // // // //   grid-template-columns: 240px 1fr;
+// // // // //   min-height: 100vh;
+// // // // //   transition: grid-template-columns 320ms var(--ease);
+// // // // //   background: var(--stone-100);
+// // // // // }
+
+// // // // // .gs-shell.collapsed {
+// // // // //   grid-template-columns: 56px 1fr;
+// // // // // }
+
+// // // // // /* ── Sidebar ──────────────────────── */
+// // // // // .gs-sidebar {
+// // // // //   background: var(--stone-50);
+// // // // //   border-right: 1px solid var(--stone-200);
+// // // // //   padding: 18px 0;
+// // // // //   display: flex;
+// // // // //   flex-direction: column;
+// // // // //   position: sticky;
+// // // // //   top: 0;
+// // // // //   height: 100vh;
+// // // // //   /* NO overflow:hidden — that was clipping the toggle button */
+// // // // //   overflow-y: auto;
+// // // // //   overflow-x: hidden;
+// // // // //   z-index: 50;
+// // // // //   /* Scrollbar invisible but functional */
+// // // // //   scrollbar-width: none;
+// // // // // }
+// // // // // .gs-sidebar::-webkit-scrollbar { display: none; }
+
+// // // // // /* Brand header */
+// // // // // .gs-sidebar-head {
+// // // // //   display: flex;
+// // // // //   align-items: center;
+// // // // //   gap: 10px;
+// // // // //   padding: 0 12px 18px;
+// // // // //   border-bottom: 1px solid var(--stone-200);
+// // // // //   margin-bottom: 14px;
+// // // // //   flex-shrink: 0;
+// // // // //   position: relative;
+// // // // //   min-height: 52px;
+// // // // // }
+
+// // // // // /* Brand mark — circle with logo image or letter */
+// // // // // .gs-mark {
+// // // // //   width: 34px; height: 34px;
+// // // // //   border-radius: 50%;
+// // // // //   background: var(--primary);
+// // // // //   color: white;
+// // // // //   display: flex; align-items: center; justify-content: center;
+// // // // //   font-family: 'Fraunces', serif;
+// // // // //   font-weight: 600; font-size: 15px;
+// // // // //   flex-shrink: 0;
+// // // // //   overflow: hidden;
+// // // // //   transition: width var(--d-base) var(--ease), height var(--d-base) var(--ease);
+// // // // // }
+
+// // // // // .gs-logo-img {
+// // // // //   width: 100%; height: 100%;
+// // // // //   object-fit: cover;
+// // // // //   border-radius: 50%;
+// // // // //   display: block;
+// // // // // }
+
+// // // // // .gs-name-wrap {
+// // // // //   flex: 1;
+// // // // //   min-width: 0;
+// // // // //   overflow: hidden;
+// // // // //   transition: opacity 200ms var(--ease), width 320ms var(--ease);
+// // // // // }
+
+// // // // // .gs-shell.collapsed .gs-name-wrap {
+// // // // //   opacity: 0;
+// // // // //   width: 0;
+// // // // //   pointer-events: none;
+// // // // // }
+
+// // // // // .gs-name {
+// // // // //   font-family: 'Fraunces', serif;
+// // // // //   font-size: 15px;
+// // // // //   font-weight: 500;
+// // // // //   letter-spacing: -0.015em;
+// // // // //   color: var(--ink);
+// // // // //   white-space: nowrap;
+// // // // //   overflow: hidden;
+// // // // //   text-overflow: ellipsis;
+// // // // // }
+
+// // // // // .gs-meta {
+// // // // //   font-size: 10px;
+// // // // //   color: var(--ink-mute);
+// // // // //   font-family: 'JetBrains Mono', monospace;
+// // // // //   margin-top: 1px;
+// // // // // }
+
+// // // // // /* ── Toggle button ─────────────────────────────────────────────────
+// // // // //    CRITICAL: When collapsed the sidebar is only 56px wide.
+// // // // //    The button must NEVER be clipped by overflow-x:hidden.
+// // // // //    Solution: when collapsed, position it outside the sidebar
+// // // // //    using a fixed/absolute position so it's always reachable.
+// // // // // ──────────────────────────────────────────────────────────────────── */
+// // // // // .gs-collapse {
+// // // // //   width: 28px; height: 28px;
+// // // // //   border-radius: 6px; border: 1px solid var(--stone-200);
+// // // // //   background: var(--stone-50); color: var(--ink-mute);
+// // // // //   display: flex !important; align-items: center; justify-content: center;
+// // // // //   cursor: pointer; flex-shrink: 0;
+// // // // //   transition: all var(--d-fast) var(--ease);
+// // // // //   opacity: 1 !important;
+// // // // //   pointer-events: auto !important;
+// // // // //   visibility: visible !important;
+// // // // //   z-index: 60;
+// // // // // }
+// // // // // .gs-collapse:hover { background: var(--stone-200); color: var(--ink); }
+// // // // // .gs-collapse svg { transition: transform 320ms var(--ease); }
+
+// // // // // /* When expanded — normal position inside head */
+// // // // // .gs-shell:not(.collapsed) .gs-collapse {
+// // // // //   position: relative;
+// // // // // }
+
+// // // // // /* When collapsed — float the button to the right edge of sidebar,
+// // // // //    overlapping into the main content so it's always visible & clickable */
+// // // // // .gs-shell.collapsed .gs-collapse {
+// // // // //   position: fixed;
+// // // // //   left: 44px;
+// // // // //   top: 12px;
+// // // // //   box-shadow: 0 1px 4px rgba(0,0,0,.12);
+// // // // //   z-index: 100;
+// // // // // }
+// // // // // .gs-shell.collapsed .gs-collapse svg { transform: rotate(180deg); }
+
+// // // // // /* Collapsed sidebar — center all icons in the 56px strip */
+// // // // // .gs-shell.collapsed .gs-sidebar-head {
+// // // // //   padding: 0 0 14px;
+// // // // //   justify-content: center;
+// // // // //   gap: 0;
+// // // // // }
+
+// // // // // .gs-shell.collapsed .gs-mark {
+// // // // //   margin: 0 auto;
+// // // // // }
+
+// // // // // .gs-shell.collapsed .gs-nav {
+// // // // //   padding: 0 4px;
+// // // // // }
+
+// // // // // .gs-shell.collapsed .gs-link {
+// // // // //   justify-content: center;
+// // // // //   padding: 9px 0;
+// // // // // }
+
+// // // // // .gs-shell.collapsed .gs-link svg {
+// // // // //   margin: 0 auto;
+// // // // // }
+
+// // // // // .gs-shell.collapsed .gs-sidebar-foot {
+// // // // //   padding: 8px 0;
+// // // // //   justify-content: center;
+// // // // // }
+
+// // // // // .gs-shell.collapsed .gs-user-av {
+// // // // //   margin: 0 auto;
+// // // // // }
+
+// // // // // /* Navigation */
+// // // // // .gs-nav {
+// // // // //   padding: 0 8px;
+// // // // //   flex: 1;
+// // // // // }
+
+// // // // // .gs-section + .gs-section { margin-top: 14px; }
+
+// // // // // .gs-section-label {
+// // // // //   font-size: 10px; font-weight: 600;
+// // // // //   text-transform: uppercase; letter-spacing: 0.14em;
+// // // // //   color: var(--ink-low);
+// // // // //   padding: 6px 8px;
+// // // // //   white-space: nowrap;
+// // // // //   overflow: hidden;
+// // // // //   transition: opacity 200ms var(--ease);
+// // // // // }
+// // // // // .gs-shell.collapsed .gs-section-label { opacity: 0; }
+
+// // // // // .gs-link {
+// // // // //   display: flex; align-items: center; gap: 12px;
+// // // // //   padding: 9px 10px;
+// // // // //   border-radius: 8px;
+// // // // //   color: var(--ink-soft);
+// // // // //   font-size: 14px; font-weight: 500;
+// // // // //   margin-bottom: 2px;
+// // // // //   text-decoration: none;
+// // // // //   position: relative;
+// // // // //   transition: all var(--d-fast) var(--ease);
+// // // // //   white-space: nowrap;
+// // // // //   overflow: hidden;
+// // // // // }
+// // // // // .gs-link:hover { background: var(--stone-100); color: var(--ink); }
+// // // // // .gs-link.active { background: var(--ink); color: var(--stone-50); }
+
+// // // // // .gs-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+// // // // // .gs-text {
+// // // // //   flex: 1; overflow: hidden; text-overflow: ellipsis;
+// // // // //   transition: opacity 200ms var(--ease);
+// // // // // }
+// // // // // .gs-shell.collapsed .gs-text { opacity: 0; }
+
+// // // // // .gs-badge {
+// // // // //   background: var(--warm-red); color: white;
+// // // // //   font-size: 10px; font-weight: 600;
+// // // // //   padding: 1px 7px; border-radius: 999px;
+// // // // //   transition: opacity 200ms var(--ease);
+// // // // //   flex-shrink: 0;
+// // // // // }
+// // // // // .gs-link.active .gs-badge { background: var(--amber); color: var(--ink); }
+
+// // // // // .gs-shell.collapsed .gs-badge {
+// // // // //   position: absolute; top: 4px; right: 4px;
+// // // // //   font-size: 0; width: 8px; height: 8px; padding: 0;
+// // // // //   opacity: 1;
+// // // // // }
+
+// // // // // /* Footer: user av + name + logout */
+// // // // // .gs-sidebar-foot {
+// // // // //   display: flex; align-items: center; gap: 10px;
+// // // // //   padding: 10px 12px 4px;
+// // // // //   margin-top: auto; flex-shrink: 0;
+// // // // //   border-top: 1px solid var(--stone-200);
+// // // // // }
+
+// // // // // /* User avatar circle — image or initial */
+// // // // // .gs-user-av {
+// // // // //   width: 32px; height: 32px;
+// // // // //   border-radius: 50%;
+// // // // //   background: var(--amber);
+// // // // //   color: white;
+// // // // //   display: flex; align-items: center; justify-content: center;
+// // // // //   font-family: 'Fraunces', serif;
+// // // // //   font-weight: 600; font-size: 13px;
+// // // // //   flex-shrink: 0;
+// // // // //   overflow: hidden;
+// // // // // }
+
+// // // // // .gs-av-img {
+// // // // //   width: 100%; height: 100%;
+// // // // //   object-fit: cover; border-radius: 50%; display: block;
+// // // // // }
+
+// // // // // .gs-user-info {
+// // // // //   flex: 1; overflow: hidden; min-width: 0;
+// // // // //   transition: opacity 200ms var(--ease);
+// // // // // }
+// // // // // .gs-shell.collapsed .gs-user-info {
+// // // // //   opacity: 0; pointer-events: none;
+// // // // // }
+
+// // // // // .gs-user-name {
+// // // // //   font-size: 13px; font-weight: 500; color: var(--ink);
+// // // // //   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+// // // // // }
+// // // // // .gs-user-role {
+// // // // //   font-size: 10px; color: var(--ink-mute);
+// // // // //   text-transform: uppercase; letter-spacing: 0.08em; margin-top: 1px;
+// // // // // }
+
+// // // // // /* Logout — ALWAYS visible and clickable */
+// // // // // .gs-logout-btn {
+// // // // //   border: none; background: transparent; color: var(--ink-mute);
+// // // // //   padding: 6px; border-radius: 6px; cursor: pointer;
+// // // // //   display: flex !important; align-items: center; justify-content: center;
+// // // // //   transition: all var(--d-fast) var(--ease);
+// // // // //   flex-shrink: 0;
+// // // // //   opacity: 1 !important;
+// // // // //   pointer-events: auto !important;
+// // // // //   visibility: visible !important;
+// // // // //   position: relative;
+// // // // //   z-index: 60;
+// // // // // }
+// // // // // .gs-logout-btn:hover { background: var(--stone-200); color: var(--warm-red); }
+
+// // // // // /* When collapsed — logout button always visible at bottom of collapsed strip */
+// // // // // .gs-shell.collapsed .gs-logout-btn {
+// // // // //   position: fixed;
+// // // // //   left: 10px;
+// // // // //   bottom: 12px;
+// // // // //   background: var(--stone-100);
+// // // // //   border: 1px solid var(--stone-200);
+// // // // //   border-radius: 8px;
+// // // // //   box-shadow: 0 1px 4px rgba(0,0,0,.1);
+// // // // //   z-index: 100;
+// // // // //   padding: 8px;
+// // // // //   width: 36px; height: 36px;
+// // // // // }
+
+// // // // // .gs-main {
+// // // // //   min-height: 100vh;
+// // // // //   overflow-x: hidden;
+// // // // //   /* Allow dashboard to control its own scroll */
+// // // // //   display: flex;
+// // // // //   flex-direction: column;
+// // // // // }
+
+// // // // // /* ── Mobile ─────────────────────── */
+// // // // // @media (max-width: 720px) {
+// // // // //   /* Expanded on mobile: full sidebar overlay */
+// // // // //   .gs-shell {
+// // // // //     grid-template-columns: 1fr;
+// // // // //     position: relative;
+// // // // //   }
+
+// // // // //   .gs-shell.collapsed {
+// // // // //     grid-template-columns: 52px 1fr;
+// // // // //   }
+
+// // // // //   /* When expanded on mobile, sidebar overlays content */
+// // // // //   .gs-shell:not(.collapsed) .gs-sidebar {
+// // // // //     position: fixed;
+// // // // //     top: 0; left: 0; bottom: 0;
+// // // // //     width: 240px;
+// // // // //     z-index: 200;
+// // // // //     box-shadow: 4px 0 24px rgba(0,0,0,.13);
+// // // // //   }
+
+// // // // //   .gs-shell:not(.collapsed) .gs-main {
+// // // // //     margin-left: 0;
+// // // // //   }
+
+// // // // //   /* Collapsed mobile: icon-only strip */
+// // // // //   .gs-shell.collapsed .gs-sidebar {
+// // // // //     width: 52px;
+// // // // //   }
+
+// // // // //   .gs-shell.collapsed .gs-name-wrap,
+// // // // //   .gs-shell.collapsed .gs-section-label,
+// // // // //   .gs-shell.collapsed .gs-text,
+// // // // //   .gs-shell.collapsed .gs-user-info {
+// // // // //     opacity: 0 !important;
+// // // // //     pointer-events: none;
+// // // // //     width: 0;
+// // // // //   }
+
+// // // // //   .gs-shell.collapsed .gs-main {
+// // // // //     grid-column: 1;
+// // // // //     margin-left: 52px;
+// // // // //   }
+
+// // // // //   /* Collapse button always shown on mobile */
+// // // // //   .gs-collapse { display: flex !important; }
+
+// // // // //   /* Sidebar footer always shows logout */
+// // // // //   .gs-sidebar-foot { padding: 8px 12px; }
+
+// // // // //   /* Backdrop when sidebar is open on mobile */
+// // // // //   .gs-shell:not(.collapsed)::before {
+// // // // //     content: '';
+// // // // //     position: fixed;
+// // // // //     inset: 0;
+// // // // //     background: rgba(0,0,0,0.35);
+// // // // //     z-index: 199;
+// // // // //   }
+// // // // // }
+
+
+// // // // :host { display: block; }
+
+// // // // /* ══════════════════════════════════
+// // // //    QUIET OPERATOR — super admin dark shell
+// // // //    ══════════════════════════════════ */
+// // // // .qo-shell {
+// // // //   min-height: 100vh;
+// // // //   background: var(--qo-bg);
+// // // //   color: var(--qo-text);
+// // // //   display: flex;
+// // // //   flex-direction: column;
+// // // // }
+
+// // // // .qo-topbar {
+// // // //   background: var(--qo-bg);
+// // // //   border-bottom: 1px solid var(--qo-line);
+// // // //   display: flex;
+// // // //   align-items: stretch;
+// // // //   height: 48px;
+// // // //   position: sticky;
+// // // //   top: 0;
+// // // //   z-index: 100;
+// // // // }
+
+// // // // .qo-brand {
+// // // //   padding: 0 22px;
+// // // //   display: flex;
+// // // //   align-items: center;
+// // // //   gap: 10px;
+// // // //   border-right: 1px solid var(--qo-line);
+// // // //   font-family: 'JetBrains Mono', monospace;
+// // // //   font-size: 12px;
+// // // //   font-weight: 600;
+// // // //   color: var(--qo-text);
+// // // // }
+
+// // // // .qo-mark {
+// // // //   width: 22px; height: 22px;
+// // // //   background: var(--qo-amber);
+// // // //   color: var(--qo-bg);
+// // // //   display: flex; align-items: center; justify-content: center;
+// // // //   font-size: 13px; font-weight: 700;
+// // // //   border-radius: 4px;
+// // // // }
+
+// // // // .qo-meta { color: var(--qo-text-dim); font-weight: 400; }
+
+// // // // .qo-context {
+// // // //   padding: 0 18px;
+// // // //   display: flex; align-items: center; gap: 14px;
+// // // //   border-right: 1px solid var(--qo-line);
+// // // //   font-family: 'JetBrains Mono', monospace;
+// // // //   font-size: 11px;
+// // // //   color: var(--qo-text-dim);
+// // // // }
+
+// // // // .qo-live { display: inline-flex; align-items: center; gap: 6px; }
+// // // // .qo-pulse {
+// // // //   width: 6px; height: 6px;
+// // // //   background: var(--qo-green);
+// // // //   border-radius: 50%;
+// // // //   animation: qo-live-pulse 2s ease-out infinite;
+// // // // }
+// // // // @keyframes qo-live-pulse {
+// // // //   0%   { box-shadow: 0 0 0 0 rgba(123, 192, 122, 0.5); }
+// // // //   100% { box-shadow: 0 0 0 8px rgba(123, 192, 122, 0); }
+// // // // }
+
+// // // // .qo-nav {
+// // // //   flex: 1;
+// // // //   display: flex; align-items: stretch;
+// // // //   padding: 0 18px; gap: 6px;
+// // // // }
+// // // // .qo-nav a {
+// // // //   display: inline-flex; align-items: center;
+// // // //   padding: 0 14px;
+// // // //   font-family: 'JetBrains Mono', monospace;
+// // // //   font-size: 12px;
+// // // //   color: var(--qo-text-dim);
+// // // //   transition: color var(--d-fast) var(--ease);
+// // // //   position: relative;
+// // // // }
+// // // // .qo-nav a:hover { color: var(--qo-text); }
+// // // // .qo-nav a.active { color: var(--qo-amber); }
+// // // // .qo-nav a.active::after {
+// // // //   content: ''; position: absolute;
+// // // //   bottom: -1px; left: 14px; right: 14px;
+// // // //   height: 2px; background: var(--qo-amber);
+// // // // }
+
+// // // // .qo-badge {
+// // // //   margin-left: 8px;
+// // // //   background: var(--qo-amber); color: var(--qo-bg);
+// // // //   font-size: 10px; font-weight: 600;
+// // // //   padding: 1px 6px; border-radius: 999px;
+// // // //   font-family: 'JetBrains Mono', monospace;
+// // // // }
+
+// // // // .qo-user {
+// // // //   padding: 0 18px;
+// // // //   display: flex; align-items: center; gap: 12px;
+// // // //   border-left: 1px solid var(--qo-line);
+// // // //   font-size: 12px;
+// // // // }
+// // // // .qo-who { color: var(--qo-text); font-family: 'JetBrains Mono', monospace; }
+// // // // .qo-logout {
+// // // //   background: transparent; border: 1px solid var(--qo-line);
+// // // //   color: var(--qo-text-dim); padding: 6px; border-radius: 4px;
+// // // //   cursor: pointer; display: inline-flex; align-items: center;
+// // // //   transition: all var(--d-fast) var(--ease);
+// // // // }
+// // // // .qo-logout:hover { border-color: var(--qo-red); color: var(--qo-red); }
+// // // // .qo-main { flex: 1; }
+
+// // // // /* ══════════════════════════════════
+// // // //    GARDEN & STONE — community shell
+// // // //    ══════════════════════════════════ */
+// // // // .gs-shell {
+// // // //   display: grid;
+// // // //   grid-template-columns: 240px 1fr;
+// // // //   min-height: 100vh;
+// // // //   transition: grid-template-columns 320ms var(--ease);
+// // // //   background: var(--stone-100);
+// // // // }
+
+// // // // .gs-shell.collapsed {
+// // // //   grid-template-columns: 56px 1fr;
+// // // // }
+
+// // // // /* ── Sidebar ──────────────────────── */
+// // // // .gs-sidebar {
+// // // //   background: var(--stone-50);
+// // // //   border-right: 1px solid var(--stone-200);
+// // // //   padding: 18px 0;
+// // // //   display: flex;
+// // // //   flex-direction: column;
+// // // //   position: sticky;
+// // // //   top: 0;
+// // // //   height: 100vh;
+// // // //   /* NO overflow:hidden — that was clipping the toggle button */
+// // // //   overflow-y: auto;
+// // // //   overflow-x: hidden;
+// // // //   z-index: 50;
+// // // //   /* Scrollbar invisible but functional */
+// // // //   scrollbar-width: none;
+// // // // }
+// // // // .gs-sidebar::-webkit-scrollbar { display: none; }
+
+// // // // /* Brand header */
+// // // // .gs-sidebar-head {
+// // // //   display: flex;
+// // // //   align-items: center;
+// // // //   gap: 10px;
+// // // //   padding: 0 12px 18px;
+// // // //   border-bottom: 1px solid var(--stone-200);
+// // // //   margin-bottom: 14px;
+// // // //   flex-shrink: 0;
+// // // //   position: relative;
+// // // //   min-height: 52px;
+// // // // }
+
+// // // // /* Brand mark — circle with logo image or letter */
+// // // // .gs-mark {
+// // // //   width: 34px; height: 34px;
+// // // //   border-radius: 50%;
+// // // //   background: var(--primary);
+// // // //   color: white;
+// // // //   display: flex; align-items: center; justify-content: center;
+// // // //   font-family: 'Fraunces', serif;
+// // // //   font-weight: 600; font-size: 15px;
+// // // //   flex-shrink: 0;
+// // // //   overflow: hidden;
+// // // //   transition: width var(--d-base) var(--ease), height var(--d-base) var(--ease);
+// // // // }
+
+// // // // .gs-logo-img {
+// // // //   width: 100%; height: 100%;
+// // // //   object-fit: cover;
+// // // //   border-radius: 50%;
+// // // //   display: block;
+// // // // }
+
+// // // // .gs-name-wrap {
+// // // //   flex: 1;
+// // // //   min-width: 0;
+// // // //   overflow: hidden;
+// // // //   transition: opacity 200ms var(--ease), width 320ms var(--ease);
+// // // // }
+
+// // // // .gs-shell.collapsed .gs-name-wrap {
+// // // //   opacity: 0;
+// // // //   width: 0;
+// // // //   pointer-events: none;
+// // // // }
+
+// // // // .gs-name {
+// // // //   font-family: 'Fraunces', serif;
+// // // //   font-size: 15px;
+// // // //   font-weight: 500;
+// // // //   letter-spacing: -0.015em;
+// // // //   color: var(--ink);
+// // // //   white-space: nowrap;
+// // // //   overflow: hidden;
+// // // //   text-overflow: ellipsis;
+// // // // }
+
+// // // // .gs-meta {
+// // // //   font-size: 10px;
+// // // //   color: var(--ink-mute);
+// // // //   font-family: 'JetBrains Mono', monospace;
+// // // //   margin-top: 1px;
+// // // // }
+
+// // // // /* ── Toggle button ─────────────────────────────────────────────────
+// // // //    CRITICAL: When collapsed the sidebar is only 56px wide.
+// // // //    The button must NEVER be clipped by overflow-x:hidden.
+// // // //    Solution: when collapsed, position it outside the sidebar
+// // // //    using a fixed/absolute position so it's always reachable.
+// // // // ──────────────────────────────────────────────────────────────────── */
+// // // // .gs-collapse {
+// // // //   width: 28px; height: 28px;
+// // // //   border-radius: 6px; border: 1px solid var(--stone-200);
+// // // //   background: var(--stone-50); color: var(--ink-mute);
+// // // //   display: flex !important; align-items: center; justify-content: center;
+// // // //   cursor: pointer; flex-shrink: 0;
+// // // //   transition: all var(--d-fast) var(--ease);
+// // // //   opacity: 1 !important;
+// // // //   pointer-events: auto !important;
+// // // //   visibility: visible !important;
+// // // //   z-index: 60;
+// // // // }
+// // // // .gs-collapse:hover { background: var(--stone-200); color: var(--ink); }
+// // // // .gs-collapse svg { transition: transform 320ms var(--ease); }
+
+// // // // /* When expanded — normal position inside head */
+// // // // .gs-shell:not(.collapsed) .gs-collapse {
+// // // //   position: relative;
+// // // // }
+
+// // // // /* When collapsed — float the button to the right edge of sidebar,
+// // // //    overlapping into the main content so it's always visible & clickable */
+// // // // .gs-shell.collapsed .gs-collapse {
+// // // //   position: fixed;
+// // // //   left: 44px;
+// // // //   top: 12px;
+// // // //   box-shadow: 0 1px 4px rgba(0,0,0,.12);
+// // // //   z-index: 100;
+// // // // }
+// // // // .gs-shell.collapsed .gs-collapse svg { transform: rotate(180deg); }
+
+// // // // /* ── Collapsed sidebar — perfectly centered 56px icon strip ── */
+// // // // .gs-shell.collapsed .gs-sidebar-head {
+// // // //   padding: 0 0 14px;
+// // // //   justify-content: center;
+// // // //   align-items: center;
+// // // //   gap: 0;
+// // // // }
+
+// // // // .gs-shell.collapsed .gs-mark {
+// // // //   margin: 0 auto;
+// // // // }
+
+// // // // .gs-shell.collapsed .gs-nav {
+// // // //   padding: 0;
+// // // //   width: 56px;
+// // // // }
+
+// // // // /* Each nav link becomes a centered 40px icon button */
+// // // // .gs-shell.collapsed .gs-link {
+// // // //   width: 40px;
+// // // //   height: 40px;
+// // // //   padding: 0;
+// // // //   margin: 2px auto;
+// // // //   border-radius: 10px;
+// // // //   display: flex;
+// // // //   align-items: center;
+// // // //   justify-content: center;
+// // // //   gap: 0;
+// // // //   overflow: hidden;
+// // // // }
+
+// // // // .gs-shell.collapsed .gs-link svg {
+// // // //   flex-shrink: 0;
+// // // //   width: 18px;
+// // // //   height: 18px;
+// // // // }
+
+// // // // /* Hide text completely in collapsed state */
+// // // // .gs-shell.collapsed .gs-text {
+// // // //   display: none;
+// // // // }
+
+// // // // .gs-shell.collapsed .gs-sidebar-foot {
+// // // //   padding: 8px 0;
+// // // //   justify-content: center;
+// // // //   align-items: center;
+// // // //   width: 56px;
+// // // //   margin: 0 auto;
+// // // // }
+
+// // // // .gs-shell.collapsed .gs-user-av {
+// // // //   margin: 0 auto;
+// // // // }
+
+// // // // /* Section labels fully hidden */
+// // // // .gs-shell.collapsed .gs-section {
+// // // //   padding: 0;
+// // // //   margin: 4px 0;
+// // // // }
+
+// // // // /* Navigation */
+// // // // .gs-nav {
+// // // //   padding: 0 8px;
+// // // //   flex: 1;
+// // // // }
+
+// // // // .gs-section + .gs-section { margin-top: 14px; }
+
+// // // // .gs-section-label {
+// // // //   font-size: 10px; font-weight: 600;
+// // // //   text-transform: uppercase; letter-spacing: 0.14em;
+// // // //   color: var(--ink-low);
+// // // //   padding: 6px 8px;
+// // // //   white-space: nowrap;
+// // // //   overflow: hidden;
+// // // //   transition: opacity 200ms var(--ease);
+// // // // }
+// // // // .gs-shell.collapsed .gs-section-label { opacity: 0; }
+
+// // // // .gs-link {
+// // // //   display: flex; align-items: center; gap: 12px;
+// // // //   padding: 9px 10px;
+// // // //   border-radius: 8px;
+// // // //   color: var(--ink-soft);
+// // // //   font-size: 14px; font-weight: 500;
+// // // //   margin-bottom: 2px;
+// // // //   text-decoration: none;
+// // // //   position: relative;
+// // // //   transition: all var(--d-fast) var(--ease);
+// // // //   white-space: nowrap;
+// // // //   overflow: hidden;
+// // // // }
+// // // // .gs-link:hover { background: var(--stone-100); color: var(--ink); }
+// // // // .gs-link.active { background: var(--ink); color: var(--stone-50); }
+
+// // // // .gs-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+// // // // .gs-text {
+// // // //   flex: 1; overflow: hidden; text-overflow: ellipsis;
+// // // //   transition: opacity 200ms var(--ease);
+// // // // }
+// // // // .gs-shell.collapsed .gs-text { opacity: 0; }
+
+// // // // .gs-badge {
+// // // //   background: var(--warm-red); color: white;
+// // // //   font-size: 10px; font-weight: 600;
+// // // //   padding: 1px 7px; border-radius: 999px;
+// // // //   transition: opacity 200ms var(--ease);
+// // // //   flex-shrink: 0;
+// // // // }
+// // // // .gs-link.active .gs-badge { background: var(--amber); color: var(--ink); }
+
+// // // // .gs-shell.collapsed .gs-badge {
+// // // //   position: absolute; top: 4px; right: 4px;
+// // // //   font-size: 0; width: 8px; height: 8px; padding: 0;
+// // // //   opacity: 1;
+// // // // }
+
+// // // // /* Footer: user av + name + logout */
+// // // // .gs-sidebar-foot {
+// // // //   display: flex; align-items: center; gap: 10px;
+// // // //   padding: 10px 12px 4px;
+// // // //   margin-top: auto; flex-shrink: 0;
+// // // //   border-top: 1px solid var(--stone-200);
+// // // // }
+
+// // // // /* User avatar circle — image or initial */
+// // // // .gs-user-av {
+// // // //   width: 32px; height: 32px;
+// // // //   border-radius: 50%;
+// // // //   background: var(--amber);
+// // // //   color: white;
+// // // //   display: flex; align-items: center; justify-content: center;
+// // // //   font-family: 'Fraunces', serif;
+// // // //   font-weight: 600; font-size: 13px;
+// // // //   flex-shrink: 0;
+// // // //   overflow: hidden;
+// // // // }
+
+// // // // .gs-av-img {
+// // // //   width: 100%; height: 100%;
+// // // //   object-fit: cover; border-radius: 50%; display: block;
+// // // // }
+
+// // // // .gs-user-info {
+// // // //   flex: 1; overflow: hidden; min-width: 0;
+// // // //   transition: opacity 200ms var(--ease);
+// // // // }
+// // // // .gs-shell.collapsed .gs-user-info {
+// // // //   opacity: 0; pointer-events: none;
+// // // // }
+
+// // // // .gs-user-name {
+// // // //   font-size: 13px; font-weight: 500; color: var(--ink);
+// // // //   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+// // // // }
+// // // // .gs-user-role {
+// // // //   font-size: 10px; color: var(--ink-mute);
+// // // //   text-transform: uppercase; letter-spacing: 0.08em; margin-top: 1px;
+// // // // }
+
+// // // // /* Logout — ALWAYS visible and clickable */
+// // // // .gs-logout-btn {
+// // // //   border: none; background: transparent; color: var(--ink-mute);
+// // // //   padding: 6px; border-radius: 6px; cursor: pointer;
+// // // //   display: flex !important; align-items: center; justify-content: center;
+// // // //   transition: all var(--d-fast) var(--ease);
+// // // //   flex-shrink: 0;
+// // // //   opacity: 1 !important;
+// // // //   pointer-events: auto !important;
+// // // //   visibility: visible !important;
+// // // //   position: relative;
+// // // //   z-index: 60;
+// // // // }
+// // // // .gs-logout-btn:hover { background: var(--stone-200); color: var(--warm-red); }
+
+// // // // /* When collapsed — logout button always visible at bottom of collapsed strip */
+// // // // .gs-shell.collapsed .gs-logout-btn {
+// // // //   position: fixed;
+// // // //   left: 10px;
+// // // //   bottom: 12px;
+// // // //   background: var(--stone-100);
+// // // //   border: 1px solid var(--stone-200);
+// // // //   border-radius: 8px;
+// // // //   box-shadow: 0 1px 4px rgba(0,0,0,.1);
+// // // //   z-index: 100;
+// // // //   padding: 8px;
+// // // //   width: 36px; height: 36px;
+// // // // }
+
+// // // // .gs-main {
+// // // //   min-height: 100vh;
+// // // //   overflow-x: hidden;
+// // // //   /* Allow dashboard to control its own scroll */
+// // // //   display: flex;
+// // // //   flex-direction: column;
+// // // // }
+
+// // // // /* ── Mobile ─────────────────────── */
+// // // // @media (max-width: 720px) {
+// // // //   /* Expanded on mobile: full sidebar overlay */
+// // // //   .gs-shell {
+// // // //     grid-template-columns: 1fr;
+// // // //     position: relative;
+// // // //   }
+
+// // // //   .gs-shell.collapsed {
+// // // //     grid-template-columns: 52px 1fr;
+// // // //   }
+
+// // // //   /* When expanded on mobile, sidebar overlays content */
+// // // //   .gs-shell:not(.collapsed) .gs-sidebar {
+// // // //     position: fixed;
+// // // //     top: 0; left: 0; bottom: 0;
+// // // //     width: 240px;
+// // // //     z-index: 200;
+// // // //     box-shadow: 4px 0 24px rgba(0,0,0,.13);
+// // // //   }
+
+// // // //   .gs-shell:not(.collapsed) .gs-main {
+// // // //     margin-left: 0;
+// // // //   }
+
+// // // //   /* Collapsed mobile: icon-only strip */
+// // // //   .gs-shell.collapsed .gs-sidebar {
+// // // //     width: 52px;
+// // // //   }
+
+// // // //   .gs-shell.collapsed .gs-name-wrap,
+// // // //   .gs-shell.collapsed .gs-section-label,
+// // // //   .gs-shell.collapsed .gs-text,
+// // // //   .gs-shell.collapsed .gs-user-info {
+// // // //     opacity: 0 !important;
+// // // //     pointer-events: none;
+// // // //     width: 0;
+// // // //   }
+
+// // // //   .gs-shell.collapsed .gs-main {
+// // // //     grid-column: 1;
+// // // //     margin-left: 52px;
+// // // //   }
+
+// // // //   /* Collapse button always shown on mobile */
+// // // //   .gs-collapse { display: flex !important; }
+
+// // // //   /* Sidebar footer always shows logout */
+// // // //   .gs-sidebar-foot { padding: 8px 12px; }
+
+// // // //   /* Backdrop when sidebar is open on mobile */
+// // // //   .gs-shell:not(.collapsed)::before {
+// // // //     content: '';
+// // // //     position: fixed;
+// // // //     inset: 0;
+// // // //     background: rgba(0,0,0,0.35);
+// // // //     z-index: 199;
+// // // //   }
+// // // // }
+
+
+// // // :host { display: block; }
+
+// // // /* ══════════════════════════════════
+// // //    QUIET OPERATOR — super admin dark shell
+// // //    ══════════════════════════════════ */
+// // // .qo-shell {
+// // //   min-height: 100vh;
+// // //   background: var(--qo-bg);
+// // //   color: var(--qo-text);
+// // //   display: flex;
+// // //   flex-direction: column;
+// // // }
+
+// // // .qo-topbar {
+// // //   background: var(--qo-bg);
+// // //   border-bottom: 1px solid var(--qo-line);
+// // //   display: flex;
+// // //   align-items: stretch;
+// // //   height: 48px;
+// // //   position: sticky;
+// // //   top: 0;
+// // //   z-index: 100;
+// // // }
+
+// // // .qo-brand {
+// // //   padding: 0 22px;
+// // //   display: flex;
+// // //   align-items: center;
+// // //   gap: 10px;
+// // //   border-right: 1px solid var(--qo-line);
+// // //   font-family: 'JetBrains Mono', monospace;
+// // //   font-size: 12px;
+// // //   font-weight: 600;
+// // //   color: var(--qo-text);
+// // // }
+
+// // // .qo-mark {
+// // //   width: 22px; height: 22px;
+// // //   background: var(--qo-amber);
+// // //   color: var(--qo-bg);
+// // //   display: flex; align-items: center; justify-content: center;
+// // //   font-size: 13px; font-weight: 700;
+// // //   border-radius: 4px;
+// // // }
+
+// // // .qo-meta { color: var(--qo-text-dim); font-weight: 400; }
+
+// // // .qo-context {
+// // //   padding: 0 18px;
+// // //   display: flex; align-items: center; gap: 14px;
+// // //   border-right: 1px solid var(--qo-line);
+// // //   font-family: 'JetBrains Mono', monospace;
+// // //   font-size: 11px;
+// // //   color: var(--qo-text-dim);
+// // // }
+
+// // // .qo-live { display: inline-flex; align-items: center; gap: 6px; }
+// // // .qo-pulse {
+// // //   width: 6px; height: 6px;
+// // //   background: var(--qo-green);
+// // //   border-radius: 50%;
+// // //   animation: qo-live-pulse 2s ease-out infinite;
+// // // }
+// // // @keyframes qo-live-pulse {
+// // //   0%   { box-shadow: 0 0 0 0 rgba(123, 192, 122, 0.5); }
+// // //   100% { box-shadow: 0 0 0 8px rgba(123, 192, 122, 0); }
+// // // }
+
+// // // .qo-nav {
+// // //   flex: 1;
+// // //   display: flex; align-items: stretch;
+// // //   padding: 0 18px; gap: 6px;
+// // // }
+// // // .qo-nav a {
+// // //   display: inline-flex; align-items: center;
+// // //   padding: 0 14px;
+// // //   font-family: 'JetBrains Mono', monospace;
+// // //   font-size: 12px;
+// // //   color: var(--qo-text-dim);
+// // //   transition: color var(--d-fast) var(--ease);
+// // //   position: relative;
+// // // }
+// // // .qo-nav a:hover { color: var(--qo-text); }
+// // // .qo-nav a.active { color: var(--qo-amber); }
+// // // .qo-nav a.active::after {
+// // //   content: ''; position: absolute;
+// // //   bottom: -1px; left: 14px; right: 14px;
+// // //   height: 2px; background: var(--qo-amber);
+// // // }
+
+// // // .qo-badge {
+// // //   margin-left: 8px;
+// // //   background: var(--qo-amber); color: var(--qo-bg);
+// // //   font-size: 10px; font-weight: 600;
+// // //   padding: 1px 6px; border-radius: 999px;
+// // //   font-family: 'JetBrains Mono', monospace;
+// // // }
+
+// // // .qo-user {
+// // //   padding: 0 18px;
+// // //   display: flex; align-items: center; gap: 12px;
+// // //   border-left: 1px solid var(--qo-line);
+// // //   font-size: 12px;
+// // // }
+// // // .qo-who { color: var(--qo-text); font-family: 'JetBrains Mono', monospace; }
+// // // .qo-logout {
+// // //   background: transparent; border: 1px solid var(--qo-line);
+// // //   color: var(--qo-text-dim); padding: 6px; border-radius: 4px;
+// // //   cursor: pointer; display: inline-flex; align-items: center;
+// // //   transition: all var(--d-fast) var(--ease);
+// // // }
+// // // .qo-logout:hover { border-color: var(--qo-red); color: var(--qo-red); }
+// // // .qo-main { flex: 1; }
+
+// // // /* ══════════════════════════════════
+// // //    GARDEN & STONE — community shell
+// // //    ══════════════════════════════════ */
+// // // .gs-shell {
+// // //   display: grid;
+// // //   grid-template-columns: 240px 1fr;
+// // //   min-height: 100vh;
+// // //   transition: grid-template-columns 320ms var(--ease);
+// // //   background: var(--stone-100);
+// // // }
+
+// // // .gs-shell.collapsed {
+// // //   grid-template-columns: 56px 1fr;
+// // // }
+
+// // // /* ── Sidebar ──────────────────────── */
+// // // .gs-sidebar {
+// // //   background: var(--stone-50);
+// // //   border-right: 1px solid var(--stone-200);
+// // //   padding: 18px 0;
+// // //   display: flex;
+// // //   flex-direction: column;
+// // //   position: sticky;
+// // //   top: 0;
+// // //   height: 100vh;
+// // //   /* NO overflow:hidden — that was clipping the toggle button */
+// // //   overflow-y: auto;
+// // //   overflow-x: hidden;
+// // //   z-index: 50;
+// // //   /* Scrollbar invisible but functional */
+// // //   scrollbar-width: none;
+// // // }
+// // // .gs-sidebar::-webkit-scrollbar { display: none; }
+
+// // // /* Brand header */
+// // // .gs-sidebar-head {
+// // //   display: flex;
+// // //   align-items: center;
+// // //   gap: 10px;
+// // //   padding: 0 12px 18px;
+// // //   border-bottom: 1px solid var(--stone-200);
+// // //   margin-bottom: 14px;
+// // //   flex-shrink: 0;
+// // //   position: relative;
+// // //   min-height: 52px;
+// // // }
+
+// // // /* Brand mark — circle with logo image or letter */
+// // // .gs-mark {
+// // //   width: 34px; height: 34px;
+// // //   border-radius: 50%;
+// // //   background: var(--primary);
+// // //   color: white;
+// // //   display: flex; align-items: center; justify-content: center;
+// // //   font-family: 'Fraunces', serif;
+// // //   font-weight: 600; font-size: 15px;
+// // //   flex-shrink: 0;
+// // //   overflow: hidden;
+// // //   transition: width var(--d-base) var(--ease), height var(--d-base) var(--ease);
+// // // }
+
+// // // .gs-logo-img {
+// // //   width: 100%; height: 100%;
+// // //   object-fit: cover;
+// // //   border-radius: 50%;
+// // //   display: block;
+// // // }
+
+// // // .gs-name-wrap {
+// // //   flex: 1;
+// // //   min-width: 0;
+// // //   overflow: hidden;
+// // //   transition: opacity 200ms var(--ease), width 320ms var(--ease);
+// // // }
+
+// // // .gs-shell.collapsed .gs-name-wrap {
+// // //   opacity: 0;
+// // //   width: 0;
+// // //   pointer-events: none;
+// // // }
+
+// // // .gs-name {
+// // //   font-family: 'Fraunces', serif;
+// // //   font-size: 15px;
+// // //   font-weight: 500;
+// // //   letter-spacing: -0.015em;
+// // //   color: var(--ink);
+// // //   white-space: nowrap;
+// // //   overflow: hidden;
+// // //   text-overflow: ellipsis;
+// // // }
+
+// // // .gs-meta {
+// // //   font-size: 10px;
+// // //   color: var(--ink-mute);
+// // //   font-family: 'JetBrains Mono', monospace;
+// // //   margin-top: 1px;
+// // // }
+
+// // // /* ── Toggle button ─────────────────────────────────────────────────
+// // //    CRITICAL: When collapsed the sidebar is only 56px wide.
+// // //    The button must NEVER be clipped by overflow-x:hidden.
+// // //    Solution: when collapsed, position it outside the sidebar
+// // //    using a fixed/absolute position so it's always reachable.
+// // // ──────────────────────────────────────────────────────────────────── */
+// // // .gs-collapse {
+// // //   width: 28px; height: 28px;
+// // //   border-radius: 6px; border: 1px solid var(--stone-200);
+// // //   background: var(--stone-50); color: var(--ink-mute);
+// // //   display: flex !important; align-items: center; justify-content: center;
+// // //   cursor: pointer; flex-shrink: 0;
+// // //   transition: all var(--d-fast) var(--ease);
+// // //   opacity: 1 !important;
+// // //   pointer-events: auto !important;
+// // //   visibility: visible !important;
+// // //   z-index: 60;
+// // // }
+// // // .gs-collapse:hover { background: var(--stone-200); color: var(--ink); }
+// // // .gs-collapse svg { transition: transform 320ms var(--ease); }
+
+// // // /* When expanded — normal position inside head */
+// // // .gs-shell:not(.collapsed) .gs-collapse {
+// // //   position: relative;
+// // // }
+
+// // // /* When collapsed — float the button to the right edge of sidebar,
+// // //    overlapping into the main content so it's always visible & clickable */
+// // // .gs-shell.collapsed .gs-collapse {
+// // //   position: fixed;
+// // //   left: 44px;
+// // //   top: 12px;
+// // //   box-shadow: 0 1px 4px rgba(0,0,0,.12);
+// // //   z-index: 100;
+// // // }
+// // // .gs-shell.collapsed .gs-collapse svg { transform: rotate(180deg); }
+
+// // // /* ── Collapsed sidebar — perfectly centered 56px icon strip ── */
+
+// // // /* Sidebar itself: center everything horizontally */
+// // // .gs-shell.collapsed .gs-sidebar {
+// // //   align-items: center;
+// // //   padding: 18px 0;
+// // // }
+
+// // // .gs-shell.collapsed .gs-sidebar-head {
+// // //   width: 56px;
+// // //   padding: 0 0 14px;
+// // //   justify-content: center;
+// // //   align-items: center;
+// // //   gap: 0;
+// // //   border-bottom: 1px solid var(--stone-200);
+// // // }
+
+// // // .gs-shell.collapsed .gs-mark {
+// // //   margin: 0;
+// // // }
+
+// // // /* Nav: full width so links center within it */
+// // // .gs-shell.collapsed .gs-nav {
+// // //   padding: 0;
+// // //   width: 100%;
+// // //   display: flex;
+// // //   flex-direction: column;
+// // //   align-items: center;
+// // // }
+
+// // // /* Each nav link: fixed size, perfectly centered */
+// // // .gs-shell.collapsed .gs-link {
+// // //   width: 40px;
+// // //   height: 40px;
+// // //   min-width: 40px;
+// // //   padding: 0;
+// // //   margin: 2px 0;
+// // //   border-radius: 10px;
+// // //   display: flex;
+// // //   align-items: center;
+// // //   justify-content: center;
+// // //   gap: 0;
+// // // }
+
+// // // .gs-shell.collapsed .gs-link svg {
+// // //   width: 18px;
+// // //   height: 18px;
+// // //   flex-shrink: 0;
+// // // }
+
+// // // /* Hide text — display:none removes it from layout entirely */
+// // // .gs-shell.collapsed .gs-text { display: none; }
+// // // .gs-shell.collapsed .gs-badge { display: none; }
+// // // .gs-shell.collapsed .gs-section-label { display: none; }
+// // // .gs-shell.collapsed .gs-name-wrap { display: none; }
+
+// // // /* Section spacer */
+// // // .gs-shell.collapsed .gs-section {
+// // //   padding: 4px 0 0;
+// // //   margin: 0;
+// // //   width: 100%;
+// // // }
+
+// // // /* Footer: center the user avatar and logout */
+// // // .gs-shell.collapsed .gs-sidebar-foot {
+// // //   width: 56px;
+// // //   padding: 8px 0;
+// // //   display: flex;
+// // //   flex-direction: column;
+// // //   align-items: center;
+// // //   gap: 8px;
+// // // }
+
+// // // .gs-shell.collapsed .gs-user-av {
+// // //   margin: 0;
+// // // }
+
+// // // .gs-shell.collapsed .gs-user-info { display: none; }
+
+// // // /* Navigation */
+// // // .gs-nav {
+// // //   padding: 0 8px;
+// // //   flex: 1;
+// // // }
+
+// // // .gs-section + .gs-section { margin-top: 14px; }
+
+// // // .gs-section-label {
+// // //   font-size: 10px; font-weight: 600;
+// // //   text-transform: uppercase; letter-spacing: 0.14em;
+// // //   color: var(--ink-low);
+// // //   padding: 6px 8px;
+// // //   white-space: nowrap;
+// // //   overflow: hidden;
+// // //   transition: opacity 200ms var(--ease);
+// // // }
+// // // .gs-shell.collapsed .gs-section-label { opacity: 0; }
+
+// // // .gs-link {
+// // //   display: flex; align-items: center; gap: 12px;
+// // //   padding: 9px 10px;
+// // //   border-radius: 8px;
+// // //   color: var(--ink-soft);
+// // //   font-size: 14px; font-weight: 500;
+// // //   margin-bottom: 2px;
+// // //   text-decoration: none;
+// // //   position: relative;
+// // //   transition: all var(--d-fast) var(--ease);
+// // //   white-space: nowrap;
+// // //   overflow: hidden;
+// // // }
+// // // .gs-link:hover { background: var(--stone-100); color: var(--ink); }
+// // // .gs-link.active { background: var(--ink); color: var(--stone-50); }
+
+// // // .gs-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+// // // .gs-text {
+// // //   flex: 1; overflow: hidden; text-overflow: ellipsis;
+// // //   transition: opacity 200ms var(--ease);
+// // // }
+// // // .gs-shell.collapsed .gs-text { opacity: 0; }
+
+// // // .gs-badge {
+// // //   background: var(--warm-red); color: white;
+// // //   font-size: 10px; font-weight: 600;
+// // //   padding: 1px 7px; border-radius: 999px;
+// // //   transition: opacity 200ms var(--ease);
+// // //   flex-shrink: 0;
+// // // }
+// // // .gs-link.active .gs-badge { background: var(--amber); color: var(--ink); }
+
+// // // .gs-shell.collapsed .gs-badge {
+// // //   position: absolute; top: 4px; right: 4px;
+// // //   font-size: 0; width: 8px; height: 8px; padding: 0;
+// // //   opacity: 1;
+// // // }
+
+// // // /* Footer: user av + name + logout */
+// // // .gs-sidebar-foot {
+// // //   display: flex; align-items: center; gap: 10px;
+// // //   padding: 10px 12px 4px;
+// // //   margin-top: auto; flex-shrink: 0;
+// // //   border-top: 1px solid var(--stone-200);
+// // // }
+
+// // // /* User avatar circle — image or initial */
+// // // .gs-user-av {
+// // //   width: 32px; height: 32px;
+// // //   border-radius: 50%;
+// // //   background: var(--amber);
+// // //   color: white;
+// // //   display: flex; align-items: center; justify-content: center;
+// // //   font-family: 'Fraunces', serif;
+// // //   font-weight: 600; font-size: 13px;
+// // //   flex-shrink: 0;
+// // //   overflow: hidden;
+// // // }
+
+// // // .gs-av-img {
+// // //   width: 100%; height: 100%;
+// // //   object-fit: cover; border-radius: 50%; display: block;
+// // // }
+
+// // // .gs-user-info {
+// // //   flex: 1; overflow: hidden; min-width: 0;
+// // //   transition: opacity 200ms var(--ease);
+// // // }
+// // // .gs-shell.collapsed .gs-user-info {
+// // //   opacity: 0; pointer-events: none;
+// // // }
+
+// // // .gs-user-name {
+// // //   font-size: 13px; font-weight: 500; color: var(--ink);
+// // //   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+// // // }
+// // // .gs-user-role {
+// // //   font-size: 10px; color: var(--ink-mute);
+// // //   text-transform: uppercase; letter-spacing: 0.08em; margin-top: 1px;
+// // // }
+
+// // // /* Logout — ALWAYS visible and clickable */
+// // // .gs-logout-btn {
+// // //   border: none; background: transparent; color: var(--ink-mute);
+// // //   padding: 6px; border-radius: 6px; cursor: pointer;
+// // //   display: flex !important; align-items: center; justify-content: center;
+// // //   transition: all var(--d-fast) var(--ease);
+// // //   flex-shrink: 0;
+// // //   opacity: 1 !important;
+// // //   pointer-events: auto !important;
+// // //   visibility: visible !important;
+// // //   position: relative;
+// // //   z-index: 60;
+// // // }
+// // // .gs-logout-btn:hover { background: var(--stone-200); color: var(--warm-red); }
+
+// // // /* When collapsed — logout button always visible at bottom of collapsed strip */
+// // // .gs-shell.collapsed .gs-logout-btn {
+// // //   position: fixed;
+// // //   left: 10px;
+// // //   bottom: 12px;
+// // //   background: var(--stone-100);
+// // //   border: 1px solid var(--stone-200);
+// // //   border-radius: 8px;
+// // //   box-shadow: 0 1px 4px rgba(0,0,0,.1);
+// // //   z-index: 100;
+// // //   padding: 8px;
+// // //   width: 36px; height: 36px;
+// // // }
+
+// // // .gs-main {
+// // //   min-height: 100vh;
+// // //   overflow-x: hidden;
+// // //   /* Allow dashboard to control its own scroll */
+// // //   display: flex;
+// // //   flex-direction: column;
+// // // }
+
+// // // /* ── Mobile ─────────────────────── */
+// // // @media (max-width: 720px) {
+// // //   /* Expanded on mobile: full sidebar overlay */
+// // //   .gs-shell {
+// // //     grid-template-columns: 1fr;
+// // //     position: relative;
+// // //   }
+
+// // //   .gs-shell.collapsed {
+// // //     grid-template-columns: 52px 1fr;
+// // //   }
+
+// // //   /* When expanded on mobile, sidebar overlays content */
+// // //   .gs-shell:not(.collapsed) .gs-sidebar {
+// // //     position: fixed;
+// // //     top: 0; left: 0; bottom: 0;
+// // //     width: 240px;
+// // //     z-index: 200;
+// // //     box-shadow: 4px 0 24px rgba(0,0,0,.13);
+// // //   }
+
+// // //   .gs-shell:not(.collapsed) .gs-main {
+// // //     margin-left: 0;
+// // //   }
+
+// // //   /* Collapsed mobile: icon-only strip */
+// // //   .gs-shell.collapsed .gs-sidebar {
+// // //     width: 52px;
+// // //   }
+
+// // //   .gs-shell.collapsed .gs-name-wrap,
+// // //   .gs-shell.collapsed .gs-section-label,
+// // //   .gs-shell.collapsed .gs-text,
+// // //   .gs-shell.collapsed .gs-user-info {
+// // //     opacity: 0 !important;
+// // //     pointer-events: none;
+// // //     width: 0;
+// // //   }
+
+// // //   .gs-shell.collapsed .gs-main {
+// // //     grid-column: 1;
+// // //     margin-left: 52px;
+// // //   }
+
+// // //   /* Collapse button always shown on mobile */
+// // //   .gs-collapse { display: flex !important; }
+
+// // //   /* Sidebar footer always shows logout */
+// // //   .gs-sidebar-foot { padding: 8px 12px; }
+
+// // //   /* Backdrop when sidebar is open on mobile */
+// // //   .gs-shell:not(.collapsed)::before {
+// // //     content: '';
+// // //     position: fixed;
+// // //     inset: 0;
+// // //     background: rgba(0,0,0,0.35);
+// // //     z-index: 199;
+// // //   }
+// // // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // :host { display: block; }
+
+// // /* ══════════════════════════════════
+// //    QUIET OPERATOR — super admin dark shell
+// //    ══════════════════════════════════ */
+// // .qo-shell {
+// //   min-height: 100vh;
+// //   background: var(--qo-bg);
+// //   color: var(--qo-text);
+// //   display: flex;
+// //   flex-direction: column;
+// // }
+
+// // .qo-topbar {
+// //   background: var(--qo-bg);
+// //   border-bottom: 1px solid var(--qo-line);
+// //   display: flex;
+// //   align-items: stretch;
+// //   height: 48px;
+// //   position: sticky;
+// //   top: 0;
+// //   z-index: 100;
+// // }
+
+// // .qo-brand {
+// //   padding: 0 22px;
+// //   display: flex;
+// //   align-items: center;
+// //   gap: 10px;
+// //   border-right: 1px solid var(--qo-line);
+// //   font-family: 'JetBrains Mono', monospace;
+// //   font-size: 12px;
+// //   font-weight: 600;
+// //   color: var(--qo-text);
+// // }
+
+// // .qo-mark {
+// //   width: 22px; height: 22px;
+// //   background: var(--qo-amber);
+// //   color: var(--qo-bg);
+// //   display: flex; align-items: center; justify-content: center;
+// //   font-size: 13px; font-weight: 700;
+// //   border-radius: 4px;
+// // }
+
+// // .qo-meta { color: var(--qo-text-dim); font-weight: 400; }
+
+// // .qo-context {
+// //   padding: 0 18px;
+// //   display: flex; align-items: center; gap: 14px;
+// //   border-right: 1px solid var(--qo-line);
+// //   font-family: 'JetBrains Mono', monospace;
+// //   font-size: 11px;
+// //   color: var(--qo-text-dim);
+// // }
+
+// // .qo-live { display: inline-flex; align-items: center; gap: 6px; }
+// // .qo-pulse {
+// //   width: 6px; height: 6px;
+// //   background: var(--qo-green);
+// //   border-radius: 50%;
+// //   animation: qo-live-pulse 2s ease-out infinite;
+// // }
+// // @keyframes qo-live-pulse {
+// //   0%   { box-shadow: 0 0 0 0 rgba(123, 192, 122, 0.5); }
+// //   100% { box-shadow: 0 0 0 8px rgba(123, 192, 122, 0); }
+// // }
+
+// // .qo-nav {
+// //   flex: 1;
+// //   display: flex; align-items: stretch;
+// //   padding: 0 18px; gap: 6px;
+// // }
+// // .qo-nav a {
+// //   display: inline-flex; align-items: center;
+// //   padding: 0 14px;
+// //   font-family: 'JetBrains Mono', monospace;
+// //   font-size: 12px;
+// //   color: var(--qo-text-dim);
+// //   transition: color var(--d-fast) var(--ease);
+// //   position: relative;
+// // }
+// // .qo-nav a:hover { color: var(--qo-text); }
+// // .qo-nav a.active { color: var(--qo-amber); }
+// // .qo-nav a.active::after {
+// //   content: ''; position: absolute;
+// //   bottom: -1px; left: 14px; right: 14px;
+// //   height: 2px; background: var(--qo-amber);
+// // }
+
+// // .qo-badge {
+// //   margin-left: 8px;
+// //   background: var(--qo-amber); color: var(--qo-bg);
+// //   font-size: 10px; font-weight: 600;
+// //   padding: 1px 6px; border-radius: 999px;
+// //   font-family: 'JetBrains Mono', monospace;
+// // }
+
+// // .qo-user {
+// //   padding: 0 18px;
+// //   display: flex; align-items: center; gap: 12px;
+// //   border-left: 1px solid var(--qo-line);
+// //   font-size: 12px;
+// // }
+// // .qo-who { color: var(--qo-text); font-family: 'JetBrains Mono', monospace; }
+// // .qo-logout {
+// //   background: transparent; border: 1px solid var(--qo-line);
+// //   color: var(--qo-text-dim); padding: 6px; border-radius: 4px;
+// //   cursor: pointer; display: inline-flex; align-items: center;
+// //   transition: all var(--d-fast) var(--ease);
+// // }
+// // .qo-logout:hover { border-color: var(--qo-red); color: var(--qo-red); }
+// // .qo-main { flex: 1; }
+
+// // /* ══════════════════════════════════
+// //    GARDEN & STONE — community shell
+// //    ══════════════════════════════════ */
+// // .gs-shell {
+// //   display: grid;
+// //   grid-template-columns: 240px 1fr;
+// //   min-height: 100vh;
+// //   transition: grid-template-columns 320ms var(--ease);
+// //   background: var(--stone-100);
+// // }
+
+// // .gs-shell.collapsed {
+// //   grid-template-columns: 56px 1fr;
+// // }
+
+// // /* ── Sidebar ──────────────────────── */
+// // .gs-sidebar {
+// //   background: var(--stone-50);
+// //   border-right: 1px solid var(--stone-200);
+// //   padding: 18px 0;
+// //   display: flex;
+// //   flex-direction: column;
+// //   position: sticky;
+// //   top: 0;
+// //   height: 100vh;
+// //   /* NO overflow:hidden — that was clipping the toggle button */
+// //   overflow-y: auto;
+// //   overflow-x: hidden;
+// //   z-index: 50;
+// //   /* Scrollbar invisible but functional */
+// //   scrollbar-width: none;
+// // }
+// // .gs-sidebar::-webkit-scrollbar { display: none; }
+
+// // /* Brand header */
+// // .gs-sidebar-head {
+// //   display: flex;
+// //   align-items: center;
+// //   gap: 10px;
+// //   padding: 0 12px 18px;
+// //   border-bottom: 1px solid var(--stone-200);
+// //   margin-bottom: 14px;
+// //   flex-shrink: 0;
+// //   position: relative;
+// //   min-height: 52px;
+// // }
+
+// // /* Brand mark — circle with logo image or letter */
+// // .gs-mark {
+// //   width: 34px; height: 34px;
+// //   border-radius: 50%;
+// //   background: var(--primary);
+// //   color: white;
+// //   display: flex; align-items: center; justify-content: center;
+// //   font-family: 'Fraunces', serif;
+// //   font-weight: 600; font-size: 15px;
+// //   flex-shrink: 0;
+// //   overflow: hidden;
+// //   transition: width var(--d-base) var(--ease), height var(--d-base) var(--ease);
+// // }
+
+// // .gs-logo-img {
+// //   width: 100%; height: 100%;
+// //   object-fit: cover;
+// //   border-radius: 50%;
+// //   display: block;
+// // }
+
+// // .gs-name-wrap {
+// //   flex: 1;
+// //   min-width: 0;
+// //   overflow: hidden;
+// //   transition: opacity 200ms var(--ease), width 320ms var(--ease);
+// // }
+
+// // .gs-shell.collapsed .gs-name-wrap {
+// //   opacity: 0;
+// //   width: 0;
+// //   pointer-events: none;
+// // }
+
+// // .gs-name {
+// //   font-family: 'Fraunces', serif;
+// //   font-size: 15px;
+// //   font-weight: 500;
+// //   letter-spacing: -0.015em;
+// //   color: var(--ink);
+// //   white-space: nowrap;
+// //   overflow: hidden;
+// //   text-overflow: ellipsis;
+// // }
+
+// // .gs-meta {
+// //   font-size: 10px;
+// //   color: var(--ink-mute);
+// //   font-family: 'JetBrains Mono', monospace;
+// //   margin-top: 1px;
+// // }
+
+// // /* ── Toggle button ─────────────────────────────────────────────────
+// //    CRITICAL: When collapsed the sidebar is only 56px wide.
+// //    The button must NEVER be clipped by overflow-x:hidden.
+// //    Solution: when collapsed, position it outside the sidebar
+// //    using a fixed/absolute position so it's always reachable.
+// // ──────────────────────────────────────────────────────────────────── */
+// // .gs-collapse {
+// //   width: 28px; height: 28px;
+// //   border-radius: 6px; border: 1px solid var(--stone-200);
+// //   background: var(--stone-50); color: var(--ink-mute);
+// //   display: flex !important; align-items: center; justify-content: center;
+// //   cursor: pointer; flex-shrink: 0;
+// //   transition: all var(--d-fast) var(--ease);
+// //   opacity: 1 !important;
+// //   pointer-events: auto !important;
+// //   visibility: visible !important;
+// //   z-index: 60;
+// // }
+// // .gs-collapse:hover { background: var(--stone-200); color: var(--ink); }
+// // .gs-collapse svg { transition: transform 320ms var(--ease); }
+
+// // /* When expanded — normal position inside head */
+// // .gs-shell:not(.collapsed) .gs-collapse {
+// //   position: relative;
+// // }
+
+// // /* When collapsed — float the button to the right edge of sidebar,
+// //    overlapping into the main content so it's always visible & clickable */
+// // .gs-shell.collapsed .gs-collapse {
+// //   position: fixed;
+// //   left: 44px;
+// //   top: 12px;
+// //   box-shadow: 0 1px 4px rgba(0,0,0,.12);
+// //   z-index: 100;
+// // }
+// // .gs-shell.collapsed .gs-collapse svg { transform: rotate(180deg); }
+
+// // /* ══════════════════════════════════════════════════════════════
+// //    COLLAPSED SIDEBAR — 56px icon strip, all icons centered
+// //    ══════════════════════════════════════════════════════════════ */
+
+// // /* 1. Sidebar column: center all direct children horizontally */
+// // .gs-shell.collapsed .gs-sidebar {
+// //   align-items: center;
+// //   padding: 18px 0;
+// //   width: 56px;
+// // }
+
+// // /* 2. Header: center the logo mark */
+// // .gs-shell.collapsed .gs-sidebar-head {
+// //   width: 56px;
+// //   padding: 0 0 14px;
+// //   display: flex;
+// //   align-items: center;
+// //   justify-content: center;
+// //   gap: 0;
+// // }
+
+// // /* 3. Logo mark stays centered */
+// // .gs-shell.collapsed .gs-mark { margin: 0 auto; }
+
+// // /* 4. Nav fills full width, column layout, children centered */
+// // .gs-shell.collapsed .gs-nav {
+// //   width: 56px;
+// //   padding: 0;
+// //   display: flex;
+// //   flex-direction: column;
+// //   align-items: center;
+// // }
+
+// // /* 5. Each section: centered column, no extra padding */
+// // .gs-shell.collapsed .gs-section {
+// //   width: 56px;
+// //   padding: 4px 0 0;
+// //   margin: 0;
+// //   display: flex;
+// //   flex-direction: column;
+// //   align-items: center;
+// // }
+
+// // /* 6. Each link: 40×40 centered icon button — no text layout */
+// // .gs-shell.collapsed .gs-link {
+// //   width: 40px !important;
+// //   height: 40px !important;
+// //   padding: 0 !important;
+// //   margin: 2px 0 !important;
+// //   display: flex !important;
+// //   align-items: center !important;
+// //   justify-content: center !important;
+// //   gap: 0 !important;
+// //   border-radius: 10px;
+// //   overflow: visible;
+// // }
+
+// // /* 7. SVG icon: centered in the 40px box */
+// // .gs-shell.collapsed .gs-link svg {
+// //   width: 18px;
+// //   height: 18px;
+// //   flex-shrink: 0;
+// //   margin: 0;
+// // }
+
+// // /* 8. Hide all text elements completely */
+// // .gs-shell.collapsed .gs-text         { display: none !important; }
+// // .gs-shell.collapsed .gs-badge        { display: none !important; }
+// // .gs-shell.collapsed .gs-section-label{ display: none !important; }
+// // .gs-shell.collapsed .gs-name-wrap    { display: none !important; }
+// // .gs-shell.collapsed .gs-user-info    { display: none !important; }
+
+// // /* 9. Footer: centered column */
+// // .gs-shell.collapsed .gs-sidebar-foot {
+// //   width: 56px;
+// //   padding: 8px 0;
+// //   display: flex;
+// //   flex-direction: column;
+// //   align-items: center;
+// //   justify-content: center;
+// //   gap: 8px;
+// // }
+
+// // /* 10. User avatar: centered */
+// // .gs-shell.collapsed .gs-user-av { margin: 0 auto; }
+
+// // /* Navigation */
+// // .gs-nav {
+// //   padding: 0 8px;
+// //   flex: 1;
+// // }
+
+// // .gs-section + .gs-section { margin-top: 14px; }
+
+// // .gs-section-label {
+// //   font-size: 10px; font-weight: 600;
+// //   text-transform: uppercase; letter-spacing: 0.14em;
+// //   color: var(--ink-low);
+// //   padding: 6px 8px;
+// //   white-space: nowrap;
+// //   overflow: hidden;
+// //   transition: opacity 200ms var(--ease);
+// // }
+// // .gs-shell.collapsed .gs-section-label { opacity: 0; }
+
+// // .gs-link {
+// //   display: flex; align-items: center; gap: 12px;
+// //   padding: 9px 10px;
+// //   border-radius: 8px;
+// //   color: var(--ink-soft);
+// //   font-size: 14px; font-weight: 500;
+// //   margin-bottom: 2px;
+// //   text-decoration: none;
+// //   position: relative;
+// //   transition: all var(--d-fast) var(--ease);
+// //   white-space: nowrap;
+// //   overflow: hidden;
+// // }
+// // .gs-link:hover { background: var(--stone-100); color: var(--ink); }
+// // .gs-link.active { background: var(--ink); color: var(--stone-50); }
+
+// // .gs-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+// // .gs-text {
+// //   flex: 1; overflow: hidden; text-overflow: ellipsis;
+// //   transition: opacity 200ms var(--ease);
+// // }
+// // .gs-shell.collapsed .gs-text { opacity: 0; }
+
+// // .gs-badge {
+// //   background: var(--warm-red); color: white;
+// //   font-size: 10px; font-weight: 600;
+// //   padding: 1px 7px; border-radius: 999px;
+// //   transition: opacity 200ms var(--ease);
+// //   flex-shrink: 0;
+// // }
+// // .gs-link.active .gs-badge { background: var(--amber); color: var(--ink); }
+
+// // .gs-shell.collapsed .gs-badge {
+// //   position: absolute; top: 4px; right: 4px;
+// //   font-size: 0; width: 8px; height: 8px; padding: 0;
+// //   opacity: 1;
+// // }
+
+// // /* Footer: user av + name + logout */
+// // .gs-sidebar-foot {
+// //   display: flex; align-items: center; gap: 10px;
+// //   padding: 10px 12px 4px;
+// //   margin-top: auto; flex-shrink: 0;
+// //   border-top: 1px solid var(--stone-200);
+// // }
+
+// // /* User avatar circle — image or initial */
+// // .gs-user-av {
+// //   width: 32px; height: 32px;
+// //   border-radius: 50%;
+// //   background: var(--amber);
+// //   color: white;
+// //   display: flex; align-items: center; justify-content: center;
+// //   font-family: 'Fraunces', serif;
+// //   font-weight: 600; font-size: 13px;
+// //   flex-shrink: 0;
+// //   overflow: hidden;
+// // }
+
+// // .gs-av-img {
+// //   width: 100%; height: 100%;
+// //   object-fit: cover; border-radius: 50%; display: block;
+// // }
+
+// // .gs-user-info {
+// //   flex: 1; overflow: hidden; min-width: 0;
+// //   transition: opacity 200ms var(--ease);
+// // }
+// // .gs-shell.collapsed .gs-user-info {
+// //   opacity: 0; pointer-events: none;
+// // }
+
+// // .gs-user-name {
+// //   font-size: 13px; font-weight: 500; color: var(--ink);
+// //   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+// // }
+// // .gs-user-role {
+// //   font-size: 10px; color: var(--ink-mute);
+// //   text-transform: uppercase; letter-spacing: 0.08em; margin-top: 1px;
+// // }
+
+// // /* Logout — ALWAYS visible and clickable */
+// // .gs-logout-btn {
+// //   border: none; background: transparent; color: var(--ink-mute);
+// //   padding: 6px; border-radius: 6px; cursor: pointer;
+// //   display: flex !important; align-items: center; justify-content: center;
+// //   transition: all var(--d-fast) var(--ease);
+// //   flex-shrink: 0;
+// //   opacity: 1 !important;
+// //   pointer-events: auto !important;
+// //   visibility: visible !important;
+// //   position: relative;
+// //   z-index: 60;
+// // }
+// // .gs-logout-btn:hover { background: var(--stone-200); color: var(--warm-red); }
+
+// // /* When collapsed — logout button always visible at bottom of collapsed strip */
+// // .gs-shell.collapsed .gs-logout-btn {
+// //   position: fixed;
+// //   left: 10px;
+// //   bottom: 12px;
+// //   background: var(--stone-100);
+// //   border: 1px solid var(--stone-200);
+// //   border-radius: 8px;
+// //   box-shadow: 0 1px 4px rgba(0,0,0,.1);
+// //   z-index: 100;
+// //   padding: 8px;
+// //   width: 36px; height: 36px;
+// // }
+
+// // .gs-main {
+// //   min-height: 100vh;
+// //   overflow-x: hidden;
+// //   /* Allow dashboard to control its own scroll */
+// //   display: flex;
+// //   flex-direction: column;
+// // }
+
+// // /* ── Mobile ─────────────────────── */
+// // @media (max-width: 720px) {
+// //   /* Expanded on mobile: full sidebar overlay */
+// //   .gs-shell {
+// //     grid-template-columns: 1fr;
+// //     position: relative;
+// //   }
+
+// //   .gs-shell.collapsed {
+// //     grid-template-columns: 52px 1fr;
+// //   }
+
+// //   /* When expanded on mobile, sidebar overlays content */
+// //   .gs-shell:not(.collapsed) .gs-sidebar {
+// //     position: fixed;
+// //     top: 0; left: 0; bottom: 0;
+// //     width: 240px;
+// //     z-index: 200;
+// //     box-shadow: 4px 0 24px rgba(0,0,0,.13);
+// //   }
+
+// //   .gs-shell:not(.collapsed) .gs-main {
+// //     margin-left: 0;
+// //   }
+
+// //   /* Collapsed mobile: icon-only strip */
+// //   .gs-shell.collapsed .gs-sidebar {
+// //     width: 52px;
+// //   }
+
+// //   .gs-shell.collapsed .gs-name-wrap,
+// //   .gs-shell.collapsed .gs-section-label,
+// //   .gs-shell.collapsed .gs-text,
+// //   .gs-shell.collapsed .gs-user-info {
+// //     opacity: 0 !important;
+// //     pointer-events: none;
+// //     width: 0;
+// //   }
+
+// //   .gs-shell.collapsed .gs-main {
+// //     grid-column: 1;
+// //     margin-left: 52px;
+// //   }
+
+// //   /* Collapse button always shown on mobile */
+// //   .gs-collapse { display: flex !important; }
+
+// //   /* Sidebar footer always shows logout */
+// //   .gs-sidebar-foot { padding: 8px 12px; }
+
+// //   /* Backdrop when sidebar is open on mobile */
+// //   .gs-shell:not(.collapsed)::before {
+// //     content: '';
+// //     position: fixed;
+// //     inset: 0;
+// //     background: rgba(0,0,0,0.35);
+// //     z-index: 199;
+// //   }
+// // }
+
+
+
+
+// :host { display: block; }
+
+// /* ══════════════════════════════════
+//    QUIET OPERATOR — super admin dark shell
+//    ══════════════════════════════════ */
+// .qo-shell {
+//   min-height: 100vh;
+//   background: var(--qo-bg);
+//   color: var(--qo-text);
+//   display: flex;
+//   flex-direction: column;
+// }
+
+// .qo-topbar {
+//   background: var(--qo-bg);
+//   border-bottom: 1px solid var(--qo-line);
+//   display: flex;
+//   align-items: stretch;
+//   height: 48px;
+//   position: sticky;
+//   top: 0;
+//   z-index: 100;
+// }
+
+// .qo-brand {
+//   padding: 0 22px;
+//   display: flex;
+//   align-items: center;
+//   gap: 10px;
+//   border-right: 1px solid var(--qo-line);
+//   font-family: 'JetBrains Mono', monospace;
+//   font-size: 12px;
+//   font-weight: 600;
+//   color: var(--qo-text);
+// }
+
+// .qo-mark {
+//   width: 22px; height: 22px;
+//   background: var(--qo-amber);
+//   color: var(--qo-bg);
+//   display: flex; align-items: center; justify-content: center;
+//   font-size: 13px; font-weight: 700;
+//   border-radius: 4px;
+// }
+
+// .qo-meta { color: var(--qo-text-dim); font-weight: 400; }
+
+// .qo-context {
+//   padding: 0 18px;
+//   display: flex; align-items: center; gap: 14px;
+//   border-right: 1px solid var(--qo-line);
+//   font-family: 'JetBrains Mono', monospace;
+//   font-size: 11px;
+//   color: var(--qo-text-dim);
+// }
+
+// .qo-live { display: inline-flex; align-items: center; gap: 6px; }
+// .qo-pulse {
+//   width: 6px; height: 6px;
+//   background: var(--qo-green);
+//   border-radius: 50%;
+//   animation: qo-live-pulse 2s ease-out infinite;
+// }
+// @keyframes qo-live-pulse {
+//   0%   { box-shadow: 0 0 0 0 rgba(123, 192, 122, 0.5); }
+//   100% { box-shadow: 0 0 0 8px rgba(123, 192, 122, 0); }
+// }
+
+// .qo-nav {
+//   flex: 1;
+//   display: flex; align-items: stretch;
+//   padding: 0 18px; gap: 6px;
+// }
+// .qo-nav a {
+//   display: inline-flex; align-items: center;
+//   padding: 0 14px;
+//   font-family: 'JetBrains Mono', monospace;
+//   font-size: 12px;
+//   color: var(--qo-text-dim);
+//   transition: color var(--d-fast) var(--ease);
+//   position: relative;
+// }
+// .qo-nav a:hover { color: var(--qo-text); }
+// .qo-nav a.active { color: var(--qo-amber); }
+// .qo-nav a.active::after {
+//   content: ''; position: absolute;
+//   bottom: -1px; left: 14px; right: 14px;
+//   height: 2px; background: var(--qo-amber);
+// }
+
+// .qo-badge {
+//   margin-left: 8px;
+//   background: var(--qo-amber); color: var(--qo-bg);
+//   font-size: 10px; font-weight: 600;
+//   padding: 1px 6px; border-radius: 999px;
+//   font-family: 'JetBrains Mono', monospace;
+// }
+
+// .qo-user {
+//   padding: 0 18px;
+//   display: flex; align-items: center; gap: 12px;
+//   border-left: 1px solid var(--qo-line);
+//   font-size: 12px;
+// }
+// .qo-who { color: var(--qo-text); font-family: 'JetBrains Mono', monospace; }
+// .qo-logout {
+//   background: transparent; border: 1px solid var(--qo-line);
+//   color: var(--qo-text-dim); padding: 6px; border-radius: 4px;
+//   cursor: pointer; display: inline-flex; align-items: center;
+//   transition: all var(--d-fast) var(--ease);
+// }
+// .qo-logout:hover { border-color: var(--qo-red); color: var(--qo-red); }
+// .qo-main { flex: 1; }
+
+// /* ══════════════════════════════════
+//    GARDEN & STONE — community shell
+//    ══════════════════════════════════ */
+// .gs-shell {
+//   display: grid;
+//   grid-template-columns: 240px 1fr;
+//   min-height: 100vh;
+//   transition: grid-template-columns 320ms var(--ease);
+//   background: var(--stone-100);
+// }
+
+// .gs-shell.collapsed {
+//   grid-template-columns: 56px 1fr;
+// }
+
+// /* ── Sidebar ──────────────────────── */
+// .gs-sidebar {
+//   background: var(--stone-50);
+//   border-right: 1px solid var(--stone-200);
+//   padding: 18px 0;
+//   display: flex;
+//   flex-direction: column;
+//   position: sticky;
+//   top: 0;
+//   height: 100vh;
+//   /* NO overflow:hidden — that was clipping the toggle button */
+//   overflow-y: auto;
+//   overflow-x: hidden;
+//   z-index: 50;
+//   /* Scrollbar invisible but functional */
+//   scrollbar-width: none;
+// }
+// .gs-sidebar::-webkit-scrollbar { display: none; }
+
+// /* Brand header */
+// .gs-sidebar-head {
+//   display: flex;
+//   align-items: center;
+//   gap: 10px;
+//   padding: 0 12px 18px;
+//   border-bottom: 1px solid var(--stone-200);
+//   margin-bottom: 14px;
+//   flex-shrink: 0;
+//   position: relative;
+//   min-height: 52px;
+// }
+
+// /* Brand mark — circle with logo image or letter */
+// .gs-mark {
+//   width: 34px; height: 34px;
+//   border-radius: 50%;
+//   background: var(--primary);
+//   color: white;
+//   display: flex; align-items: center; justify-content: center;
+//   font-family: 'Fraunces', serif;
+//   font-weight: 600; font-size: 15px;
+//   flex-shrink: 0;
+//   overflow: hidden;
+//   transition: width var(--d-base) var(--ease), height var(--d-base) var(--ease);
+// }
+
+// .gs-logo-img {
+//   width: 100%; height: 100%;
+//   object-fit: cover;
+//   border-radius: 50%;
+//   display: block;
+// }
+
+// .gs-name-wrap {
+//   flex: 1;
+//   min-width: 0;
+//   overflow: hidden;
+//   transition: opacity 200ms var(--ease), width 320ms var(--ease);
+// }
+
+// .gs-shell.collapsed .gs-name-wrap {
+//   opacity: 0;
+//   width: 0;
+//   pointer-events: none;
+// }
+
+// .gs-name {
+//   font-family: 'Fraunces', serif;
+//   font-size: 15px;
+//   font-weight: 500;
+//   letter-spacing: -0.015em;
+//   color: var(--ink);
+//   white-space: nowrap;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+// }
+
+// .gs-meta {
+//   font-size: 10px;
+//   color: var(--ink-mute);
+//   font-family: 'JetBrains Mono', monospace;
+//   margin-top: 1px;
+// }
+
+// /* ── Toggle button ─────────────────────────────────────────────────
+//    CRITICAL: When collapsed the sidebar is only 56px wide.
+//    The button must NEVER be clipped by overflow-x:hidden.
+//    Solution: when collapsed, position it outside the sidebar
+//    using a fixed/absolute position so it's always reachable.
+// ──────────────────────────────────────────────────────────────────── */
+// .gs-collapse {
+//   width: 28px; height: 28px;
+//   border-radius: 6px; border: 1px solid var(--stone-200);
+//   background: var(--stone-50); color: var(--ink-mute);
+//   display: flex !important; align-items: center; justify-content: center;
+//   cursor: pointer; flex-shrink: 0;
+//   transition: all var(--d-fast) var(--ease);
+//   opacity: 1 !important;
+//   pointer-events: auto !important;
+//   visibility: visible !important;
+//   z-index: 60;
+// }
+// .gs-collapse:hover { background: var(--stone-200); color: var(--ink); }
+// .gs-collapse svg { transition: transform 320ms var(--ease); }
+
+// /* When expanded — normal position inside head */
+// .gs-shell:not(.collapsed) .gs-collapse {
+//   position: relative;
+// }
+
+// /* When collapsed — float the button to the right edge of sidebar,
+//    overlapping into the main content so it's always visible & clickable */
+// .gs-shell.collapsed .gs-collapse {
+//   position: fixed;
+//   left: 44px;
+//   top: 12px;
+//   box-shadow: 0 1px 4px rgba(0,0,0,.12);
+//   z-index: 100;
+// }
+// .gs-shell.collapsed .gs-collapse svg { transform: rotate(180deg); }
+
+// /* ══════════════════════════════════════════════════════════════
+//    COLLAPSED SIDEBAR — 56px icon strip, all icons centered
+//    ══════════════════════════════════════════════════════════════ */
+
+// /* 1. Sidebar column: center all direct children horizontally */
+// .gs-shell.collapsed .gs-sidebar {
+//   align-items: center;
+//   padding: 18px 0;
+//   width: 56px;
+// }
+
+// /* 2. Header: center the logo mark */
+// .gs-shell.collapsed .gs-sidebar-head {
+//   width: 56px;
+//   padding: 0 0 14px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   gap: 0;
+// }
+
+// /* 3. Logo mark stays centered */
+// .gs-shell.collapsed .gs-mark { margin: 0 auto; }
+
+// /* 4. Nav fills full width, column layout, children centered */
+// .gs-shell.collapsed .gs-nav {
+//   width: 56px;
+//   padding: 0;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+// }
+
+// /* 5. Each section: centered column, no extra padding */
+// .gs-shell.collapsed .gs-section {
+//   width: 56px;
+//   padding: 4px 0 0;
+//   margin: 0;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+// }
+
+// /* 6. Each link: 40×40 centered icon button — no text layout */
+// .gs-shell.collapsed .gs-link {
+//   width: 40px !important;
+//   height: 40px !important;
+//   padding: 0 !important;
+//   margin: 2px 0 !important;
+//   display: flex !important;
+//   align-items: center !important;
+//   justify-content: center !important;
+//   gap: 0 !important;
+//   border-radius: 10px;
+//   overflow: visible;
+// }
+
+// /* 7. SVG icon: centered in the 40px box */
+// .gs-shell.collapsed .gs-link svg {
+//   width: 18px;
+//   height: 18px;
+//   flex-shrink: 0;
+//   margin: 0;
+// }
+
+// /* 8. Hide all text elements completely */
+// .gs-shell.collapsed .gs-text         { display: none !important; }
+// .gs-shell.collapsed .gs-badge        { display: none !important; }
+// .gs-shell.collapsed .gs-section-label{ display: none !important; }
+// .gs-shell.collapsed .gs-name-wrap    { display: none !important; }
+// .gs-shell.collapsed .gs-user-info    { display: none !important; }
+
+// /* 9. Footer: vertical stack — avatar on top, logout below */
+// .gs-shell.collapsed .gs-sidebar-foot {
+//   width: 56px;
+//   padding: 10px 0 8px;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: flex-end;
+//   gap: 6px;
+//   border-top: 1px solid var(--stone-200);
+//   margin-top: auto;
+// }
+
+// /* 10. User avatar: centered */
+// .gs-shell.collapsed .gs-user-av {
+//   margin: 0 auto;
+//   width: 30px;
+//   height: 30px;
+// }
+
+// /* Navigation */
+// .gs-nav {
+//   padding: 0 8px;
+//   flex: 1;
+// }
+
+// .gs-section + .gs-section { margin-top: 14px; }
+
+// .gs-section-label {
+//   font-size: 10px; font-weight: 600;
+//   text-transform: uppercase; letter-spacing: 0.14em;
+//   color: var(--ink-low);
+//   padding: 6px 8px;
+//   white-space: nowrap;
+//   overflow: hidden;
+//   transition: opacity 200ms var(--ease);
+// }
+// .gs-shell.collapsed .gs-section-label { opacity: 0; }
+
+// .gs-link {
+//   display: flex; align-items: center; gap: 12px;
+//   padding: 9px 10px;
+//   border-radius: 8px;
+//   color: var(--ink-soft);
+//   font-size: 14px; font-weight: 500;
+//   margin-bottom: 2px;
+//   text-decoration: none;
+//   position: relative;
+//   transition: all var(--d-fast) var(--ease);
+//   white-space: nowrap;
+//   overflow: hidden;
+// }
+// .gs-link:hover { background: var(--stone-100); color: var(--ink); }
+// .gs-link.active { background: var(--ink); color: var(--stone-50); }
+
+// .gs-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+// .gs-text {
+//   flex: 1; overflow: hidden; text-overflow: ellipsis;
+//   transition: opacity 200ms var(--ease);
+// }
+// .gs-shell.collapsed .gs-text { opacity: 0; }
+
+// .gs-badge {
+//   background: var(--warm-red); color: white;
+//   font-size: 10px; font-weight: 600;
+//   padding: 1px 7px; border-radius: 999px;
+//   transition: opacity 200ms var(--ease);
+//   flex-shrink: 0;
+// }
+// .gs-link.active .gs-badge { background: var(--amber); color: var(--ink); }
+
+// .gs-shell.collapsed .gs-badge {
+//   position: absolute; top: 4px; right: 4px;
+//   font-size: 0; width: 8px; height: 8px; padding: 0;
+//   opacity: 1;
+// }
+
+// /* Footer: user av + name + logout */
+// .gs-sidebar-foot {
+//   display: flex; align-items: center; gap: 10px;
+//   padding: 10px 12px 4px;
+//   margin-top: auto; flex-shrink: 0;
+//   border-top: 1px solid var(--stone-200);
+// }
+
+// /* User avatar circle — image or initial */
+// .gs-user-av {
+//   width: 32px; height: 32px;
+//   border-radius: 50%;
+//   background: var(--amber);
+//   color: white;
+//   display: flex; align-items: center; justify-content: center;
+//   font-family: 'Fraunces', serif;
+//   font-weight: 600; font-size: 13px;
+//   flex-shrink: 0;
+//   overflow: hidden;
+// }
+
+// .gs-av-img {
+//   width: 100%; height: 100%;
+//   object-fit: cover; border-radius: 50%; display: block;
+// }
+
+// .gs-user-info {
+//   flex: 1; overflow: hidden; min-width: 0;
+//   transition: opacity 200ms var(--ease);
+// }
+// .gs-shell.collapsed .gs-user-info {
+//   opacity: 0; pointer-events: none;
+// }
+
+// .gs-user-name {
+//   font-size: 13px; font-weight: 500; color: var(--ink);
+//   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+// }
+// .gs-user-role {
+//   font-size: 10px; color: var(--ink-mute);
+//   text-transform: uppercase; letter-spacing: 0.08em; margin-top: 1px;
+// }
+
+// /* Logout — ALWAYS visible and clickable */
+// .gs-logout-btn {
+//   border: none; background: transparent; color: var(--ink-mute);
+//   padding: 6px; border-radius: 6px; cursor: pointer;
+//   display: flex !important; align-items: center; justify-content: center;
+//   transition: all var(--d-fast) var(--ease);
+//   flex-shrink: 0;
+//   opacity: 1 !important;
+//   pointer-events: auto !important;
+//   visibility: visible !important;
+//   position: relative;
+//   z-index: 60;
+// }
+// .gs-logout-btn:hover { background: var(--stone-200); color: var(--warm-red); }
+
+// /* When collapsed — logout button stays in footer flow, centered */
+// .gs-shell.collapsed .gs-logout-btn {
+//   position: relative;
+//   left: auto;
+//   bottom: auto;
+//   background: transparent;
+//   border: none;
+//   box-shadow: none;
+//   padding: 6px;
+//   width: 32px;
+//   height: 32px;
+//   border-radius: 8px;
+//   z-index: 60;
+// }
+
+// .gs-main {
+//   min-height: 100vh;
+//   overflow-x: hidden;
+//   /* Allow dashboard to control its own scroll */
+//   display: flex;
+//   flex-direction: column;
+// }
+
+// /* ── Mobile ─────────────────────── */
+// @media (max-width: 720px) {
+//   /* Expanded on mobile: full sidebar overlay */
+//   .gs-shell {
+//     grid-template-columns: 1fr;
+//     position: relative;
+//   }
+
+//   .gs-shell.collapsed {
+//     grid-template-columns: 52px 1fr;
+//   }
+
+//   /* When expanded on mobile, sidebar overlays content */
+//   .gs-shell:not(.collapsed) .gs-sidebar {
+//     position: fixed;
+//     top: 0; left: 0; bottom: 0;
+//     width: 240px;
+//     z-index: 200;
+//     box-shadow: 4px 0 24px rgba(0,0,0,.13);
+//   }
+
+//   .gs-shell:not(.collapsed) .gs-main {
+//     margin-left: 0;
+//   }
+
+//   /* Collapsed mobile: icon-only strip */
+//   .gs-shell.collapsed .gs-sidebar {
+//     width: 52px;
+//   }
+
+//   .gs-shell.collapsed .gs-name-wrap,
+//   .gs-shell.collapsed .gs-section-label,
+//   .gs-shell.collapsed .gs-text,
+//   .gs-shell.collapsed .gs-user-info {
+//     opacity: 0 !important;
+//     pointer-events: none;
+//     width: 0;
+//   }
+
+//   .gs-shell.collapsed .gs-main {
+//     grid-column: 1;
+//     margin-left: 52px;
+//   }
+
+//   /* Collapse button always shown on mobile */
+//   .gs-collapse { display: flex !important; }
+
+//   /* Sidebar footer always shows logout */
+//   .gs-sidebar-foot { padding: 8px 12px; }
+
+//   /* Backdrop when sidebar is open on mobile */
+//   .gs-shell:not(.collapsed)::before {
+//     content: '';
+//     position: fixed;
+//     inset: 0;
+//     background: rgba(0,0,0,0.35);
+//     z-index: 199;
+//   }
+// }
+
+
+
+
+
+
+:host { display: block; }
+
+/* ══════════════════════════════════
+   QUIET OPERATOR — super admin dark shell
+   ══════════════════════════════════ */
+.qo-shell {
+  min-height: 100vh;
+  background: var(--qo-bg);
+  color: var(--qo-text);
+  display: flex;
+  flex-direction: column;
+}
+
+.qo-topbar {
+  background: var(--qo-bg);
+  border-bottom: 1px solid var(--qo-line);
+  display: flex;
+  align-items: stretch;
+  height: 48px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.qo-brand {
+  padding: 0 22px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-right: 1px solid var(--qo-line);
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--qo-text);
+}
+
+.qo-mark {
+  width: 22px; height: 22px;
+  background: var(--qo-amber);
+  color: var(--qo-bg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  border-radius: 4px;
+}
+
+.qo-meta { color: var(--qo-text-dim); font-weight: 400; }
+
+.qo-context {
+  padding: 0 18px;
+  display: flex; align-items: center; gap: 14px;
+  border-right: 1px solid var(--qo-line);
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--qo-text-dim);
+}
+
+.qo-live { display: inline-flex; align-items: center; gap: 6px; }
+.qo-pulse {
+  width: 6px; height: 6px;
+  background: var(--qo-green);
+  border-radius: 50%;
+  animation: qo-live-pulse 2s ease-out infinite;
+}
+@keyframes qo-live-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(123, 192, 122, 0.5); }
+  100% { box-shadow: 0 0 0 8px rgba(123, 192, 122, 0); }
+}
+
+.qo-nav {
+  flex: 1;
+  display: flex; align-items: stretch;
+  padding: 0 18px; gap: 6px;
+}
+.qo-nav a {
+  display: inline-flex; align-items: center;
+  padding: 0 14px;
+  font-family: 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--qo-text-dim);
+  transition: color var(--d-fast) var(--ease);
+  position: relative;
+}
+.qo-nav a:hover { color: var(--qo-text); }
+.qo-nav a.active { color: var(--qo-amber); }
+.qo-nav a.active::after {
+  content: ''; position: absolute;
+  bottom: -1px; left: 14px; right: 14px;
+  height: 2px; background: var(--qo-amber);
+}
+
+.qo-badge {
+  margin-left: 8px;
+  background: var(--qo-amber); color: var(--qo-bg);
+  font-size: 10px; font-weight: 600;
+  padding: 1px 6px; border-radius: 999px;
+  font-family: 'Fira Code', monospace;
+}
+
+.qo-user {
+  padding: 0 18px;
+  display: flex; align-items: center; gap: 12px;
+  border-left: 1px solid var(--qo-line);
+  font-size: 12px;
+}
+.qo-who { color: var(--qo-text); font-family: 'Fira Code', monospace; }
+.qo-logout {
+  background: transparent; border: 1px solid var(--qo-line);
+  color: var(--qo-text-dim); padding: 6px; border-radius: 4px;
+  cursor: pointer; display: inline-flex; align-items: center;
+  transition: all var(--d-fast) var(--ease);
+}
+.qo-logout:hover { border-color: var(--qo-red); color: var(--qo-red); }
+.qo-main { flex: 1; }
+
+/* ══════════════════════════════════
+   GARDEN & STONE — community shell
+   ══════════════════════════════════ */
+.gs-shell {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+  transition: grid-template-columns 320ms var(--ease);
+  background: var(--stone-100);
+}
+
+.gs-shell.collapsed {
+  grid-template-columns: 56px 1fr;
+}
+
+/* ── Sidebar ──────────────────────── */
+.gs-sidebar {
+  background: var(--stone-50);
+  border-right: 1px solid var(--stone-200);
+  padding: 18px 0;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  /* NO overflow:hidden — that was clipping the toggle button */
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 50;
+  /* Scrollbar invisible but functional */
+  scrollbar-width: none;
+}
+.gs-sidebar::-webkit-scrollbar { display: none; }
+
+/* Brand header */
+.gs-sidebar-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 12px 18px;
+  border-bottom: 1px solid var(--stone-200);
+  margin-bottom: 14px;
+  flex-shrink: 0;
+  position: relative;
+  min-height: 52px;
+}
+
+/* Brand mark — circle with logo image or letter */
+.gs-mark {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Plus Jakarta Sans', serif;
+  font-weight: 600; font-size: 15px;
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: width var(--d-base) var(--ease), height var(--d-base) var(--ease);
+}
+
+.gs-logo-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.gs-name-wrap {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  transition: opacity 200ms var(--ease), width 320ms var(--ease);
+}
+
+.gs-shell.collapsed .gs-name-wrap {
+  opacity: 0;
+  width: 0;
+  pointer-events: none;
+}
+
+.gs-name {
+  font-family: 'Plus Jakarta Sans', serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gs-meta {
+  font-size: 10px;
+  color: var(--ink-mute);
+  font-family: 'Fira Code', monospace;
+  margin-top: 1px;
+}
+
+/* ── Toggle button ─────────────────────────────────────────────────
+   CRITICAL: When collapsed the sidebar is only 56px wide.
+   The button must NEVER be clipped by overflow-x:hidden.
+   Solution: when collapsed, position it outside the sidebar
+   using a fixed/absolute position so it's always reachable.
+──────────────────────────────────────────────────────────────────── */
+.gs-collapse {
+  width: 28px; height: 28px;
+  border-radius: 6px; border: 1px solid var(--stone-200);
+  background: var(--stone-50); color: var(--ink-mute);
+  display: flex !important; align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0;
+  transition: all var(--d-fast) var(--ease);
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+  z-index: 60;
+}
+.gs-collapse:hover { background: var(--stone-200); color: var(--ink); }
+.gs-collapse svg { transition: transform 320ms var(--ease); }
+
+/* When expanded — normal position inside head */
+.gs-shell:not(.collapsed) .gs-collapse {
+  position: relative;
+}
+
+/* When collapsed — float the button to the right edge of sidebar,
+   overlapping into the main content so it's always visible & clickable */
+.gs-shell.collapsed .gs-collapse {
+  position: fixed;
+  left: 44px;
+  top: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.12);
+  z-index: 100;
+}
+.gs-shell.collapsed .gs-collapse svg { transform: rotate(180deg); }
+
+/* ══════════════════════════════════════════════════════════════
+   COLLAPSED SIDEBAR — 56px icon strip, all icons centered
+   ══════════════════════════════════════════════════════════════ */
+
+/* 1. Sidebar column: center all direct children horizontally */
+.gs-shell.collapsed .gs-sidebar {
+  align-items: center;
+  padding: 18px 0;
+  width: 56px;
+}
+
+/* 2. Header: center the logo mark */
+.gs-shell.collapsed .gs-sidebar-head {
+  width: 56px;
+  padding: 0 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+/* 3. Logo mark stays centered */
+.gs-shell.collapsed .gs-mark { margin: 0 auto; }
+
+/* 4. Nav fills full width, column layout, children centered */
+.gs-shell.collapsed .gs-nav {
+  width: 56px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 5. Each section: centered column, no extra padding */
+.gs-shell.collapsed .gs-section {
+  width: 56px;
+  padding: 4px 0 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 6. Each link: 40×40 centered icon button — no text layout */
+.gs-shell.collapsed .gs-link {
+  width: 40px !important;
+  height: 40px !important;
+  padding: 0 !important;
+  margin: 2px 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  border-radius: 10px;
+  overflow: visible;
+}
+
+/* 7. SVG icon: centered in the 40px box */
+.gs-shell.collapsed .gs-link svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+/* 8. Hide all text elements completely */
+.gs-shell.collapsed .gs-text         { display: none !important; }
+.gs-shell.collapsed .gs-badge        { display: none !important; }
+.gs-shell.collapsed .gs-section-label{ display: none !important; }
+.gs-shell.collapsed .gs-name-wrap    { display: none !important; }
+.gs-shell.collapsed .gs-user-info    { display: none !important; }
+
+/* 9. Footer: vertical stack — avatar on top, logout below */
+.gs-shell.collapsed .gs-sidebar-foot {
+  width: 56px;
+  padding: 10px 0 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  border-top: 1px solid var(--stone-200);
+  margin-top: auto;
+}
+
+/* 10. User avatar: centered */
+.gs-shell.collapsed .gs-user-av {
+  margin: 0 auto;
+  width: 30px;
+  height: 30px;
+}
+
+/* Navigation */
+.gs-nav {
+  padding: 0 8px;
+  flex: 1;
+}
+
+.gs-section + .gs-section { margin-top: 14px; }
+
+.gs-section-label {
+  font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--ink-low);
+  padding: 6px 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 200ms var(--ease);
+}
+.gs-shell.collapsed .gs-section-label { opacity: 0; }
+
+.gs-link {
+  display: flex; align-items: center; gap: 12px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  color: var(--ink-soft);
+  font-size: 14px; font-weight: 500;
+  margin-bottom: 2px;
+  text-decoration: none;
+  position: relative;
+  transition: all var(--d-fast) var(--ease);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.gs-link:hover { background: var(--stone-100); color: var(--ink); }
+.gs-link.active { background: var(--ink); color: var(--stone-50); }
+
+.gs-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+.gs-text {
+  flex: 1; overflow: hidden; text-overflow: ellipsis;
+  transition: opacity 200ms var(--ease);
+}
+.gs-shell.collapsed .gs-text { opacity: 0; }
+
+.gs-badge {
+  background: var(--warm-red); color: white;
+  font-size: 10px; font-weight: 600;
+  padding: 1px 7px; border-radius: 999px;
+  transition: opacity 200ms var(--ease);
+  flex-shrink: 0;
+}
+.gs-link.active .gs-badge { background: var(--amber); color: var(--ink); }
+
+.gs-shell.collapsed .gs-badge {
+  position: absolute; top: 4px; right: 4px;
+  font-size: 0; width: 8px; height: 8px; padding: 0;
+  opacity: 1;
+}
+
+/* Footer: user av + name + logout */
+.gs-sidebar-foot {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px 4px;
+  margin-top: auto; flex-shrink: 0;
+  border-top: 1px solid var(--stone-200);
+}
+
+/* User avatar circle — image or initial */
+.gs-user-av {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--amber);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Plus Jakarta Sans', serif;
+  font-weight: 600; font-size: 13px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.gs-av-img {
+  width: 100%; height: 100%;
+  object-fit: cover; border-radius: 50%; display: block;
+}
+
+.gs-user-info {
+  flex: 1; overflow: hidden; min-width: 0;
+  transition: opacity 200ms var(--ease);
+}
+.gs-shell.collapsed .gs-user-info {
+  opacity: 0; pointer-events: none;
+}
+
+.gs-user-name {
+  font-size: 13px; font-weight: 500; color: var(--ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.gs-user-role {
+  font-size: 10px; color: var(--ink-mute);
+  text-transform: uppercase; letter-spacing: 0.08em; margin-top: 1px;
+}
+
+/* Logout — ALWAYS visible and clickable */
+.gs-logout-btn {
+  border: none; background: transparent; color: var(--ink-mute);
+  padding: 6px; border-radius: 6px; cursor: pointer;
+  display: flex !important; align-items: center; justify-content: center;
+  transition: all var(--d-fast) var(--ease);
+  flex-shrink: 0;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+  position: relative;
+  z-index: 60;
+}
+.gs-logout-btn:hover { background: var(--stone-200); color: var(--warm-red); }
+
+/* When collapsed — logout button stays in footer flow, centered */
+.gs-shell.collapsed .gs-logout-btn {
+  position: relative;
+  left: auto;
+  bottom: auto;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 6px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  z-index: 60;
+}
+
+.gs-main {
+  min-height: 100vh;
+  overflow-x: hidden;
+  /* Allow dashboard to control its own scroll */
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Mobile ─────────────────────── */
+@media (max-width: 720px) {
+  /* Expanded on mobile: full sidebar overlay */
+  .gs-shell {
+    grid-template-columns: 1fr;
+    position: relative;
+  }
+
+  .gs-shell.collapsed {
+    grid-template-columns: 52px 1fr;
+  }
+
+  /* When expanded on mobile, sidebar overlays content */
+  .gs-shell:not(.collapsed) .gs-sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: 240px;
+    z-index: 200;
+    box-shadow: 4px 0 24px rgba(0,0,0,.13);
+  }
+
+  .gs-shell:not(.collapsed) .gs-main {
+    margin-left: 0;
+  }
+
+  /* Collapsed mobile: icon-only strip */
+  .gs-shell.collapsed .gs-sidebar {
+    width: 52px;
+  }
+
+  .gs-shell.collapsed .gs-name-wrap,
+  .gs-shell.collapsed .gs-section-label,
+  .gs-shell.collapsed .gs-text,
+  .gs-shell.collapsed .gs-user-info {
+    opacity: 0 !important;
+    pointer-events: none;
+    width: 0;
+  }
+
+  .gs-shell.collapsed .gs-main {
+    grid-column: 1;
+    margin-left: 52px;
+  }
+
+  /* Collapse button always shown on mobile */
+  .gs-collapse { display: flex !important; }
+
+  /* Sidebar footer always shows logout */
+  .gs-sidebar-foot { padding: 8px 12px; }
+
+  /* Backdrop when sidebar is open on mobile */
+  .gs-shell:not(.collapsed)::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 199;
+  }
+}

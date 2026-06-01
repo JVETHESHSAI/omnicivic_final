@@ -1,0 +1,118 @@
+<div class="setup-page">
+
+  <header class="setup-bar">
+    <div class="brand">
+      <span class="mark">⌘</span>
+      omnicivic <span class="meta">// bootstrap</span>
+    </div>
+    <div class="context">
+      <span class="live"><span class="pulse"></span> v1.2.0</span>
+      <span>·</span>
+      <span>initial setup</span>
+    </div>
+  </header>
+
+  <main class="setup-main">
+
+    <!-- Checking state -->
+    <div *ngIf="checking" class="setup-card center">
+      <p class="mono dim">$ check bootstrap-status…</p>
+    </div>
+
+    <!-- Already done -->
+    <div *ngIf="!checking && exists" class="setup-card center">
+      <div class="ok-icon">✓</div>
+      <h2 class="title">Setup already complete</h2>
+      <p class="dim">A super admin already exists. Nothing to do here.</p>
+      <a routerLink="/login" class="btn-link">Go to login →</a>
+    </div>
+
+    <!-- Setup form -->
+    <div *ngIf="!checking && !exists && !success" class="setup-grid">
+
+      <!-- Left: explainer -->
+      <aside class="explainer">
+        <div class="eyebrow">$ initial setup</div>
+        <h1 class="title">Create the <em>first operator</em>.</h1>
+        <p class="lede">
+          This account will own the entire OmniCivic platform — approving communities, removing communities, monitoring health. Choose carefully.
+        </p>
+
+        <div class="warn-block">
+          <div class="row"><span class="key">⚠</span><span>Only one super admin can be created here.</span></div>
+          <div class="row"><span class="key">⚠</span><span>This page disappears after creation.</span></div>
+          <div class="row"><span class="key">⚠</span><span>Save the credentials immediately — there's no reset path.</span></div>
+        </div>
+
+        <div class="terminal">
+          <div class="t-row"><span class="cmd">$ check db.connection</span></div>
+          <div class="t-row"><span class="ok">●</span> <span>connected to mysql</span></div>
+          <div class="t-row"><span class="cmd">$ check schema</span></div>
+          <div class="t-row"><span class="ok">●</span> <span>14 tables present</span></div>
+          <div class="t-row"><span class="cmd">$ await operator…</span></div>
+        </div>
+      </aside>
+
+      <!-- Right: form -->
+      <section class="form-card">
+        <header class="head">
+          <div class="form-eyebrow">$ register --super</div>
+          <h2>Operator details</h2>
+        </header>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="row-2">
+            <div class="field">
+              <label>First name</label>
+              <input type="text" formControlName="firstName" placeholder="e.g. Vethesh">
+            </div>
+            <div class="field">
+              <label>Last name</label>
+              <input type="text" formControlName="lastName" placeholder="e.g. J">
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Email</label>
+            <input type="email" formControlName="email" placeholder="you@omnicivic.com">
+            <p class="field-helper">This becomes the sign-in username.</p>
+          </div>
+
+          <div class="field">
+            <label>Phone (optional)</label>
+            <input type="tel" formControlName="phone" placeholder="+91 98765 43210">
+          </div>
+
+          <div class="field">
+            <label>Password</label>
+            <input type="password" formControlName="password" placeholder="At least 8 characters">
+            <p class="field-helper">Use a strong, unique password.</p>
+          </div>
+
+          <button type="submit" class="amber-btn" [disabled]="form.invalid || loading">
+            <span *ngIf="!loading">Provision &amp; create →</span>
+            <span *ngIf="loading">Provisioning…</span>
+          </button>
+
+          <div *ngIf="error" class="error-row">
+            <div>✗ {{ error }}</div>
+            <div *ngIf="errorDetail" class="error-detail">{{ errorDetail }}</div>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <!-- Success -->
+    <div *ngIf="success" class="setup-card center success">
+      <div class="ok-icon">✓</div>
+      <h2 class="title">Operator created</h2>
+      <p class="dim">Operator account ready. Use the password you just set.</p>
+      <div class="creds">
+        <div class="cred"><span>username</span><strong>{{ success.username }}</strong></div>
+        <div class="cred" *ngIf="success.tempPassword"><span>password</span><strong>{{ success.tempPassword }}</strong></div>
+      </div>
+      <p class="dim">Redirecting to login in a few seconds…</p>
+    </div>
+
+  </main>
+</div>

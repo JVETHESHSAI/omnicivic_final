@@ -1,0 +1,45 @@
+<div class="page">
+
+  <header class="page-head">
+    <div>
+      <h1 class="page-title">Notifications</h1>
+      <p class="page-sub" *ngIf="unreadCount > 0">{{ unreadCount }} unread</p>
+      <p class="page-sub" *ngIf="unreadCount === 0">You're all caught up.</p>
+    </div>
+    <button class="btn btn-secondary" *ngIf="unreadCount > 0" (click)="markAll()">Mark all read</button>
+  </header>
+
+  <div class="filter-row">
+    <button class="filter-pill" [class.active]="filter === 'all'" (click)="filter = 'all'">
+      All <span class="count">{{ notifications.length }}</span>
+    </button>
+    <button class="filter-pill" [class.active]="filter === 'unread'" (click)="filter = 'unread'">
+      Unread <span class="count">{{ unreadCount }}</span>
+    </button>
+  </div>
+
+  <div class="loading-state" *ngIf="loading">$ loading notifications…</div>
+
+  <div class="empty-state" *ngIf="!loading && filtered.length === 0">
+    <strong>{{ filter === 'unread' ? 'No unread notifications.' : 'No notifications yet.' }}</strong>
+    <p>You'll see updates here when something happens with your complaints.</p>
+  </div>
+
+  <div class="notif-list" *ngIf="!loading && filtered.length > 0">
+    <article *ngFor="let n of filtered"
+             class="notif"
+             [class.unread]="!n.read"
+             (click)="open(n)">
+      <div class="icon" [ngClass]="iconClass(n.type)">{{ iconFor(n.type) }}</div>
+      <div class="notif-body">
+        <p class="msg">{{ n.message }}</p>
+        <div class="notif-meta">
+          <span class="type">{{ n.type }}</span>
+          <span class="sep"></span>
+          <span>{{ timeAgo(n.createdAt) }}</span>
+        </div>
+      </div>
+      <span class="unread-dot" *ngIf="!n.read"></span>
+    </article>
+  </div>
+</div>

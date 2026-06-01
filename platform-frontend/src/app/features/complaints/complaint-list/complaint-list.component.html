@@ -1,0 +1,361 @@
+<div class="page">
+
+  <header class="page-head">
+    <div>
+      <h1 class="page-title">
+        {{ isResident() ? 'My complaints' : isStaff() ? 'My tasks' : 'All complaints' }}
+      </h1>
+      <p class="page-sub">
+        {{ isResident() ? 'Issues you have reported' :
+           isStaff() ? 'Issues assigned to you' :
+           'Every complaint in your community' }}
+      </p>
+
+    </div>
+    <a *ngIf="isResident()" routerLink="/complaints/new" class="btn btn-primary">
+      <svg fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+      Report something
+    </a>
+  </header>
+
+  <!-- Filter chips -->
+  <div class="chips">
+    <button class="chip" [class.active]="activeFilter === 'all'" (click)="setFilter('all')">
+      All <span class="count">{{ filterCounts.all }}</span>
+    </button>
+    <button class="chip" [class.active]="activeFilter === 'OPEN'" (click)="setFilter('OPEN')">
+      Open <span class="count">{{ filterCounts.OPEN }}</span>
+    </button>
+    <button class="chip" [class.active]="activeFilter === 'IN_PROGRESS'" (click)="setFilter('IN_PROGRESS')">
+      In progress <span class="count">{{ filterCounts.IN_PROGRESS }}</span>
+    </button>
+    <button *ngIf="isAdmin()" class="chip" [class.active]="activeFilter === 'PROOF_SUBMITTED'" (click)="setFilter('PROOF_SUBMITTED')">
+      Awaiting review <span class="count">{{ filterCounts.PROOF_SUBMITTED }}</span>
+    </button>
+    <button class="chip" [class.active]="activeFilter === 'RESOLVED'" (click)="setFilter('RESOLVED')">
+      Resolved <span class="count">{{ filterCounts.RESOLVED }}</span>
+    </button>
+    <button *ngIf="isStaff() && filterCounts.REJECTED > 0"
+            class="chip chip-rejected" [class.active]="activeFilter === 'REJECTED'"
+            (click)="setFilter('REJECTED')">
+      Rejected <span class="count">{{ filterCounts.REJECTED }}</span>
+    </button>
+  </div>
+
+  <div class="loading-state" *ngIf="loading">$ loading complaints…</div>
+
+  <div class="empty-state" *ngIf="!loading && filtered.length === 0 && !selected">
+    <strong>Nothing here.</strong>
+    <p>No complaints match this filter.</p>
+  </div>
+
+  <!-- List -->
+  <div class="list" *ngIf="!loading && filtered.length > 0">
+    <article *ngFor="let c of filtered"
+             class="row"
+             [class.selected]="selectedId === c.id"
+             (click)="select(c)">
+
+      <div class="row-thumb" *ngIf="hasPhoto(c)">
+        <img [src]="photoSrc(c)" alt="">
+      </div>
+      <div class="row-thumb no-image" *ngIf="!hasPhoto(c)">
+        <span class="cat-glyph">{{ c.categoryName.charAt(0) }}</span>
+      </div>
+
+      <div class="row-body">
+        <div class="row-meta">
+          <span class="c-num mono text-xs text-mute" *ngIf="c.communityComplaintNumber">#{{ c.communityComplaintNumber }}</span>
+          <span class="cat">{{ c.categoryName }}</span>
+          <span class="sep"></span>
+          <span>{{ timeAgo(c.createdAt) }}</span>
+          <span class="sep"></span>
+          <span class="by">by {{ c.submittedByUsername }}</span>
+        </div>
+        <p class="row-desc">{{ c.description }}</p>
+        <div class="row-footer">
+          <span *ngIf="c.assignedToUsername" class="assignee">→ {{ c.assignedToUsername }}</span>
+          <span class="eta-chip" [class.pending]="!c.estimatedResolutionAt">{{ etaLabel(c.estimatedResolutionAt) }}</span>
+          <span class="upvotes">{{ c.upvoteCount }} affected</span>
+        </div>
+      </div>
+
+      <span class="status-pill {{ statusClass(c.status) }}">
+        <span class="dot"></span> {{ c.status | lowercase }}
+      </span>
+    </article>
+  </div>
+
+</div>
+
+<!-- ─── DETAIL PANEL OVERLAY ─── -->
+<div class="detail-overlay" *ngIf="selected" (click)="close()"></div>
+<aside class="detail-panel" *ngIf="selected">
+  <header class="detail-head">
+    <button class="close-btn" (click)="close()" aria-label="Close">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+    <span class="detail-cat">{{ selected.categoryName }}</span>
+    <span class="c-num mono text-xs text-mute" *ngIf="selected.communityComplaintNumber">#{{ selected.communityComplaintNumber }}</span>
+    <span class="status-pill {{ statusClass(selected.status) }}">
+      <span class="dot"></span> {{ selected.status | lowercase }}
+    </span>
+  </header>
+
+  <div class="detail-body">
+    <p class="quote">"{{ selected.description }}"</p>
+
+    <div class="detail-meta-grid">
+      <div>
+        <div class="lbl">Reported by</div>
+        <div class="val">{{ selected.submittedByUsername }}</div>
+      </div>
+      <div>
+        <div class="lbl">Reported</div>
+        <div class="val">{{ fullDate(selected.createdAt) }}</div>
+      </div>
+      <div *ngIf="selected.assignedToUsername">
+        <div class="lbl">Assigned to</div>
+        <div class="val">{{ selected.assignedToUsername }}</div>
+      </div>
+      <div>
+        <div class="lbl">ETA</div>
+        <div class="val">{{ etaLabel(selected.estimatedResolutionAt) }}</div>
+      </div>
+      <div *ngIf="selected.resolvedAt">
+        <div class="lbl">Resolved</div>
+        <div class="val">{{ fullDate(selected.resolvedAt) }}</div>
+      </div>
+      <div *ngIf="selected.upvoteCount > 0">
+        <div class="lbl">Affected</div>
+        <div class="val">{{ selected.upvoteCount }} residents</div>
+      </div>
+    </div>
+
+    <div class="media-strip" *ngIf="hasPhoto(selected)">
+      <img *ngFor="let _ of selected.mediaBase64List; let i = index" [src]="photoSrc(selected, i)" alt="">
+    </div>
+
+    <!-- Proofs -->
+    <section *ngIf="selected.proofs && selected.proofs.length > 0" class="proofs">
+      <h3>Work proof</h3>
+      <article *ngFor="let p of selected.proofs" class="proof-item">
+        <div class="proof-head">
+          <span class="who">{{ p.submittedByUsername }}</span>
+          <span class="when">{{ fullDate(p.submittedAt) }}</span>
+          <span class="status-pill" [class]="'status-' + p.status">{{ p.status | lowercase }}</span>
+        </div>
+        <p class="proof-note">{{ p.workNote }}</p>
+        <img *ngIf="p.imageBase64" [src]="proofPhoto(p)" alt="" class="proof-img">
+        <p *ngIf="p.rejectionReason" class="proof-rejection">
+          <strong>Rejection reason:</strong> {{ p.rejectionReason }}
+        </p>
+      </article>
+    </section>
+
+    <!-- Resolution -->
+    <section *ngIf="selected.resolutionNote" class="resolution">
+      <h3>Resolution note</h3>
+      <p>{{ selected.resolutionNote }}</p>
+    </section>
+
+    <div class="error-msg" *ngIf="errorMsg">⚠ {{ errorMsg }}</div>
+    <div class="success-msg" *ngIf="successMsg">✓ {{ successMsg }}</div>
+
+    <!-- ─── ROLE-SPECIFIC ACTIONS ─── -->
+
+    <!-- RESIDENT -->
+    <section *ngIf="isResident()" class="actions">
+      <h3>Your actions</h3>
+      <button *ngIf="selected.canUpvote" class="btn btn-secondary" (click)="doUpvote(selected)">
+        + Mark as affecting me ({{ selected.upvoteCount }})
+      </button>
+      <p *ngIf="!selected.canUpvote && selected.submittedByUsername === currentUsername" class="field-hint">
+        You cannot mark your own complaint as affecting you.
+      </p>
+      <p *ngIf="!selected.canUpvote && selected.submittedByUsername !== currentUsername" class="field-hint">
+        You can mark another resident's complaint only once.
+      </p>
+      <button *ngIf="canDeleteComplaint(selected)" class="btn btn-danger" (click)="doDeleteComplaint()">
+        Delete this complaint
+      </button>
+      <p *ngIf="!canDeleteComplaint(selected)" class="field-hint">Complaints can be deleted only before work starts.</p>
+    </section>
+
+    <!-- STAFF: in different states -->
+    <section *ngIf="isStaff()" class="actions">
+      <h3>Your actions</h3>
+
+      <!-- CASE 1: Rework — proof was rejected, reassigned back to same staff -->
+      <ng-container *ngIf="isRework(selected)">
+        <div class="rework-banner">
+          <div class="rework-title">⚠ Proof rejected — rework required</div>
+          <div class="rework-reason">{{ myRejectedProof(selected)?.rejectionReason }}</div>
+        </div>
+        <button class="btn btn-sage" (click)="doStart()">
+          ▸ Start rework
+        </button>
+      </ng-container>
+
+      <!-- CASE 2: Fresh assignment (no rejected proof from this staff, and still assigned to this staff) -->
+      <button *ngIf="selected.status === 'ASSIGNED' && !isRework(selected) && !isReassignedAway(selected)" class="btn btn-sage" (click)="doStart()">
+        ▸ Start work
+      </button>
+
+      <!-- CASE 3: In progress -->
+      <button *ngIf="selected.status === 'IN_PROGRESS'" class="btn btn-primary" (click)="openProofModal()">
+        ✓ Submit proof of completion
+      </button>
+
+      <!-- CASE 4: Proof submitted, awaiting review -->
+      <p *ngIf="selected.status === 'PROOF_SUBMITTED'" class="awaiting">
+        ⏳ Proof submitted — awaiting admin review.
+      </p>
+
+      <!-- CASE 5: Proof rejected and reassigned to someone else — read only for this staff -->
+      <div *ngIf="isReassignedAway(selected)" class="reassigned-away-notice">
+        <div class="notice-title">Your proof was rejected</div>
+        <div class="notice-reason">Reason: {{ myRejectedProof(selected)?.rejectionReason }}</div>
+        <div class="notice-sub">This task has been reassigned to another staff member.</div>
+      </div>
+
+      <!-- CASE 6: Resolved / Closed -->
+      <p *ngIf="selected.status === 'RESOLVED' || selected.status === 'CLOSED'" class="awaiting resolved">
+        ✓ Resolved — good work!
+      </p>
+    </section>
+
+    <!-- ADMIN -->
+    <section *ngIf="isAdmin()" class="actions">
+      <h3>Admin actions</h3>
+
+      <!-- Assign / Reassign -->
+      <div class="action-block" *ngIf="selected.status === 'OPEN' || selected.status === 'SUBMITTED'">
+        <label class="action-label">Assign to staff</label>
+        <div class="action-row">
+          <select [(ngModel)]="assignStaffId">
+            <option [ngValue]="null">— pick a staff member —</option>
+            <option *ngFor="let s of categoryStaffList" [ngValue]="s.id">{{ s.username }} · {{ s.firstName }} {{ s.lastName }}</option>
+          </select>
+          <input type="datetime-local" [(ngModel)]="assignEta" title="Optional ETA override">
+          <button class="btn btn-primary" (click)="doAssign()" [disabled]="!assignStaffId">Assign</button>
+        </div>
+        <div class="field-hint">If you leave the date unchanged, the auto-generated expiry from submission will be kept.</div>
+      </div>
+
+      <div class="action-block" *ngIf="selected.status === 'ASSIGNED' || selected.status === 'IN_PROGRESS'">
+        <label class="action-label">Reassign to a different staff</label>
+        <div class="action-row">
+          <select [(ngModel)]="assignStaffId">
+            <option [ngValue]="null">— pick a staff member —</option>
+            <option *ngFor="let s of categoryStaffList" [ngValue]="s.id">{{ s.username }} · {{ s.firstName }} {{ s.lastName }}</option>
+          </select>
+          <input type="datetime-local" [(ngModel)]="assignEta" title="Optional ETA override">
+          <button class="btn btn-secondary" (click)="doReassign()" [disabled]="!assignStaffId">Reassign</button>
+        </div>
+        <div class="field-hint">Change the date only if this reassignment needs a new expiry.</div>
+      </div>
+
+      <!-- Review proof -->
+      <div class="action-block" *ngIf="selected.status === 'PROOF_SUBMITTED'">
+        <label class="action-label">Review the submitted proof</label>
+        <div class="action-row">
+          <button class="btn btn-sage" (click)="openReviewModal('APPROVE')">✓ Approve &amp; resolve</button>
+          <button class="btn btn-danger" (click)="openReviewModal('REJECT')">✗ Reject &amp; reassign</button>
+        </div>
+      </div>
+
+      <!-- Close -->
+      <div class="action-block" *ngIf="selected.status === 'RESOLVED'">
+        <label class="action-label">Final resolution note (optional)</label>
+        <textarea [(ngModel)]="closeNote" rows="2" placeholder="e.g. Verified on site, working as expected."></textarea>
+        <div class="action-row">
+          <button class="btn btn-primary" (click)="doClose()">Close complaint</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</aside>
+
+<!-- ─── PROOF MODAL (staff) ─── -->
+<div class="modal-overlay" *ngIf="showProofModal" (click)="showProofModal = false">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h2>Submit proof of completion</h2>
+    <p class="modal-sub">Describe what you did, and optionally attach a photo.</p>
+    <div class="field">
+      <label>Work note</label>
+      <textarea [(ngModel)]="proofNote" rows="4" placeholder="e.g. Replaced the LED fixture and tested the circuit."></textarea>
+    </div>
+    <div class="field">
+      <label>Photo (optional)</label>
+      <div class="proof-photo-actions">
+        <button type="button" class="btn btn-secondary btn-icon" (click)="openProofCamera()">
+          <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" width="16" height="16">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h.01M15 12h.01"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 10.5v3"/>
+          </svg>
+          Take photo
+        </button>
+        <label class="btn btn-ghost btn-icon proof-upload-btn">
+          <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" width="16" height="16">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 16V4m0 0l-4 4m4-4l4 4"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16.5v1.5A2 2 0 006 20h12a2 2 0 002-2v-1.5"/>
+          </svg>
+          Upload photo
+          <input type="file" accept="image/*" (change)="onProofFile($event)" style="display:none">
+        </label>
+      </div>
+      <p class="field-hint">Take a live photo from the work site or upload one from the device.</p>
+      <img *ngIf="proofImage" [src]="'data:image/jpeg;base64,' + proofImage" class="preview-thumb">
+      <button *ngIf="proofImage" type="button" class="btn btn-ghost btn-sm proof-clear-btn" (click)="clearProofImage()">Remove photo</button>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" (click)="showProofModal = false">Cancel</button>
+      <button class="btn btn-primary" (click)="doSubmitProof()" [disabled]="!proofNote">Submit for review</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── REVIEW MODAL (admin) ─── -->
+<div class="modal-overlay" *ngIf="showReviewModal" (click)="showReviewModal = false">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h2 *ngIf="reviewMode === 'APPROVE'">Approve proof</h2>
+    <h2 *ngIf="reviewMode === 'REJECT'">Reject proof</h2>
+    <p class="modal-sub" *ngIf="reviewMode === 'APPROVE'">This will mark the complaint as resolved.</p>
+    <p class="modal-sub" *ngIf="reviewMode === 'REJECT'">The complaint will go back to the staff member to retry.</p>
+    <div class="field" *ngIf="reviewMode === 'REJECT'">
+      <label>Reason</label>
+      <textarea [(ngModel)]="reviewReason" rows="3" placeholder="Tell the staff what needs to change."></textarea>
+    </div>
+    <div class="field" *ngIf="reviewMode === 'REJECT'">
+      <label>Reassign to (optional)</label>
+      <select [(ngModel)]="assignStaffId">
+        <option [ngValue]="null">— Keep same staff (will be asked to redo) —</option>
+        <option *ngFor="let s of categoryStaffList" [ngValue]="s.id">{{ s.username }} · {{ s.firstName }} {{ s.lastName }}</option>
+      </select>
+      <small class="field-hint">If you select a different staff member, the current staff will be notified their work was handed over — not asked to redo.</small>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" (click)="showReviewModal = false">Cancel</button>
+      <button class="btn btn-sage" *ngIf="reviewMode === 'APPROVE'" (click)="doReviewProof()">Approve</button>
+      <button class="btn btn-danger" *ngIf="reviewMode === 'REJECT'" (click)="doReviewProof()" [disabled]="!reviewReason">Reject</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="showProofCameraModal" (click)="closeProofCamera()">
+  <div class="modal camera-modal" (click)="$event.stopPropagation()">
+    <h2>Take proof photo</h2>
+    <p class="modal-sub">Capture the completed work directly from the site before you submit proof.</p>
+    <div class="camera-frame" [class.camera-frame-error]="proofCameraError">
+      <video #proofCameraVideo autoplay playsinline muted></video>
+      <div *ngIf="proofCameraStarting" class="camera-placeholder">Starting camera...</div>
+      <div *ngIf="proofCameraError" class="camera-placeholder">{{ proofCameraError }}</div>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-secondary" (click)="closeProofCamera()">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="captureProofPhoto()" [disabled]="proofCameraStarting || !!proofCameraError">Capture photo</button>
+    </div>
+  </div>
+</div>

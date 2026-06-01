@@ -1,0 +1,347 @@
+<!-- ═══════════════════════════════════════
+     RESIDENT HOME — 3-column layout
+     ═══════════════════════════════════════ -->
+<div *ngIf="isResident()" class="resident-home" [style.--primary]="themeColor">
+
+  <!-- Left rail -->
+  <aside class="lr">
+  <div class="lr-inner">
+    <div class="lr-greet">
+      <div class="lr-greet-name">{{ displayName }}</div>
+      <div class="lr-greet-role text-mute text-sm">Resident · {{ user?.communityPrefix }}</div>
+    </div>
+
+    <a routerLink="/complaints/new" class="lr-report-btn">
+      <svg fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24" width="16" height="16">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+      </svg>
+      Report something
+    </a>
+
+    <div class="lr-section">
+      <div class="lr-section-label">Filter</div>
+      <button class="lr-filter" [class.active]="activeFilter === 'all'" (click)="setFilter('all')">
+        <span>Everything</span><span class="lr-count">{{ filterCounts.all }}</span>
+      </button>
+      <button class="lr-filter" [class.active]="activeFilter === 'OPEN'" (click)="setFilter('OPEN')">
+        <span>Open</span><span class="lr-count">{{ filterCounts.OPEN }}</span>
+      </button>
+      <button class="lr-filter" [class.active]="activeFilter === 'IN_PROGRESS'" (click)="setFilter('IN_PROGRESS')">
+        <span>In progress</span><span class="lr-count">{{ filterCounts.IN_PROGRESS }}</span>
+      </button>
+      <button class="lr-filter" [class.active]="activeFilter === 'RESOLVED'" (click)="setFilter('RESOLVED')">
+        <span>Resolved</span><span class="lr-count">{{ filterCounts.RESOLVED }}</span>
+      </button>
+    </div>
+
+    <div class="lr-mystats">
+      <div class="lr-mystats-label">Community pulse</div>
+      <div class="lr-stat-row"><span class="n warm">{{ stats.open }}</span><span>Needs attention</span></div>
+      <div class="lr-stat-row"><span class="n amb">{{ stats.inProgress }}</span><span>Being fixed</span></div>
+      <div class="lr-stat-row"><span class="n sage">{{ stats.resolved }}</span><span>Resolved</span></div>
+    </div>
+
+    <!-- Social links -->
+    <div class="lr-social" *ngIf="branding?.websiteUrl || branding?.instagramUrl || branding?.facebookUrl || branding?.twitterUrl">
+      <div class="lr-section-label">Community links</div>
+      <a *ngIf="branding?.websiteUrl" [href]="branding?.websiteUrl" target="_blank" class="lr-social-link">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+        Website
+      </a>
+      <a *ngIf="branding?.instagramUrl" [href]="branding?.instagramUrl" target="_blank" class="lr-social-link">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><path stroke-linecap="round" stroke-linejoin="round" d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        Instagram
+      </a>
+      <a *ngIf="branding?.facebookUrl" [href]="branding?.facebookUrl" target="_blank" class="lr-social-link">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+        Facebook
+      </a>
+      <a *ngIf="branding?.twitterUrl" [href]="branding?.twitterUrl" target="_blank" class="lr-social-link">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" width="14" height="14"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+        Twitter / X
+      </a>
+    </div>
+  </div>
+  </aside>
+
+  <!-- Center feed -->
+  <main class="feed">
+    <div class="feed-heading">
+      <h2 class="page-title">{{ timeOfDay }}, <em>{{ displayName }}</em></h2>
+      <p class="page-sub" style="margin-bottom: 0;">
+        Community feed · {{ filterCounts.all }} total
+      </p>
+    </div>
+
+    <div class="loading-row" *ngIf="loading">Loading feed…</div>
+
+    <div class="empty" *ngIf="!loading && filteredComplaints.length === 0">
+      <h3>All clear here</h3>
+      <p>No complaints match this filter.</p>
+    </div>
+
+    <div class="complaint-feed" *ngIf="!loading">
+      <div *ngFor="let c of filteredComplaints"
+           class="cf-card"
+           [class.highlighted]="highlightedId === c.id"
+           [attr.data-card-id]="c.id"
+           (mouseenter)="highlightFromCard(c)"
+           (click)="openComplaint(c)">
+
+        <div *ngIf="hasPhoto(c)" class="cf-photo">
+          <img [src]="photoSrc(c)" alt="">
+        </div>
+        <div *ngIf="!hasPhoto(c)" class="cf-nophoto">
+          <span class="cf-nophoto-letter">{{ c.categoryName.charAt(0) }}</span>
+        </div>
+
+        <div class="cf-body">
+          <div class="cf-top">
+            <span class="tag">{{ c.categoryName }}</span>
+            <span class="cf-num mono text-mute text-xs">{{ complaintNumber(c) }}</span>
+          </div>
+          <p class="cf-desc">{{ c.description }}</p>
+          <div *ngIf="isResident() && c.canUpvote" class="text-mute text-xs">Open to mark this issue as affecting you</div>
+          <div class="cf-foot">
+            <span class="status-pill" [class]="'status-pill ' + c.status.toLowerCase().replace('_', '-')">
+              <span class="dot"></span>{{ statusLabel(c.status) }}
+            </span>
+            <span class="cf-eta" [class]="'cf-eta ' + etaClass(c)">{{ etaLabel(c) }}</span>
+            <span class="text-mute text-sm">{{ timeAgo(c.createdAt) }}</span>
+            <span *ngIf="c.upvoteCount > 0" class="cf-upvotes text-mute text-sm">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="11" height="11"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
+              {{ c.upvoteCount }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Right rail map -->
+  <aside class="rr">
+  <div class="rr-inner">
+    <div class="rr-map-card">
+      <div class="rr-map-head">
+        <span class="rr-map-title">Live map</span>
+        <span class="rr-map-meta mono text-mute text-xs">
+          <span class="pulse-dot"></span>{{ filterCounts.OPEN + filterCounts.IN_PROGRESS }} active
+        </span>
+      </div>
+      <div #mapEl class="rr-map-canvas"></div>
+      <a routerLink="/map" class="rr-map-link">Full map →</a>
+    </div>
+
+    <div class="rr-stats card card-pad">
+      <div class="rr-stat">
+        <div class="rr-n warm">{{ stats.open }}</div>
+        <div class="rr-lbl">Open</div>
+      </div>
+      <div class="rr-stat">
+        <div class="rr-n amb">{{ stats.inProgress }}</div>
+        <div class="rr-lbl">In progress</div>
+      </div>
+      <div class="rr-stat">
+        <div class="rr-n sage">{{ stats.resolved }}</div>
+        <div class="rr-lbl">Resolved</div>
+      </div>
+    </div>
+  </div>
+  </aside>
+</div>
+
+<!-- ═══════════════════════════════════════
+     STAFF HOME — work queue + community feed
+     ═══════════════════════════════════════ -->
+<div *ngIf="isStaff()" class="staff-home" [style.--primary]="themeColor">
+
+  <div class="staff-header">
+    <div>
+      <h1 class="page-title">{{ timeOfDay }}, <em>{{ displayName }}</em></h1>
+      <p class="page-sub">Your work queue · {{ complaints.length }} assigned</p>
+    </div>
+  </div>
+
+  <div class="loading-row" *ngIf="loading">Loading your tasks…</div>
+
+  <!-- Proof submitted awaiting review -->
+  <section *ngIf="!loading && proofPendingComplaints.length > 0" class="staff-section">
+    <div class="staff-section-head">
+      <div class="staff-section-eyebrow sky"><span class="dot"></span>Awaiting admin review</div>
+      <span class="mono text-mute text-xs">{{ proofPendingComplaints.length }} pending</span>
+    </div>
+    <div class="task-list">
+      <div *ngFor="let c of proofPendingComplaints" class="task-card proof-pending" (click)="openComplaint(c)">
+        <div class="task-left">
+          <div class="task-num mono text-xs">{{ complaintNumber(c) }}</div>
+          <div class="task-cat">{{ c.categoryName }}</div>
+          <div class="task-desc">{{ c.description }}</div>
+        </div>
+        <div class="task-right">
+          <span class="status-pill proof-submitted"><span class="dot"></span>Awaiting review</span>
+          <div class="task-time text-mute text-xs">{{ timeAgo(c.updatedAt) }}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Active work -->
+  <!-- REWORK NEEDED — proof rejected, reassigned back to this staff -->
+  <section *ngIf="!loading && reworkComplaints.length > 0" class="staff-section">
+    <div class="staff-section-head">
+      <div class="staff-section-eyebrow rework"><span class="dot"></span>Rework required</div>
+      <span class="mono text-mute text-xs">{{ reworkComplaints.length }} tasks</span>
+    </div>
+    <div class="task-list">
+      <div *ngFor="let c of reworkComplaints" class="task-card rework-card" (click)="openComplaint(c)">
+        <div class="task-left">
+          <div class="task-num mono text-xs">{{ complaintNumber(c) }}</div>
+          <div class="task-cat">{{ c.categoryName }}</div>
+          <div class="task-desc">{{ c.description }}</div>
+          <div class="rework-reason-pill">⚠ {{ getRejectionReason(c) }}</div>
+        </div>
+        <div class="task-right">
+          <span class="status-pill rework">
+            <span class="dot"></span>Rework needed
+          </span>
+          <div class="task-time text-mute text-xs">{{ timeAgo(c.createdAt) }}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACTIVE WORK — fresh assignments and in-progress -->
+  <section *ngIf="!loading && activeWorkComplaints.length > 0" class="staff-section">
+    <div class="staff-section-head">
+      <div class="staff-section-eyebrow amber"><span class="dot"></span>Active work</div>
+      <span class="mono text-mute text-xs">{{ activeWorkComplaints.length }} tasks</span>
+    </div>
+    <div class="task-list">
+      <div *ngFor="let c of activeWorkComplaints" class="task-card" (click)="openComplaint(c)">
+        <div class="task-left">
+          <div class="task-num mono text-xs">{{ complaintNumber(c) }}</div>
+          <div class="task-cat">{{ c.categoryName }}</div>
+          <div class="task-desc">{{ c.description }}</div>
+        </div>
+        <div class="task-right">
+          <span class="status-pill" [class]="'status-pill ' + c.status.toLowerCase().replace('_','-')">
+            <span class="dot"></span>{{ statusLabel(c.status) }}
+          </span>
+          <div class="task-time text-mute text-xs">{{ timeAgo(c.createdAt) }}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <div *ngIf="!loading && complaints.length === 0" class="empty">
+    <h3>No tasks assigned</h3>
+    <p>You'll see work here once an admin assigns complaints to you.</p>
+  </div>
+
+  <!-- Community feed divider -->
+  <div class="community-feed-divider">
+    <span>Community feed — see what's happening around you</span>
+  </div>
+
+  <!-- Shared community feed for staff -->
+  <div class="loading-row" *ngIf="loadingCommunityFeed">Loading community feed…</div>
+  <div class="complaint-feed compact" *ngIf="!loadingCommunityFeed">
+    <div *ngFor="let c of communityFeed | slice:0:10"
+         class="cf-card"
+         (click)="openComplaint(c)">
+      <div *ngIf="hasPhoto(c)" class="cf-photo"><img [src]="photoSrc(c)" alt=""></div>
+      <div *ngIf="!hasPhoto(c)" class="cf-nophoto">
+        <span class="cf-nophoto-letter">{{ c.categoryName.charAt(0) }}</span>
+      </div>
+      <div class="cf-body">
+        <div class="cf-top">
+          <span class="tag">{{ c.categoryName }}</span>
+          <span class="cf-num mono text-mute text-xs">{{ complaintNumber(c) }}</span>
+        </div>
+        <p class="cf-desc">{{ c.description }}</p>
+        <div class="cf-foot">
+          <span class="status-pill" [class]="'status-pill ' + c.status.toLowerCase().replace('_','-')">
+            <span class="dot"></span>{{ statusLabel(c.status) }}
+          </span>
+          <span class="cf-eta" [class]="'cf-eta ' + etaClass(c)">{{ etaLabel(c) }}</span>
+          <span class="text-mute text-sm">{{ timeAgo(c.createdAt) }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     ADMIN/CO-ADMIN HOME — Command Garden + community feed
+     ═══════════════════════════════════════ -->
+<div *ngIf="isAdmin()" class="admin-home" [style.--primary]="themeColor">
+
+  <div class="admin-header">
+    <div>
+      <h1 class="page-title">{{ timeOfDay }}, <em>{{ displayName }}</em></h1>
+      <p class="page-sub">{{ branding?.name || user?.communityPrefix }} · Community overview</p>
+    </div>
+    <a routerLink="/complaints" class="btn btn-primary btn-sm">All complaints →</a>
+  </div>
+
+  <!-- Stats strip -->
+  <div class="admin-stats">
+    <div class="astat card card-pad">
+      <div class="astat-n warm">{{ stats.open }}</div>
+      <div class="astat-lbl">Needs assignment</div>
+    </div>
+    <div class="astat card card-pad">
+      <div class="astat-n amb">{{ stats.inProgress }}</div>
+      <div class="astat-lbl">In progress</div>
+    </div>
+    <div class="astat card card-pad">
+      <div class="astat-n sky">{{ stats.proofSubmitted }}</div>
+      <div class="astat-lbl">Awaiting review</div>
+    </div>
+    <div class="astat card card-pad">
+      <div class="astat-n sage">{{ stats.resolved }}</div>
+      <div class="astat-lbl">Resolved</div>
+    </div>
+  </div>
+
+  <div class="loading-row" *ngIf="loading">Loading community data…</div>
+
+  <!-- Priority queue -->
+  <section class="admin-queue" *ngIf="!loading">
+    <div class="queue-head">
+      <h3>Priority queue</h3>
+      <div class="queue-filters">
+        <button class="qf" [class.active]="activeFilter === 'all'" (click)="setFilter('all')">All <span>{{ filterCounts.all }}</span></button>
+        <button class="qf warm" [class.active]="activeFilter === 'OPEN'" (click)="setFilter('OPEN')">Open <span>{{ filterCounts.OPEN }}</span></button>
+        <button class="qf amb" [class.active]="activeFilter === 'IN_PROGRESS'" (click)="setFilter('IN_PROGRESS')">Active <span>{{ filterCounts.IN_PROGRESS }}</span></button>
+        <button class="qf sage" [class.active]="activeFilter === 'RESOLVED'" (click)="setFilter('RESOLVED')">Done <span>{{ filterCounts.RESOLVED }}</span></button>
+      </div>
+    </div>
+
+    <div class="empty" *ngIf="filteredComplaints.length === 0">
+      <h3>Nothing here</h3><p>No complaints match this filter.</p>
+    </div>
+
+    <div class="queue-table" *ngIf="filteredComplaints.length > 0">
+      <div class="qt-header">
+        <span>No.</span><span>Issue</span><span>Category</span><span>Status</span><span>Assigned</span><span>When</span>
+      </div>
+      <div *ngFor="let c of filteredComplaints | slice:0:20"
+           class="qt-row" (click)="openComplaint(c)">
+        <span class="mono text-xs text-mute">{{ complaintNumber(c) }}</span>
+        <span class="qt-desc">{{ c.description }}</span>
+        <span><span class="tag">{{ c.categoryName }}</span></span>
+        <span>
+          <span class="status-pill" [class]="'status-pill ' + c.status.toLowerCase().replace('_','-')">
+            <span class="dot"></span>{{ statusLabel(c.status) }}
+          </span>
+        </span>
+        <span class="text-sm" [class.text-mute]="!c.assignedToUsername">{{ c.assignedToUsername || '— unassigned' }}</span>
+        <span class="text-sm text-mute">{{ timeAgo(c.createdAt) }}</span>
+      </div>
+    </div>
+  </section>
+
+</div>

@@ -1,0 +1,153 @@
+<div [class]="pageClass" [style.--primary]="themeColor" [style.--primary-dark]="themeColor">
+
+  <!-- LEFT (visual) -->
+  <aside class="login-left">
+
+    <div class="login-art" *ngIf="mode !== 'super'">
+      <svg viewBox="0 0 460 460" fill="none" stroke="currentColor" stroke-width="0.8" stroke-opacity="0.18">
+        <circle cx="230" cy="230" r="220"/>
+        <circle cx="230" cy="230" r="180"/>
+        <circle cx="230" cy="230" r="140"/>
+        <circle cx="230" cy="230" r="100"/>
+        <circle cx="230" cy="230" r="60"/>
+        <circle cx="230" cy="230" r="20"/>
+        <line x1="10" y1="230" x2="450" y2="230"/>
+        <line x1="230" y1="10" x2="230" y2="450"/>
+        <line x1="78" y1="78" x2="382" y2="382"/>
+        <line x1="382" y1="78" x2="78" y2="382"/>
+      </svg>
+    </div>
+
+    <div class="login-brand">
+      <div class="brand-mark" [class.has-logo]="branding?.logoBase64">
+        <img *ngIf="branding?.logoBase64"
+             [src]="logoSrc(branding?.logoBase64)" alt="Logo">
+        <span *ngIf="!branding?.logoBase64">{{ brandMark }}</span>
+      </div>
+      <div class="brand-name">
+        {{ brandName }}
+        <span class="brand-meta" *ngIf="brandMeta">{{ brandMeta }}</span>
+      </div>
+    </div>
+
+    <div class="login-body">
+      <div class="login-eyebrow">
+        <span>{{ eyebrowText }}</span>
+        <span class="recognition-line"></span>
+      </div>
+      <h1 class="login-headline" [innerHTML]="headlineHtml"></h1>
+      <p class="login-sub">{{ subText }}</p>
+
+      <!-- Super admin gravitas block -->
+      <div *ngIf="mode === 'super'" class="super-gravitas">
+        <div class="row"><span class="key">$ omnicivic auth --status</span></div>
+        <div class="row"><span class="key">version</span><span class="val">v1.2.0 <span class="ok">●</span></span></div>
+        <div class="row"><span class="key">communities active</span><span class="val">—</span></div>
+        <div class="row"><span class="key">pending requests</span><span class="val pending">—</span></div>
+        <div class="row sep"><span class="key">⚠</span><span class="note">decisions made here affect real users</span></div>
+      </div>
+
+      <!-- Community card (shown when recognized) -->
+      <div *ngIf="mode === 'community' && branding" class="community-card">
+        <div class="cc-head">
+          <span class="cc-dot"></span>
+          <span class="cc-label">{{ branding.name }} · live now</span>
+        </div>
+        <p class="cc-activity">
+          Sign in to see what's <em>new</em>.
+        </p>
+      </div>
+
+      <!-- Default stats -->
+      <div *ngIf="mode === 'default'" class="login-stats">
+        <div class="login-stat">
+          <div class="n serif">14</div>
+          <div class="lbl">Communities</div>
+        </div>
+        <div class="login-stat">
+          <div class="n serif">1,247</div>
+          <div class="lbl">Residents</div>
+        </div>
+        <div class="login-stat">
+          <div class="n serif">2,840</div>
+          <div class="lbl">Issues resolved</div>
+        </div>
+      </div>
+    </div>
+
+    <blockquote class="login-quote" *ngIf="mode !== 'super'">
+      <span>Felt like someone actually listened — the hedges were trimmed within two days.</span>
+      <cite>PRIYA S. · <strong>BLOCK D RESIDENT</strong></cite>
+    </blockquote>
+  </aside>
+
+  <!-- RIGHT (form) -->
+  <main class="login-right">
+    <div class="login-form-wrap">
+
+      <header class="form-head">
+        <div class="form-eyebrow">
+          <span>{{ formEyebrow }}</span>
+          <span class="role-tag">
+            <span class="pulse"></span>
+            <span>{{ roleTagText }}</span>
+          </span>
+        </div>
+        <h2 class="form-title">{{ formTitle }}</h2>
+        <p class="form-sub" [innerHTML]="formSubHtml"></p>
+      </header>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="field">
+          <label for="user-input">Username</label>
+          <input id="user-input"
+                 type="text"
+                 formControlName="username"
+                 placeholder="e.g. marinaA1 or you@omnicivic.com"
+                 autocomplete="username"
+                 autofocus>
+          <p class="field-helper" [class.success]="mode !== 'default'" [innerHTML]="helperHtml"></p>
+        </div>
+
+        <div class="field">
+          <div class="pwd-row">
+            <label for="pwd-input">Password</label>
+          </div>
+          <input id="pwd-input"
+                 type="password"
+                 formControlName="password"
+                 placeholder="••••••••"
+                 autocomplete="current-password">
+          <p class="field-helper">
+            <span>Your community admin can reissue if needed.</span>
+          </p>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg" [disabled]="form.invalid || loading">
+          <span>{{ submitText }}</span>
+          <svg fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </button>
+
+        <div *ngIf="error" class="banner error" style="margin-top: 16px;">
+          {{ error }}
+        </div>
+
+        <div *ngIf="firstTimeHint && mode === 'community'" class="first-time">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <div>
+            <strong>First time signing in?</strong> Use the temporary password from your welcome email. You'll be asked to set a new one immediately after.
+          </div>
+        </div>
+      </form>
+
+      <div class="form-extra" *ngIf="mode !== 'super'">
+        <span>Not on OmniCivic yet?</span>
+        <a href="/index.html">Request access →</a>
+      </div>
+
+      <footer class="form-foot">
+        Need help signing in? <a href="mailto:hello@omnicivic.com">Reach the OmniCivic team</a>
+      </footer>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,106 @@
+<div class="page">
+
+  <header class="page-head">
+    <div>
+      <h1 class="page-title">Categories</h1>
+      <p class="page-sub">Define the kinds of issues residents can report.</p>
+    </div>
+    <button class="btn btn-primary" (click)="openCreate()">+ New category</button>
+  </header>
+
+  <div class="loading-state" *ngIf="loading">$ loading categories…</div>
+
+  <div class="empty-state" *ngIf="!loading && categories.length === 0">
+    <strong>No categories yet.</strong>
+    <p>Add a few — water, lighting, garbage, security — so residents have the right buckets to report into.</p>
+  </div>
+
+  <div class="cat-grid" *ngIf="!loading && categories.length > 0">
+    <article *ngFor="let c of categories" class="cat-card">
+      <div class="cat-card-head">
+        <div class="cat-glyph">{{ c.name?.charAt(0) }}</div>
+        <span class="status-pill" [class.status-RESOLVED]="c.active" [class.status-OPEN]="!c.active">
+          <span class="dot"></span> {{ c.active ? 'Active' : 'Inactive' }}
+        </span>
+      </div>
+      <h3 class="cat-name">{{ c.name }}</h3>
+      <p class="cat-desc" *ngIf="c.description">{{ c.description }}</p>
+      <p class="cat-desc empty" *ngIf="!c.description">No description.</p>
+
+      <!-- Assigned staff chips — only for THIS category -->
+      <div class="cat-staff-list" *ngIf="getStaffForCategory(c.id).length > 0">
+        <span class="cat-staff-label">Assigned staff:</span>
+        <span *ngFor="let s of getStaffForCategory(c.id)" class="cat-staff-chip">
+          {{ s.firstName || s.username }}
+          <button class="chip-remove" title="Remove" (click)="$event.stopPropagation(); removeStaff(c, s)">×</button>
+        </span>
+      </div>
+      <div class="cat-staff-empty" *ngIf="getStaffForCategory(c.id).length === 0">
+        <span class="text-mute" style="font-size:12px;">No staff assigned yet</span>
+      </div>
+
+      <div class="cat-actions">
+        <button class="btn btn-sm btn-secondary" (click)="openEdit(c)">Edit</button>
+        <button class="btn btn-sm btn-secondary" (click)="openAssign(c)">Assign staff</button>
+        <button class="btn btn-sm btn-danger" (click)="doDelete(c)">Delete</button>
+      </div>
+    </article>
+  </div>
+</div>
+
+<!-- ─── CREATE / EDIT MODAL ─── -->
+<div class="modal-overlay" *ngIf="showCreate" (click)="showCreate = false">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h2>{{ editingId ? 'Edit category' : 'New category' }}</h2>
+    <p class="modal-sub">Categories help residents file the right complaint and admins assign the right staff.</p>
+
+    <form [formGroup]="form" (ngSubmit)="saveCategory()">
+      <div class="field">
+        <label>Name</label>
+        <input type="text" formControlName="name" placeholder="e.g. Water leakage" autofocus>
+      </div>
+      <div class="field">
+        <label>Description (optional)</label>
+        <textarea formControlName="description" rows="3"
+                  placeholder="What kind of issues fall under this category?"></textarea>
+      </div>
+      <div class="field">
+        <label>Icon name (optional)</label>
+        <input type="text" formControlName="iconName" placeholder="e.g. droplet">
+        <p class="hint">// short keyword for display purposes</p>
+      </div>
+
+      <div class="error-msg" *ngIf="errorMsg">⚠ {{ errorMsg }}</div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" (click)="showCreate = false">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="submitting || form.invalid">
+          {{ editingId ? 'Save changes' : 'Create category' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ─── ASSIGN STAFF MODAL ─── -->
+<div class="modal-overlay" *ngIf="showAssign" (click)="showAssign = false">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h2>Assign staff to "{{ assignCategory?.name }}"</h2>
+    <p class="modal-sub">Staff assigned to this category will be eligible to receive complaints in it.</p>
+
+    <div class="field">
+      <label>Staff member</label>
+      <select [(ngModel)]="assignStaffId">
+        <option [ngValue]="null">— pick a staff member —</option>
+        <option *ngFor="let s of getUnassignedStaff(assignCategory)" [ngValue]="s.id">{{ s.username }} · {{ s.firstName }} {{ s.lastName }}</option>
+      </select>
+    </div>
+
+    <div class="error-msg" *ngIf="errorMsg">⚠ {{ errorMsg }}</div>
+
+    <div class="modal-actions">
+      <button class="btn btn-secondary" (click)="showAssign = false">Cancel</button>
+      <button class="btn btn-primary" (click)="doAssign()" [disabled]="!assignStaffId">Assign</button>
+    </div>
+  </div>
+</div>

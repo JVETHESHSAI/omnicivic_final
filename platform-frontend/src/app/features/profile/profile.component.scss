@@ -1,0 +1,310 @@
+// :host { display: block; }
+
+// .profile-page {
+//   padding: 36px 40px 80px;
+//   max-width: 900px;
+//   margin: 0 auto;
+// }
+
+// @media (max-width: 720px) { .profile-page { padding: 24px 16px 64px; } }
+
+// .profile-header { margin-bottom: 36px; }
+
+// .profile-grid {
+//   display: grid;
+//   grid-template-columns: 280px 1fr;
+//   gap: 28px;
+//   align-items: start;
+// }
+
+// @media (max-width: 800px) {
+//   .profile-grid { grid-template-columns: 1fr; }
+// }
+
+// /* Avatar zone */
+// .profile-aside { display: flex; flex-direction: column; gap: 20px; }
+
+// .avatar-zone {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   padding: 24px;
+//   background: var(--stone-50);
+//   border: 1px solid var(--stone-200);
+//   border-radius: var(--radius);
+// }
+
+// .avatar-frame {
+//   position: relative;
+//   width: 96px;
+//   height: 96px;
+//   border-radius: 50%;
+//   margin-bottom: 12px;
+// }
+
+// .avatar-img {
+//   width: 96px;
+//   height: 96px;
+//   border-radius: 50%;
+//   object-fit: cover;
+//   border: 3px solid var(--stone-200);
+//   display: block;
+// }
+
+// .avatar-initials {
+//   width: 96px;
+//   height: 96px;
+//   border-radius: 50%;
+//   background: var(--primary);
+//   color: white;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   font-family: 'Fraunces', serif;
+//   font-size: 32px;
+//   font-weight: 600;
+//   letter-spacing: -0.02em;
+//   border: 3px solid transparent;
+// }
+
+// .avatar-upload-btn {
+//   position: absolute;
+//   bottom: 0;
+//   right: 0;
+//   width: 28px;
+//   height: 28px;
+//   background: var(--ink);
+//   color: white;
+//   border-radius: 50%;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   cursor: pointer;
+//   border: 2px solid var(--stone-50);
+//   transition: background var(--d-fast) var(--ease);
+// }
+
+// .avatar-upload-btn:hover { background: var(--primary); }
+
+// .avatar-hint {
+//   font-size: 11px;
+//   color: var(--ink-mute);
+//   text-align: center;
+//   margin-top: 4px;
+//   font-family: 'JetBrains Mono', monospace;
+// }
+
+// /* Identity card */
+// .identity-card {}
+
+// .id-row {
+//   display: flex;
+//   align-items: baseline;
+//   justify-content: space-between;
+//   padding: 10px 0;
+//   border-bottom: 1px solid var(--stone-200);
+//   gap: 12px;
+// }
+
+// .id-row:last-child { border-bottom: none; }
+
+// .id-label {
+//   font-size: 11px;
+//   font-weight: 600;
+//   text-transform: uppercase;
+//   letter-spacing: 0.1em;
+//   color: var(--ink-mute);
+//   flex-shrink: 0;
+// }
+
+// .id-val {
+//   font-size: 13px;
+//   color: var(--ink);
+//   text-align: right;
+// }
+
+// /* Form */
+// .profile-form {}
+
+// .form-row-2 {
+//   display: grid;
+//   grid-template-columns: 1fr 1fr;
+//   gap: 16px;
+// }
+
+// @media (max-width: 600px) { .form-row-2 { grid-template-columns: 1fr; } }
+
+// .save-row {
+//   display: flex;
+//   align-items: center;
+//   gap: 16px;
+//   margin-top: 8px;
+// }
+
+// .save-ok {
+//   display: flex;
+//   align-items: center;
+//   gap: 6px;
+//   font-size: 13px;
+//   font-weight: 500;
+//   color: var(--sage-dark);
+//   animation: fadeIn 300ms var(--ease);
+// }
+
+// .save-ok svg { color: var(--sage); }
+
+
+:host { display: block; }
+
+.profile-page {
+  padding: 36px 40px 80px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+@media (max-width: 720px) { .profile-page { padding: 24px 16px 64px; } }
+
+.profile-header { margin-bottom: 36px; }
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+@media (max-width: 800px) {
+  .profile-grid { grid-template-columns: 1fr; }
+}
+
+/* Avatar zone */
+.profile-aside { display: flex; flex-direction: column; gap: 20px; }
+
+.avatar-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  background: var(--stone-50);
+  border: 1px solid var(--stone-200);
+  border-radius: var(--radius);
+}
+
+.avatar-frame {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  margin-bottom: 12px;
+}
+
+.avatar-img {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--stone-200);
+  display: block;
+}
+
+.avatar-initials {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Plus Jakarta Sans', serif;
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  border: 3px solid transparent;
+}
+
+.avatar-upload-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 28px;
+  height: 28px;
+  background: var(--ink);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid var(--stone-50);
+  transition: background var(--d-fast) var(--ease);
+}
+
+.avatar-upload-btn:hover { background: var(--primary); }
+
+.avatar-hint {
+  font-size: 11px;
+  color: var(--ink-mute);
+  text-align: center;
+  margin-top: 4px;
+  font-family: 'Fira Code', monospace;
+}
+
+/* Identity card */
+.identity-card {}
+
+.id-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--stone-200);
+  gap: 12px;
+}
+
+.id-row:last-child { border-bottom: none; }
+
+.id-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-mute);
+  flex-shrink: 0;
+}
+
+.id-val {
+  font-size: 13px;
+  color: var(--ink);
+  text-align: right;
+}
+
+/* Form */
+.profile-form {}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 600px) { .form-row-2 { grid-template-columns: 1fr; } }
+
+.save-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.save-ok {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--sage-dark);
+  animation: fadeIn 300ms var(--ease);
+}
+
+.save-ok svg { color: var(--sage); }
