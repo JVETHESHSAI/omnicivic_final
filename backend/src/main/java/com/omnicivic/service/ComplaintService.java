@@ -35,7 +35,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ComplaintService {
 
-    private static final double DUPLICATE_RADIUS_METERS = 50.0;
+    private static final double DUPLICATE_RADIUS_METERS = 10.0;
     @Value("${app.complaints.default-eta-days:4}")
     private int defaultEtaDays;
     @Value("${app.complaints.allowed-radius-meters:200}")

@@ -12,6 +12,8 @@ logs/
 # Java / Spring
 backend/target/
 backend/.mvn/
+automation-tests/target/
+.m2-cache/
 **/build/
 **/out/
 
@@ -21,6 +23,11 @@ platform-frontend/.angular/
 platform-frontend/dist/
 platform-frontend/.cache/
 company-website/node_modules/
+presentation-generator/node_modules/
+
+# Test / IDE output
+automation-tests/.idea/
+automation-tests/test-output/
 
 # Local env / secrets
 .env
@@ -28,8 +35,10 @@ company-website/node_modules/
 !.env.example
 backend/src/main/resources/application-local.properties
 backend/src/main/resources/application-secrets.properties
+automation-tests/src/test/resources/config.local.properties
 
 # Misc
 coverage/
 tmp/
 temp/
+deliverables/~$*.pptx
